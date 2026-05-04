@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlashSuite Custom URL Shortener & QR Code Generator | Blog Post</title>
+    <meta name="description"
+        content="FlashSuite Blog Post. Learn more about link management, branded links, and QR codes.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .post-container {
+            max-width: 800px;
+            margin: 60px auto 100px;
+            padding: 40px;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .post-title {
+            color: var(--secondary);
+            font-size: 2.5rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .post-meta {
+            font-size: 0.95rem;
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+            display: inline-block;
+            background: rgba(157, 28, 68, 0.08);
+            padding: 8px 16px;
+            border-radius: 20px;
+        }
+
+        .post-content {
+            line-height: 1.8;
+            color: #444;
+            font-size: 1.15rem;
+        }
+
+        .post-content p {
+            margin-bottom: 25px;
+        }
+
+        .post-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            display: block;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="glass-nav">
+        <a href="/"><img src="flashsuite_logo.png" alt="FlashSuite Logo" style="height: 100px;"></a>
+        <div class="nav-links">
+            <a href="/#features">Features</a>
+            <a href="/blog.html">Blog</a>
+            <a href="/login.html" class="btn-outline" style="text-decoration: none;">Login</a>
+        </div>
+    </nav>
+
+    <main class="container fade-in-up" style="padding-top: 120px;">
+        <div class="post-container" id="postContainer">
+            <p style="text-align: center; color: #888;"><em>Loading post...</em></p>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = urlParams.get('id');
+            const container = document.getElementById('postContainer');
+
+            if (!postId) {
+                container.innerHTML = '<div style="text-align: center;"><p style="color: #cc0000; font-size: 1.1rem;">Post not found.</p><a href="/blog.html" class="btn-outline" style="display: inline-block; margin-top: 20px; text-decoration: none;">Back to Blog</a></div>';
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/blogs/' + postId);
+                if (!res.ok) throw new Error('Post not found');
+
+                const blog = await res.json();
+
+                document.title = blog.title + ' | FlashSuite';
+
+                container.innerHTML = `
+                    <a href="/blog.html" class="back-btn">&larr; Back to Blog</a>
+                    <br>
+                    <span class="post-meta">${new Date(blog.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+                    <h1 class="post-title">${blog.title}</h1>
+                    <div class="post-content">
+                        ${blog.content.split('\\n').map(p => p.trim() ? '<p>' + p + '</p>' : '').join('')}
+                    </div>
+                `;
+            } catch (e) {
+                container.innerHTML = '<div style="text-align: center;"><p style="color: #cc0000; font-size: 1.1rem;">Failed to load post or post does not exist.</p><a href="/blog.html" class="btn-outline" style="display: inline-block; margin-top: 20px; text-decoration: none;">Back to Blog</a></div>';
+            }
+        });
+    </script>
+
+    <footer class="site-footer">
+        <nav class="footer-nav">
+            <a href="/">Home</a>
+            <a href="/blog.html">Blog</a>
+            <a href="/about.html">About Us</a>
+            <a href="/privacy.html">Privacy Policy</a>
+            <a href="/terms.html">Terms of Service</a>
+        </nav>
+        <p class="footer-copy">&copy; 2026 FlashSuite. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

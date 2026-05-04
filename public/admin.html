@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | FlashSuite Custom URL Shortener & QR Code Generator</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+
+<body>
+    <div class="dashboard-grid">
+        <aside class="sidebar">
+            <h2>FlashSuite</h2>
+            <nav>
+                <p onclick="switchView('dashboard')" style="cursor:pointer;">Dashboard & Links</p>
+                <p onclick="switchView('blogs')" style="cursor:pointer;">Blog Management</p>
+                <p style="cursor:pointer;">Settings</p>
+                <button onclick="logout()" style="margin-top: 20px; width: 100%;">Logout</button>
+            </nav>
+        </aside>
+
+        <main class="container">
+            <header>
+                <h1>System Admin</h1>
+            </header>
+
+            <div id="dashboardView">
+                <div class="card-grid">
+                    <div class="metric-card">
+                        <h3>Total Clicks</h3>
+                        <h2 id="totalClicks">0</h2>
+                    </div>
+                    <div class="metric-card">
+                        <h3>Active Links</h3>
+                        <h2 id="totalLinks">0</h2>
+                    </div>
+                </div>
+
+                <div class="metric-card" style="margin-bottom: 40px; display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div style="flex: 2; min-width: 300px; height: 300px;"><canvas id="clickChart"></canvas></div>
+                    <div style="flex: 1; min-width: 250px; height: 300px;"><canvas id="referrerChart"></canvas></div>
+                </div>
+
+                <section class="metric-card">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 style="margin: 0;">Managed Links</h3>
+                        <input type="text" id="searchLinks" placeholder="Search links..."
+                            style="padding: 10px; border-radius: 8px; border: 1px solid var(--border); font-family: inherit; outline: none; width: 250px;"
+                            onkeyup="filterLinks()">
+                    </div>
+                    <table id="linksTable" style="width: 100%; text-align: left; border-collapse: collapse;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--bg);">
+                                <th>Short Code</th>
+                                <th>Original URL</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="linksBody">
+                            <!-- Data injected by main.js -->
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+
+            <div id="blogView" style="display: none;">
+                <div class="metric-card" style="margin-bottom: 40px;">
+                    <h3>Create New Blog</h3>
+                    <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+                        <input type="text" id="blogTitle" placeholder="Blog Title"
+                            style="padding: 15px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 1rem;">
+                        <textarea id="blogContent" placeholder="Blog Content (Text or HTML)" rows="10"
+                            style="padding: 15px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 1rem; resize: vertical;"></textarea>
+                        <select id="blogStatus"
+                            style="padding: 15px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 1rem;">
+                            <option value="published">Published</option>
+                            <option value="draft">Draft</option>
+                        </select>
+                        <button id="blogSubmitBtn" onclick="saveBlog()">Publish Blog</button>
+                        <button id="blogCancelBtn" onclick="cancelEditBlog()"
+                            style="display:none; background:var(--secondary); margin-top:5px;">Cancel Edit</button>
+                    </div>
+                </div>
+
+                <section class="metric-card">
+                    <h3>All Blogs</h3>
+                    <table style="width: 100%; text-align: left; border-collapse: collapse;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--bg);">
+                                <th>Title</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="blogsBody">
+                            <!-- Data injected by main.js -->
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- QR Code Modal -->
+    <div class="qr-modal-overlay" id="qrModal">
+        <div class="qr-modal-content">
+            <div class="qr-modal-header">
+                <h3>Generate QR Code</h3>
+                <button class="qr-close-btn" onclick="closeQrModal()">&times;</button>
+            </div>
+            <div class="qr-modal-body">
+                <div class="qr-preview-container" id="qrCodeContainer"></div>
+                <div class="qr-controls">
+                    <div class="qr-control-group">
+                        <label for="qrFgColor">Foreground</label>
+                        <input type="color" id="qrFgColor" value="#1A2B3C" onchange="generateQRCode()">
+                    </div>
+                    <div class="qr-control-group">
+                        <label for="qrBgColor">Background</label>
+                        <input type="color" id="qrBgColor" value="#ffffff" onchange="generateQRCode()">
+                    </div>
+                    <div class="qr-control-group" style="grid-column: span 2;">
+                        <label for="qrErrorCorrection">Error Correction</label>
+                        <select id="qrErrorCorrection" onchange="generateQRCode()">
+                            <option value="L">Low (L)</option>
+                            <option value="M">Medium (M)</option>
+                            <option value="Q">Quarter (Q)</option>
+                            <option value="H" selected>High (H)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="qr-actions">
+                    <button class="qr-btn qr-btn-primary" onclick="downloadQRCode()">Download PNG</button>
+                    <button class="qr-btn qr-btn-secondary" onclick="copyQRCode()">Copy Image</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script src="qr-generator.js"></script>
+</body>
+
+</html>
