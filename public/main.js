@@ -108,12 +108,26 @@ function logout() {
 
 // Blog Management Functions
 function switchView(viewId) {
+    document.getElementById('dashboardView').style.display = 'none';
+    document.getElementById('blogView').style.display = 'none';
+    if (document.getElementById('settingsView')) document.getElementById('settingsView').style.display = 'none';
+
+    // Remove active class from all nav items
+    document.querySelectorAll('.sidebar-nav-item').forEach(el => el.classList.remove('active'));
+    const activeNav = document.getElementById('nav-' + viewId);
+    if (activeNav) activeNav.classList.add('active');
+
+    const titleEl = document.getElementById('pageTitle');
+
     if (viewId === 'dashboard') {
         document.getElementById('dashboardView').style.display = 'block';
-        document.getElementById('blogView').style.display = 'none';
-    } else {
-        document.getElementById('dashboardView').style.display = 'none';
+        if (titleEl) titleEl.innerText = 'System Dashboard';
+    } else if (viewId === 'blogs') {
         document.getElementById('blogView').style.display = 'block';
+        if (titleEl) titleEl.innerText = 'Blog Management';
+    } else if (viewId === 'settings') {
+        document.getElementById('settingsView').style.display = 'block';
+        if (titleEl) titleEl.innerText = 'System Settings';
     }
 }
 
@@ -193,4 +207,46 @@ async function deleteBlog(id) {
     if (!confirm("Are you sure you want to delete this blog?")) return;
     await fetch(`/api/admin/blogs/${id}`, { method: 'DELETE' });
     loadBlogsData();
+}
+
+async function updateCredentials() {
+    const u = document.getElementById('settingUsername').value;
+    const p = document.getElementById('settingPassword').value;
+
+    if (!u && !p) return alert("Please enter a new username or password.");
+
+    try {
+        const res = await fetch('/api/admin/credentials', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: u, password: p })
+        });
+        
+        if (res.ok) {
+            alert("Credentials updated! Please login again.");
+            logout();
+        } else {
+            const data = await res.json();
+            alert("Error: " + (data.error || "Failed to update credentials"));
+        }
+    } catch (err) {
+        console.error(err);
+        alert("An error occurred");
+    }
+}
+
+async function clearAnalytics() {
+    if (!confirm("CRITICAL WARNING: Are you absolutely sure you want to delete all analytics data? This action CANNOT be undone!")) return;
+    
+    try {
+        const res = await fetch('/api/admin/analytics', { method: 'DELETE' });
+        if (res.ok) {
+            alert("Analytics data cleared successfully.");
+            loadDashboardData();
+        } else {
+            alert("Failed to clear analytics");
+        }
+    } catch (err) {
+        console.error(err);
+    }
 }

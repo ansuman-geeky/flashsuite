@@ -80,31 +80,169 @@ button:hover {
     transform: translateY(-2px);
 }
 
-/* Dashboard Styles */
+/* Premium Admin Dashboard Styles */
 .dashboard-grid {
-    display: grid;
-    grid-template-columns: 250px 1fr;
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
+    background-color: #F4F7FE; /* Soft modern background */
+}
+
+@media (min-width: 992px) {
+    .dashboard-grid {
+        flex-direction: row;
+    }
 }
 
 .sidebar {
     background: var(--secondary);
     color: white;
     padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+@media (min-width: 992px) {
+    .sidebar {
+        width: 260px;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        flex-shrink: 0;
+    }
+}
+
+.sidebar-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    border-radius: 12px;
+    color: rgba(255,255,255,0.7);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.sidebar-nav-item:hover, .sidebar-nav-item.active {
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.sidebar-nav-item svg {
+    width: 20px;
+    height: 20px;
+    opacity: 0.8;
+}
+
+.sidebar-nav-item:hover svg, .sidebar-nav-item.active svg {
+    opacity: 1;
+}
+
+.admin-main {
+    flex: 1;
+    padding: 20px;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+@media (min-width: 768px) {
+    .admin-main {
+        padding: 40px;
+    }
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.admin-header h1 {
+    font-size: 2rem;
+    color: var(--secondary);
+    margin: 0;
 }
 
 .card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
     margin-bottom: 40px;
 }
 
 .metric-card {
     background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0,0,0,0.03);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
+}
+
+.metric-card h3 {
+    margin-top: 0;
+    color: #888;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+}
+
+.metric-card h2 {
+    margin: 0;
+    font-size: 2.5rem;
+    color: var(--secondary);
+}
+
+/* Modern SaaS Tables */
+.table-wrapper {
+    overflow-x: auto;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0,0,0,0.03);
+    padding: 10px 0;
+}
+
+.admin-table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+.admin-table th {
+    padding: 15px 25px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #888;
+    border-bottom: 2px solid #F4F7FE;
+}
+
+.admin-table td {
+    padding: 20px 25px;
+    border-bottom: 1px solid #F4F7FE;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.admin-table tbody tr {
+    transition: background-color 0.2s;
+}
+
+.admin-table tbody tr:hover {
+    background-color: #fcfdfd;
 }
 
 /* Info Section */
@@ -337,6 +475,29 @@ button:hover {
     justify-content: space-between;
     align-items: center;
     padding: 15px 40px;
+}
+
+.nav-logo {
+    height: 160px;
+    margin: -55px -20px; /* Counteracts image whitespace to reduce nav height */
+    width: auto;
+    transition: all 0.3s ease;
+}
+
+.login-logo {
+    height: 120px;
+    margin: -30px 0 10px 0;
+    width: auto;
+}
+
+@media (max-width: 768px) {
+    .glass-nav {
+        padding: 10px 20px;
+    }
+    .nav-logo {
+        height: 120px;
+        margin: -40px -15px;
+    }
 }
 
 .nav-links {

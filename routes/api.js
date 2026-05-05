@@ -141,6 +141,45 @@ router.get('/blogs/:id', (req, res) => {
         if (err) return res.status(500).json({ error: err.message });
         if (!blog) return res.status(404).json({ error: 'Blog not found' });
         res.json(blog);
+// Admin: Update Credentials
+router.put('/admin/credentials', isAuthenticated, async (req, res) => {
+    const { username, password } = req.body;
+    try {
+        let updates = [];
+        let params = [];
+        if (username) {
+            updates.push("username = ?");
+            params.push(username);
+        }
+        if (password) {
+            const hash = await bcrypt.hash(password, 10);
+            updates.push("password = ?");
+            params.push(hash);
+        }
+        
+        if (updates.length === 0) return res.status(400).json({ error: "No fields to update" });
+        
+        params.push(req.session.userId);
+        
+        db.run(`UPDATE users SET ${updates.join(', ')} WHERE id = ?`, params, function(err) {
+            if (err) {
+                if (err.message.includes('UNIQUE constraint failed')) {
+                    return res.status(400).json({ error: "Username already exists" });
+                }
+                return res.status(500).json({ error: err.message });
+            }
+            res.json({ success: true });
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Admin: Clear Analytics
+router.delete('/admin/analytics', isAuthenticated, (req, res) => {
+    db.run("DELETE FROM analytics", [], (err) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ success: true });
     });
 });
 

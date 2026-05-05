@@ -19,19 +19,33 @@
 <body>
     <div class="dashboard-grid">
         <aside class="sidebar">
-            <h2>FlashSuite</h2>
-            <nav>
-                <p onclick="switchView('dashboard')" style="cursor:pointer;">Dashboard & Links</p>
-                <p onclick="switchView('blogs')" style="cursor:pointer;">Blog Management</p>
-                <p style="cursor:pointer;">Settings</p>
-                <button onclick="logout()" style="margin-top: 20px; width: 100%;">Logout</button>
+            <div style="margin-bottom: 30px; text-align: center;">
+                <img src="flashsuite_logo.png" alt="FlashSuite" style="height: 120px; margin: -30px 0; max-width: 100%;">
+            </div>
+            <nav style="display: flex; flex-direction: column; gap: 5px;">
+                <div class="sidebar-nav-item active" onclick="switchView('dashboard')" id="nav-dashboard">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    Dashboard & Links
+                </div>
+                <div class="sidebar-nav-item" onclick="switchView('blogs')" id="nav-blogs">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2.5 2.5 0 00-2.5-2.5H15"></path></svg>
+                    Blog Management
+                </div>
+                <div class="sidebar-nav-item" onclick="switchView('settings')" id="nav-settings">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    Settings
+                </div>
+                <div class="sidebar-nav-item" onclick="logout()" style="margin-top: 20px; color: #ff6b6b;">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                    Logout
+                </div>
             </nav>
         </aside>
 
-        <main class="container">
-            <header>
-                <h1>System Admin</h1>
-            </header>
+        <main class="admin-main">
+            <div class="admin-header">
+                <h1 id="pageTitle">System Dashboard</h1>
+            </div>
 
             <div id="dashboardView">
                 <div class="card-grid">
@@ -58,18 +72,20 @@
                             style="padding: 10px; border-radius: 8px; border: 1px solid var(--border); font-family: inherit; outline: none; width: 250px;"
                             onkeyup="filterLinks()">
                     </div>
-                    <table id="linksTable" style="width: 100%; text-align: left; border-collapse: collapse;">
-                        <thead>
-                            <tr style="border-bottom: 2px solid var(--bg);">
-                                <th>Short Code</th>
-                                <th>Original URL</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="linksBody">
-                            <!-- Data injected by main.js -->
-                        </tbody>
-                    </table>
+                    <div class="table-wrapper">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Short Code</th>
+                                    <th>Original URL</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="linksBody">
+                                <!-- Data injected by main.js -->
+                            </tbody>
+                        </table>
+                    </div>
                 </section>
             </div>
 
@@ -94,20 +110,41 @@
 
                 <section class="metric-card">
                     <h3>All Blogs</h3>
-                    <table style="width: 100%; text-align: left; border-collapse: collapse;">
-                        <thead>
-                            <tr style="border-bottom: 2px solid var(--bg);">
-                                <th>Title</th>
-                                <th>Status</th>
-                                <th>Date</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="blogsBody">
-                            <!-- Data injected by main.js -->
-                        </tbody>
-                    </table>
+                    <div class="table-wrapper">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="blogsBody">
+                                <!-- Data injected by main.js -->
+                            </tbody>
+                        </table>
+                    </div>
                 </section>
+            </div>
+
+            <div id="settingsView" style="display: none;">
+                <div class="metric-card" style="margin-bottom: 40px;">
+                    <h3>Update Admin Credentials</h3>
+                    <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px; max-width: 400px;">
+                        <input type="text" id="settingUsername" placeholder="New Username"
+                            style="padding: 15px; border: 1px solid var(--border, #ddd); border-radius: 8px; font-family: inherit; font-size: 1rem;">
+                        <input type="password" id="settingPassword" placeholder="New Password"
+                            style="padding: 15px; border: 1px solid var(--border, #ddd); border-radius: 8px; font-family: inherit; font-size: 1rem;">
+                        <button onclick="updateCredentials()">Update Credentials</button>
+                    </div>
+                </div>
+
+                <div class="metric-card" style="border-left: 4px solid #E74C3C;">
+                    <h3 style="color: #E74C3C;">Danger Zone</h3>
+                    <p style="color: #555; margin-bottom: 20px;">Clear all analytics data. This action cannot be undone and will reset all link click counts to zero.</p>
+                    <button onclick="clearAnalytics()" style="background: #E74C3C;">Clear Analytics Data</button>
+                </div>
             </div>
         </main>
     </div>
