@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Tools | FlashSuite - Merge, Split, and Compress PDFs</title>
+    <meta name="description"
+        content="Powerful, fast, and secure PDF tools. Merge, split, compress, and convert PDFs online for free with FlashSuite.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .pdf-hero {
+            text-align: center;
+            padding: 100px 20px;
+            background: linear-gradient(180deg, #FBE4EA 0%, #ffffff 100%);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .pdf-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .pdf-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pdf-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(157, 28, 68, 0.08);
+            border-color: rgba(157, 28, 68, 0.2);
+        }
+
+        .pdf-card i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .pdf-card h3 {
+            color: var(--secondary);
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+
+        .pdf-card p {
+            color: #666;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .pdf-tag {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--primary);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .coming-soon {
+            background: #eee;
+            color: #888;
+        }
+
+        .tool-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            font-size: 2rem;
+        }
+
+        .icon-merge { background: rgba(157, 28, 68, 0.1); color: var(--primary); }
+        .icon-split { background: rgba(52, 152, 219, 0.1); color: #3498DB; }
+        .icon-compress { background: rgba(46, 204, 113, 0.1); color: #2ECC71; }
+        .icon-word { background: rgba(41, 128, 185, 0.1); color: #2980B9; }
+        .icon-img { background: rgba(241, 196, 15, 0.1); color: #F1C40F; }
+        .icon-lock { background: rgba(44, 62, 80, 0.1); color: #2C3E50; }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="glass-nav">
+        <a href="/"><img src="flashsuite_logo.png" alt="FlashSuite Logo" class="nav-logo"></a>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/">URL Shortener</a>
+            <a href="/#features">Features</a>
+            <a href="pdftools.html" style="color: var(--primary); font-weight: 700;">PDF Tools</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pdf-hero">
+        <div class="container fade-in-up">
+            <div
+                style="display: inline-block; padding: 8px 20px; background: rgba(157, 28, 68, 0.08); border: 1px solid rgba(157, 28, 68, 0.15); border-radius: 30px; color: var(--primary); font-weight: 600; font-size: 0.95rem; margin-bottom: 30px; letter-spacing: 0.5px;">
+                📂 Professional PDF Solutions
+            </div>
+            <h1 style="font-size: 3.5rem; color: var(--secondary); margin-bottom: 20px; line-height: 1.1;">
+                Every PDF Tool You Need,<br>
+                <span style="background: linear-gradient(90deg, var(--primary), #D6336C); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">All in One Place.</span>
+            </h1>
+            <p style="font-size: 1.25rem; color: #555; max-width: 700px; margin: 0 auto; line-height: 1.6;">
+                FlashSuite PDF tools allow you to merge, split, compress, and convert documents in seconds. Secure, fast, and 100% free.
+            </p>
+        </div>
+    </section>
+
+    <!-- PDF Tools Grid -->
+    <main class="pdf-grid">
+        <!-- Merge PDF -->
+        <div class="pdf-card fade-in-up" onclick="alert('Coming Soon!')">
+            <div class="tool-icon icon-merge">🔗</div>
+            <h3>Merge PDF</h3>
+            <p>Combine multiple PDF files into one document in seconds.</p>
+        </div>
+
+        <!-- Split PDF -->
+        <div class="pdf-card fade-in-up delay-1" onclick="alert('Coming Soon!')">
+            <div class="tool-icon icon-split">✂️</div>
+            <h3>Split PDF</h3>
+            <p>Extract pages from your PDF or save each page as a separate PDF.</p>
+        </div>
+
+        <!-- Compress PDF -->
+        <div class="pdf-card fade-in-up delay-2" onclick="alert('Coming Soon!')">
+            <div class="tool-icon icon-compress">📉</div>
+            <h3>Compress PDF</h3>
+            <p>Reduce the file size of your PDF while maintaining quality.</p>
+        </div>
+
+        <!-- PDF to Word -->
+        <div class="pdf-card fade-in-up" onclick="alert('Coming Soon!')">
+            <div class="tool-icon icon-word">📝</div>
+            <h3>PDF to Word</h3>
+            <p>Convert your PDF files to editable Word documents effortlessly.</p>
+        </div>
+
+        <!-- PDF to Image -->
+        <div class="pdf-card fade-in-up delay-1" onclick="alert('Coming Soon!')">
+            <div class="tool-icon icon-img">🖼️</div>
+            <h3>PDF to Image</h3>
+            <p>Extract images from your PDF or convert each page into a JPG/PNG.</p>
+        </div>
+
+        <!-- Protect PDF -->
+        <div class="pdf-card fade-in-up delay-2" onclick="alert('Coming Soon!')">
+            <div class="tool-icon icon-lock">🔒</div>
+            <h3>Protect PDF</h3>
+            <p>Secure your PDF files with encrypted passwords for privacy.</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <nav class="footer-nav">
+            <a href="/">Home</a>
+            <a href="/blog.html">Blog</a>
+            <a href="/about.html">About Us</a>
+            <a href="/privacy.html">Privacy Policy</a>
+            <a href="/terms.html">Terms of Service</a>
+        </nav>
+        <p class="footer-copy">&copy; 2026 FlashSuite. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in-up');
+                    entry.target.style.opacity = 1;
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in-up').forEach((el) => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+
+</html>
