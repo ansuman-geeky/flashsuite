@@ -25,7 +25,7 @@ app.get('/admin.html', isAuthenticated, (req, res, next) => {
     res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'] }));
 
 // API Routes
 app.use('/api', apiRoutes);
