@@ -15,7 +15,7 @@ function isAuthenticated(req, res, next) {
 // Public: Shorten URL
 router.post('/shorten', (req, res) => {
     const { url } = req.body;
-    const shortCode = nanoid(6); // Unique 6-char slug
+    const shortCode = nanoid(6);
 
     db.run("INSERT INTO links (original_url, short_code) VALUES (?, ?)",
         [url, shortCode],
@@ -31,7 +31,7 @@ router.post('/login', (req, res) => {
     const { username, password } = req.body;
     db.get("SELECT * FROM users WHERE username = ?", [username], async (err, user) => {
         if (err || !user) return res.status(401).json({ error: 'Invalid credentials' });
-        
+
         const valid = await bcrypt.compare(password, user.password);
         if (valid) {
             req.session.userId = user.id;
@@ -47,15 +47,20 @@ router.get('/admin/stats', isAuthenticated, (req, res) => {
     const stats = { totalClicks: 0, links: [], chartData: { labels: [], values: [] }, referrerData: { labels: [], values: [] } };
 
     db.all("SELECT * FROM links ORDER BY created_at DESC", [], (err, links) => {
+        if (err) return res.status(500).json({ error: err.message });
         stats.links = links;
+
         db.get("SELECT COUNT(*) as count FROM analytics", [], (err, row) => {
-            stats.totalClicks = row.count;
+            if (err) return res.status(500).json({ error: err.message });
+            stats.totalClicks = row ? row.count : 0;
 
             db.all("SELECT date(timestamp) as date, COUNT(*) as count FROM analytics GROUP BY date ORDER BY date ASC LIMIT 7", [], (err, rows) => {
+                if (err) return res.status(500).json({ error: err.message });
                 stats.chartData.labels = rows.map(r => r.date);
                 stats.chartData.values = rows.map(r => r.count);
-                
+
                 db.all("SELECT referrer, COUNT(*) as count FROM analytics GROUP BY referrer ORDER BY count DESC LIMIT 5", [], (err, refRows) => {
+                    if (err) return res.status(500).json({ error: err.message });
                     stats.referrerData.labels = refRows.map(r => r.referrer || 'Direct');
                     stats.referrerData.values = refRows.map(r => r.count);
                     res.json(stats);
@@ -83,7 +88,9 @@ router.put('/links/:id', isAuthenticated, (req, res) => {
 
 // Auth: Logout
 router.post('/logout', (req, res) => {
-    req.session.destroy();
+    if (req.session) {
+        req.session.destroy();
+    }
     res.status(200).send();
 });
 
@@ -141,6 +148,9 @@ router.get('/blogs/:id', (req, res) => {
         if (err) return res.status(500).json({ error: err.message });
         if (!blog) return res.status(404).json({ error: 'Blog not found' });
         res.json(blog);
+    }); // This closing brace/parenthesis pair was the primary culprit
+});
+
 // Admin: Update Credentials
 router.put('/admin/credentials', isAuthenticated, async (req, res) => {
     const { username, password } = req.body;
@@ -156,12 +166,12 @@ router.put('/admin/credentials', isAuthenticated, async (req, res) => {
             updates.push("password = ?");
             params.push(hash);
         }
-        
+
         if (updates.length === 0) return res.status(400).json({ error: "No fields to update" });
-        
+
         params.push(req.session.userId);
-        
-        db.run(`UPDATE users SET ${updates.join(', ')} WHERE id = ?`, params, function(err) {
+
+        db.run(`UPDATE users SET ${updates.join(', ')} WHERE id = ?`, params, function (err) {
             if (err) {
                 if (err.message.includes('UNIQUE constraint failed')) {
                     return res.status(400).json({ error: "Username already exists" });
