@@ -19,6 +19,11 @@ function generateQRCode() {
     const bgColor = document.getElementById('qrBgColor').value;
     const errorCorrection = document.getElementById('qrErrorCorrection').value;
 
+    if (typeof QRCode === 'undefined') {
+        alert('QR Code library not loaded. Please check your internet connection and refresh the page.');
+        return;
+    }
+
     qrCodeInstance = new QRCode(container, {
         text: currentQrUrl,
         width: 256,
