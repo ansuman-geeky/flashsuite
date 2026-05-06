@@ -17,12 +17,19 @@
 </head>
 
 <body>
+    <!-- Mobile Header -->
+    <header class="mobile-header">
+        <img src="flashsuite_logo.png" alt="FlashSuite" class="mobile-logo">
+        <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+    </header>
+
     <div class="dashboard-grid">
-        <aside class="sidebar">
-            <div style="margin-bottom: 30px; text-align: center;">
-                <img src="flashsuite_logo.png" alt="FlashSuite" style="height: 120px; margin: -30px 0; max-width: 100%;">
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo-container">
+                <img src="flashsuite_logo.png" alt="FlashSuite" class="sidebar-logo">
             </div>
-            <nav style="display: flex; flex-direction: column; gap: 5px;">
+            <nav class="sidebar-nav">
                 <div class="sidebar-nav-item active" onclick="switchView('dashboard')" id="nav-dashboard">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
                     Dashboard & Links
@@ -35,7 +42,7 @@
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                     Settings
                 </div>
-                <div class="sidebar-nav-item" onclick="logout()" style="margin-top: 20px; color: #ff6b6b;">
+                <div class="sidebar-nav-item logout-item" onclick="logout()">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                     Logout
                 </div>
@@ -59,17 +66,16 @@
                     </div>
                 </div>
 
-                <div class="metric-card" style="margin-bottom: 40px; display: flex; gap: 20px; flex-wrap: wrap;">
-                    <div style="flex: 2; min-width: 300px; height: 300px;"><canvas id="clickChart"></canvas></div>
-                    <div style="flex: 1; min-width: 250px; height: 300px;"><canvas id="referrerChart"></canvas></div>
+                <div class="metric-card charts-container">
+                    <div class="chart-wrapper main-chart"><canvas id="clickChart"></canvas></div>
+                    <div class="chart-wrapper side-chart"><canvas id="referrerChart"></canvas></div>
                 </div>
 
                 <section class="metric-card">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                        <h3 style="margin: 0;">Managed Links</h3>
+                    <div class="links-header">
+                        <h3 class="m-0">Managed Links</h3>
                         <input type="text" id="searchLinks" placeholder="Search links..."
-                            style="padding: 10px; border-radius: 8px; border: 1px solid var(--border); font-family: inherit; outline: none; width: 250px;"
+                            class="search-input"
                             onkeyup="filterLinks()">
                     </div>
                     <div class="table-wrapper">
@@ -92,19 +98,15 @@
             <div id="blogView" style="display: none;">
                 <div class="metric-card" style="margin-bottom: 40px;">
                     <h3>Create New Blog</h3>
-                    <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
-                        <input type="text" id="blogTitle" placeholder="Blog Title"
-                            style="padding: 15px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 1rem;">
-                        <textarea id="blogContent" placeholder="Blog Content (Text or HTML)" rows="10"
-                            style="padding: 15px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 1rem; resize: vertical;"></textarea>
-                        <select id="blogStatus"
-                            style="padding: 15px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 1rem;">
+                    <div class="blog-form">
+                        <input type="text" id="blogTitle" placeholder="Blog Title" class="admin-input">
+                        <textarea id="blogContent" placeholder="Blog Content (Text or HTML)" rows="10" class="admin-textarea"></textarea>
+                        <select id="blogStatus" class="admin-select">
                             <option value="published">Published</option>
                             <option value="draft">Draft</option>
                         </select>
                         <button id="blogSubmitBtn" onclick="saveBlog()">Publish Blog</button>
-                        <button id="blogCancelBtn" onclick="cancelEditBlog()"
-                            style="display:none; background:var(--secondary); margin-top:5px;">Cancel Edit</button>
+                        <button id="blogCancelBtn" onclick="cancelEditBlog()" class="btn-cancel">Cancel Edit</button>
                     </div>
                 </div>
 
@@ -131,19 +133,17 @@
             <div id="settingsView" style="display: none;">
                 <div class="metric-card" style="margin-bottom: 40px;">
                     <h3>Update Admin Credentials</h3>
-                    <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px; max-width: 400px;">
-                        <input type="text" id="settingUsername" placeholder="New Username"
-                            style="padding: 15px; border: 1px solid var(--border, #ddd); border-radius: 8px; font-family: inherit; font-size: 1rem;">
-                        <input type="password" id="settingPassword" placeholder="New Password"
-                            style="padding: 15px; border: 1px solid var(--border, #ddd); border-radius: 8px; font-family: inherit; font-size: 1rem;">
+                    <div class="settings-form">
+                        <input type="text" id="settingUsername" placeholder="New Username" class="admin-input">
+                        <input type="password" id="settingPassword" placeholder="New Password" class="admin-input">
                         <button onclick="updateCredentials()">Update Credentials</button>
                     </div>
                 </div>
 
-                <div class="metric-card" style="border-left: 4px solid #E74C3C;">
-                    <h3 style="color: #E74C3C;">Danger Zone</h3>
-                    <p style="color: #555; margin-bottom: 20px;">Clear all analytics data. This action cannot be undone and will reset all link click counts to zero.</p>
-                    <button onclick="clearAnalytics()" style="background: #E74C3C;">Clear Analytics Data</button>
+                <div class="metric-card border-danger">
+                    <h3 class="text-danger">Danger Zone</h3>
+                    <p class="text-muted">Clear all analytics data. This action cannot be undone and will reset all link click counts to zero.</p>
+                    <button onclick="clearAnalytics()" class="btn-danger">Clear Analytics Data</button>
                 </div>
             </div>
         </main>
@@ -167,7 +167,7 @@
                         <label for="qrBgColor">Background</label>
                         <input type="color" id="qrBgColor" value="#ffffff" onchange="generateQRCode()">
                     </div>
-                    <div class="qr-control-group" style="grid-column: span 2;">
+                    <div class="qr-control-group full-width">
                         <label for="qrErrorCorrection">Error Correction</label>
                         <select id="qrErrorCorrection" onchange="generateQRCode()">
                             <option value="L">Low (L)</option>
@@ -187,6 +187,12 @@
 
     <script src="main.js"></script>
     <script src="qr-generator.js"></script>
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('sidebarOverlay').classList.toggle('active');
+        }
+    </script>
 </body>
 
-</html>
+</html>
