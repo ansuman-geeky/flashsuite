@@ -3,7 +3,6 @@ const session = require('express-session');
 const path = require('path');
 const db = require('./models/database');
 const apiRoutes = require('./routes/api');
-
 const app = express();
 app.use(express.json());
 app.use(session({

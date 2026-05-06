@@ -96,12 +96,35 @@
             font-size: 2rem;
         }
 
-        .icon-merge { background: rgba(157, 28, 68, 0.1); color: var(--primary); }
-        .icon-split { background: rgba(52, 152, 219, 0.1); color: #3498DB; }
-        .icon-compress { background: rgba(46, 204, 113, 0.1); color: #2ECC71; }
-        .icon-word { background: rgba(41, 128, 185, 0.1); color: #2980B9; }
-        .icon-img { background: rgba(241, 196, 15, 0.1); color: #F1C40F; }
-        .icon-lock { background: rgba(44, 62, 80, 0.1); color: #2C3E50; }
+        .icon-merge {
+            background: rgba(157, 28, 68, 0.1);
+            color: var(--primary);
+        }
+
+        .icon-split {
+            background: rgba(52, 152, 219, 0.1);
+            color: #3498DB;
+        }
+
+        .icon-compress {
+            background: rgba(46, 204, 113, 0.1);
+            color: #2ECC71;
+        }
+
+        .icon-word {
+            background: rgba(41, 128, 185, 0.1);
+            color: #2980B9;
+        }
+
+        .icon-img {
+            background: rgba(241, 196, 15, 0.1);
+            color: #F1C40F;
+        }
+
+        .icon-lock {
+            background: rgba(44, 62, 80, 0.1);
+            color: #2C3E50;
+        }
     </style>
 </head>
 
@@ -122,20 +145,30 @@
         <div class="container fade-in-up">
             <div
                 style="display: inline-block; padding: 8px 20px; background: rgba(157, 28, 68, 0.08); border: 1px solid rgba(157, 28, 68, 0.15); border-radius: 30px; color: var(--primary); font-weight: 600; font-size: 0.95rem; margin-bottom: 30px; letter-spacing: 0.5px;">
-                📂 Professional PDF Solutions
+                We're working hard on PDF Tools! We will be launching them soon! 🎉
             </div>
             <h1 style="font-size: 3.5rem; color: var(--secondary); margin-bottom: 20px; line-height: 1.1;">
                 Every PDF Tool You Need,<br>
-                <span style="background: linear-gradient(90deg, var(--primary), #D6336C); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">All in One Place.</span>
+                <span
+                    style="background: linear-gradient(90deg, var(--primary), #D6336C); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">All
+                    in One Place.</span>
             </h1>
             <p style="font-size: 1.25rem; color: #555; max-width: 700px; margin: 0 auto; line-height: 1.6;">
-                FlashSuite PDF tools allow you to merge, split, compress, and convert documents in seconds. Secure, fast, and 100% free.
+                FlashSuite PDF tools allow you to merge, split, compress, and convert documents in seconds. Secure,
+                fast, and 100% free.
             </p>
         </div>
     </section>
 
     <!-- PDF Tools Grid -->
     <main class="pdf-grid">
+        <!-- Crop PDF -->
+        <div class="pdf-card fade-in-up" onclick="alert('Coming Soon!')">
+            <div class="tool-icon icon-crop">📰</div>
+            <h3>PDF Cropper</h3>
+            <p>Crop selected area from multiple pages of your PDF files.</p>
+        </div>
+
         <!-- Merge PDF -->
         <div class="pdf-card fade-in-up" onclick="alert('Coming Soon!')">
             <div class="tool-icon icon-merge">🔗</div>
@@ -176,6 +209,13 @@
             <div class="tool-icon icon-lock">🔒</div>
             <h3>Protect PDF</h3>
             <p>Secure your PDF files with encrypted passwords for privacy.</p>
+        </div>
+
+        <!-- Edit PDF -->
+        <div class="pdf-card fade-in-up" onclick="alert('Coming Soon!')">
+            <div class="tool-icon icon-edit">✏️</div>
+            <h3>Edit PDF</h3>
+            <p>Edit selected area from multiple pages of your PDF files.</p>
         </div>
     </main>
 
