@@ -19,12 +19,26 @@ function isAuthenticated(req, res, next) {
     res.redirect('/login.html');
 }
 
+// Logging Middleware
+app.use((req, res, next) => {
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+    next();
+});
+
+// Explicit Root Route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 // Protect static admin files
 app.get('/admin.html', isAuthenticated, (req, res, next) => {
     res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
 app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'] }));
+
+// Health Check
+app.get('/health', (req, res) => res.status(200).send('OK'));
 
 // API Routes
 app.use('/api', apiRoutes);
@@ -92,4 +106,5 @@ app.get('/:code', (req, res) => {
     });
 });
 
-app.listen(3000, () => console.log('FlashSuite running at http://localhost:3000'));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`FlashSuite running at http://localhost:${PORT}`));
