@@ -447,9 +447,9 @@ button:active {
 
 .result-actions button {
     flex: 1;
-    max-width: 200px;
-    padding: 18px 30px;
-    font-size: 1rem;
+    max-width: 160px;
+    padding: 12px 20px;
+    font-size: 0.9rem;
 }
 
 .btn-dark {
