@@ -430,7 +430,7 @@ button:active {
 }
 
 #shortenedLink {
-    font-size: 2rem;
+    font-size: 1rem;
     color: var(--secondary);
     word-break: break-all;
     font-weight: 700;
@@ -447,9 +447,9 @@ button:active {
 
 .result-actions button {
     flex: 1;
-    max-width: 160px;
-    padding: 12px 20px;
-    font-size: 0.9rem;
+    max-width: 200px;
+    padding: 18px 30px;
+    font-size: 1rem;
 }
 
 .btn-dark {
