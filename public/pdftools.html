@@ -10,14 +10,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         .pdf-hero {
             text-align: center;
-            padding: 100px 20px;
-            background: linear-gradient(180deg, #FBE4EA 0%, #ffffff 100%);
+            padding: 80px 0 40px;
+            background: var(--bg);
             border-bottom: 1px solid rgba(0, 0, 0, 0.03);
         }
 
@@ -25,7 +26,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
-            padding: 80px 20px;
+            padding: 60px 20px;
             max-width: 1200px;
             margin: 0 auto;
         }
@@ -33,84 +34,63 @@
         .pdf-card {
             background: white;
             padding: 40px 30px;
-            border-radius: 20px;
+            border-radius: 24px;
             text-align: center;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             border: 1px solid rgba(0, 0, 0, 0.04);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
             cursor: pointer;
             position: relative;
-            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
         }
 
         .pdf-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(157, 28, 68, 0.08);
-            border-color: rgba(157, 28, 68, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+            border-color: var(--primary);
         }
 
         .pdf-card h3 {
             color: var(--secondary);
-            margin-bottom: 10px;
+            margin: 0;
             font-size: 1.4rem;
         }
 
         .pdf-card p {
             color: #666;
-            font-size: 1rem;
+            font-size: 0.95rem;
             line-height: 1.5;
+            margin: 0;
         }
 
         .tool-icon {
-            width: 64px;
-            height: 64px;
-            margin: 0 auto 20px;
+            width: 60px;
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 16px;
-            font-size: 2rem;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
         }
 
-        .icon-merge {
-            background: rgba(157, 28, 68, 0.1);
-            color: var(--primary);
-        }
-
-        .icon-split {
-            background: rgba(52, 152, 219, 0.1);
-            color: #3498DB;
-        }
-
-        .icon-compress {
-            background: rgba(46, 204, 113, 0.1);
-            color: #2ECC71;
-        }
-
-        .icon-word {
-            background: rgba(41, 128, 185, 0.1);
-            color: #2980B9;
-        }
-
-        .icon-img {
-            background: rgba(241, 196, 15, 0.1);
-            color: #F1C40F;
-        }
-
-        .icon-lock {
-            background: rgba(44, 62, 80, 0.1);
-            color: #2C3E50;
-        }
+        .icon-merge { background: rgba(157, 28, 68, 0.1); color: var(--primary); }
+        .icon-split { background: rgba(52, 152, 219, 0.1); color: #3498DB; }
+        .icon-compress { background: rgba(46, 204, 113, 0.1); color: #2ECC71; }
+        .icon-word { background: rgba(41, 128, 185, 0.1); color: #2980B9; }
+        .icon-img { background: rgba(241, 196, 15, 0.1); color: #F1C40F; }
+        .icon-lock { background: rgba(44, 62, 80, 0.1); color: #2C3E50; }
+        .icon-crop { background: rgba(155, 89, 182, 0.1); color: #9B59B6; }
+        .icon-edit { background: rgba(230, 126, 34, 0.1); color: #E67E22; }
 
         @media (max-width: 768px) {
             .pdf-hero {
-                padding: 60px 20px;
+                padding: 60px 20px 30px;
             }
             .pdf-hero h1 {
-                font-size: 2.2rem !important;
-            }
-            .pdf-hero p {
-                font-size: 1.1rem !important;
+                font-size: 2.5rem !important;
             }
             .pdf-grid {
                 padding: 40px 20px;
@@ -146,7 +126,7 @@
     <section class="pdf-hero">
         <div class="container fade-in-up">
             <div class="hero-badge">
-                We're working hard on PDF Tools! Launching soon! 🎉
+                🚀 Coming Soon: FlashSuite PDF Tools
             </div>
             <h1>
                 Every PDF Tool You Need,<br>
@@ -163,56 +143,56 @@
     <main class="pdf-grid">
         <!-- Crop PDF -->
         <div class="pdf-card fade-in-up" onclick="alert('Coming Soon!')">
-            <div class="tool-icon icon-crop">📰</div>
+            <div class="tool-icon icon-crop"><i data-lucide="crop"></i></div>
             <h3>PDF Cropper</h3>
             <p>Crop selected area from multiple pages of your PDF files.</p>
         </div>
 
         <!-- Merge PDF -->
         <div class="pdf-card fade-in-up" onclick="alert('Coming Soon!')">
-            <div class="tool-icon icon-merge">🔗</div>
+            <div class="tool-icon icon-merge"><i data-lucide="combine"></i></div>
             <h3>Merge PDF</h3>
             <p>Combine multiple PDF files into one document in seconds.</p>
         </div>
 
         <!-- Split PDF -->
         <div class="pdf-card fade-in-up delay-1" onclick="alert('Coming Soon!')">
-            <div class="tool-icon icon-split">✂️</div>
+            <div class="tool-icon icon-split"><i data-lucide="scissors"></i></div>
             <h3>Split PDF</h3>
             <p>Extract pages from your PDF or save each page as a separate PDF.</p>
         </div>
 
         <!-- Compress PDF -->
         <div class="pdf-card fade-in-up delay-2" onclick="alert('Coming Soon!')">
-            <div class="tool-icon icon-compress">📉</div>
+            <div class="tool-icon icon-compress"><i data-lucide="file-down"></i></div>
             <h3>Compress PDF</h3>
             <p>Reduce the file size of your PDF while maintaining quality.</p>
         </div>
 
         <!-- PDF to Word -->
         <div class="pdf-card fade-in-up" onclick="alert('Coming Soon!')">
-            <div class="tool-icon icon-word">📝</div>
+            <div class="tool-icon icon-word"><i data-lucide="file-text"></i></div>
             <h3>PDF to Word</h3>
             <p>Convert your PDF files to editable Word documents effortlessly.</p>
         </div>
 
         <!-- PDF to Image -->
         <div class="pdf-card fade-in-up delay-1" onclick="alert('Coming Soon!')">
-            <div class="tool-icon icon-img">🖼️</div>
+            <div class="tool-icon icon-img"><i data-lucide="image"></i></div>
             <h3>PDF to Image</h3>
             <p>Extract images from your PDF or convert each page into a JPG/PNG.</p>
         </div>
 
         <!-- Protect PDF -->
         <div class="pdf-card fade-in-up delay-2" onclick="alert('Coming Soon!')">
-            <div class="tool-icon icon-lock">🔒</div>
+            <div class="tool-icon icon-lock"><i data-lucide="lock"></i></div>
             <h3>Protect PDF</h3>
             <p>Secure your PDF files with encrypted passwords for privacy.</p>
         </div>
 
         <!-- Edit PDF -->
         <div class="pdf-card fade-in-up" onclick="alert('Coming Soon!')">
-            <div class="tool-icon icon-edit">✏️</div>
+            <div class="tool-icon icon-edit"><i data-lucide="edit-3"></i></div>
             <h3>Edit PDF</h3>
             <p>Edit selected area from multiple pages of your PDF files.</p>
         </div>
@@ -249,6 +229,8 @@
         document.querySelectorAll('.fade-in-up').forEach((el) => {
             observer.observe(el);
         });
+
+        lucide.createIcons();
     </script>
 </body>
 

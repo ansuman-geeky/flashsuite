@@ -10,9 +10,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script type="application/ld+json">
     {
@@ -95,7 +96,7 @@
 
                     <div class="input-group">
                         <input type="url" id="longUrl" placeholder="Paste your link here..." required>
-                        <button id="actionBtn" onclick="performAction()">Shorten</button>
+                        <button id="actionBtn" onclick="performAction()">+ Shorten</button>
                     </div>
                 </div>
 
@@ -165,28 +166,28 @@
             <div class="features-grid">
                 <!-- Feature 1 -->
                 <div class="feature-card fade-in-scroll">
-                    <div class="feature-icon icon-pink">⚡</div>
+                    <div class="feature-icon icon-pink"><i data-lucide="zap"></i></div>
                     <h3>Lightning Speed</h3>
                     <p>Built on a cloud-native edge network, ensuring 99.9% uptime and instantaneous redirection anywhere in the world.</p>
                 </div>
 
                 <!-- Feature 2 -->
                 <div class="feature-card fade-in-scroll delay-1">
-                    <div class="feature-icon icon-blue">📊</div>
+                    <div class="feature-icon icon-blue"><i data-lucide="bar-chart-3"></i></div>
                     <h3>Deep Analytics</h3>
                     <p>Gain unparalleled insights into your audience. Track clicks, geographic locations, and top referring platforms in real-time.</p>
                 </div>
 
                 <!-- Feature 3 -->
                 <div class="feature-card fade-in-scroll delay-2">
-                    <div class="feature-icon icon-orange">🎯</div>
+                    <div class="feature-icon icon-orange"><i data-lucide="target"></i></div>
                     <h3>Advanced UTM Tracking</h3>
                     <p>Maintain your professional identity. Manage, edit, and safely route your custom branded links with UTM parameters from a secure admin dashboard.</p>
                 </div>
 
                 <!-- Feature 4 -->
                 <div class="feature-card fade-in-scroll delay-2">
-                    <div class="feature-icon icon-sky">📱</div>
+                    <div class="feature-icon icon-sky"><i data-lucide="qr-code"></i></div>
                     <h3>Dynamic QR Codes</h3>
                     <p>Instantly generate fully customizable QR codes for any link. Adjust colors and error correction for perfect marketing materials.</p>
                 </div>
@@ -426,6 +427,7 @@
                 answer.style.maxHeight = answer.scrollHeight + "px";
             }
         }
+        lucide.createIcons();
     </script>
 </body>
 
