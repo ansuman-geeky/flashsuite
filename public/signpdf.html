@@ -1165,7 +1165,7 @@
             page.fabricCanvas = fCanvas;
             fCanvas.setHeight(page.height * zoomScale);
             fCanvas.setWidth(page.width * zoomScale);
-            fCanvas.getZoom(zoomScale);
+            fCanvas.setZoom(zoomScale);
 
             // Setup history array if not present (e.g. initial load)
             if (!page.history || page.history.length === 0) {

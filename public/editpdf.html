@@ -1455,7 +1455,7 @@
             page.fabricCanvas = fCanvas;
             fCanvas.setHeight(page.height * zoomScale);
             fCanvas.setWidth(page.width * zoomScale);
-            fCanvas.getZoom(zoomScale);
+            fCanvas.setZoom(zoomScale);
 
             // Setup history array if not present (e.g. initial load)
             if (!page.history || page.history.length === 0) {
@@ -1757,16 +1757,61 @@
                 textColor = '#000000';
             }
 
+            // --- Extract horizontal scaling factor from CSS transform matrix ---
+            // PDF.js applies transform: scaleX(...) or matrix(a,...) to text spans
+            let cssScaleX = 1;
+            const transformStr = computedStyle.transform;
+            if (transformStr && transformStr !== 'none') {
+                // matrix(a, b, c, d, tx, ty) — 'a' is the horizontal scale
+                const matrixMatch = transformStr.match(/matrix\(([^,]+),/);
+                if (matrixMatch) {
+                    const parsedScale = parseFloat(matrixMatch[1]);
+                    if (parsedScale > 0 && isFinite(parsedScale)) {
+                        cssScaleX = parsedScale;
+                    }
+                }
+            }
+
+            // --- Map PDF subset fonts to standard web fallbacks ---
+            // PDF.js renders embedded fonts with names like g_d0_f1, g_d1_f2 etc.
+            // These subset fonts lack full glyph maps, so typing new chars fails.
+            let fontFamily = computedStyle.fontFamily || 'Helvetica';
+            const fontLower = fontFamily.toLowerCase().replace(/["']/g, '').trim();
+            if (fontLower.startsWith('g_') || fontLower.startsWith('g_d') || fontLower.match(/^g_d\d/)) {
+                // Try to infer from fallback stack or default to Arial
+                const fallbacks = fontFamily.split(',').map(f => f.trim().replace(/["']/g, ''));
+                const knownFonts = ['Arial', 'Helvetica', 'Times New Roman', 'Times', 'Courier New', 'Courier', 'Georgia', 'Verdana', 'sans-serif', 'serif', 'monospace'];
+                let resolved = 'Arial'; // safe default
+                for (let i = 1; i < fallbacks.length; i++) {
+                    if (knownFonts.some(k => k.toLowerCase() === fallbacks[i].toLowerCase())) {
+                        resolved = fallbacks[i];
+                        break;
+                    }
+                }
+                // Map generic CSS families to concrete fonts
+                if (resolved === 'serif') resolved = 'Times New Roman';
+                else if (resolved === 'monospace') resolved = 'Courier New';
+                else if (resolved === 'sans-serif') resolved = 'Arial';
+                fontFamily = resolved;
+            }
+
+            // Compute font size: divide by zoomScale since Fabric canvas has setZoom applied
             const computedFontSize = parseFloat(computedStyle.fontSize) / zoomScale;
+
+            // Compute textbox width: undo the CSS scaleX stretch to get the natural width
+            const naturalWidth = (cssScaleX !== 1 && cssScaleX > 0)
+                ? (relativeWidth / cssScaleX) + 20
+                : relativeWidth + 20;
 
             // 2. Create the editable text layer directly on top
             const editableTextbox = new fabric.Textbox(textStr, {
                 left: relativeLeft,
                 top: relativeTop - 1,
-                width: relativeWidth + 20,
+                width: naturalWidth,
                 fontSize: computedFontSize > 0 ? computedFontSize : 12,
-                fontFamily: computedStyle.fontFamily || 'Helvetica',
+                fontFamily: fontFamily,
                 fill: textColor,
+                scaleX: cssScaleX,
                 hasControls: true,
                 selectable: true,
                 editable: true,
@@ -2021,6 +2066,10 @@
             const page = pagesData.find(p => p.pageNumber === currentActivePage);
             if (!page || !page.fabricCanvas || page.historyIndex <= 0 || isUndoingRedoing) return;
 
+            // Exit any active text editing state before restoring history
+            page.fabricCanvas.discardActiveObject();
+            document.body.classList.remove('editing-fabric-text');
+
             isUndoingRedoing = true;
             page.historyIndex--;
             const prevState = page.history[page.historyIndex];
@@ -2036,6 +2085,10 @@
         document.getElementById('btnRedo').onclick = () => {
             const page = pagesData.find(p => p.pageNumber === currentActivePage);
             if (!page || !page.fabricCanvas || !page.history || page.historyIndex >= page.history.length - 1 || isUndoingRedoing) return;
+
+            // Exit any active text editing state before restoring history
+            page.fabricCanvas.discardActiveObject();
+            document.body.classList.remove('editing-fabric-text');
 
             isUndoingRedoing = true;
             page.historyIndex++;
