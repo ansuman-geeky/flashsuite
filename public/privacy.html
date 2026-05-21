@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy | FlashSuite Custom URL Shortener & QR Code Generator</title>
+    <title>Privacy Policy | FlashSuite Custom URL Shortener & PDF Tools</title>
     <meta name="description"
-        content="Read the Privacy Policy for FlashSuite, detailing how we protect your data while providing custom URL shortener and dynamic QR code generation services.">
+        content="Read the Privacy Policy for FlashSuite, detailing how we protect your data, our client-side PDF processing, and Google AdSense cookie disclosures.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -24,19 +24,19 @@
         }
 
         .page-content h1 {
-            color: var(--primary, #6366f1);
+            color: var(--primary, #9D1C44);
             margin-bottom: 20px;
-            border-bottom: 2px solid var(--primary, #6366f1);
+            border-bottom: 2px solid var(--primary, #9D1C44);
             padding-bottom: 10px;
             display: inline-block;
             font-family: 'Source Code Pro', monospace;
             font-size: 2rem;
-            font-weight: 700;
+            font-weight: 800;
             letter-spacing: -0.01em;
         }
 
         .page-content h2 {
-            color: var(--secondary, #1f2937);
+            color: var(--secondary, #1A2B3C);
             margin-top: 30px;
             margin-bottom: 15px;
             font-family: 'Source Code Pro', monospace;
@@ -45,7 +45,7 @@
         }
 
         .page-content h3 {
-            color: var(--primary, #6366f1);
+            color: var(--primary, #9D1C44);
             margin-top: 25px;
             margin-bottom: 10px;
             font-family: 'Source Code Pro', monospace;
@@ -69,21 +69,57 @@
         .page-content li {
             margin-bottom: 8px;
         }
+
+        .alert-box {
+            background: rgba(157, 28, 68, 0.05);
+            padding: 15px;
+            border-left: 4px solid var(--primary, #9D1C44);
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .alert-box p {
+            margin: 0;
+            font-size: 0.95rem;
+            font-style: italic;
+            color: #555;
+        }
     </style>
 </head>
 
 <body>
-    <header style="text-align: center; padding: 30px 0;">
+    <!-- Navigation -->
+    <nav class="glass-nav">
         <a href="/"><img src="flashsuite_logo.png" alt="FlashSuite Logo" class="nav-logo"></a>
-    </header>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/#hero">URL Shortener</a>
+            <a href="/#hero">QR Generator</a>
+            <a href="/pdftools">PDF Tools</a>
+        </div>
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="/" onclick="toggleMobileMenu()">Home</a>
+        <a href="/#hero" onclick="toggleMobileMenu()">URL Shortener</a>
+        <a href="/#hero" onclick="toggleMobileMenu()">QR Generator</a>
+        <a href="/pdftools" onclick="toggleMobileMenu()">PDF Tools</a>
+    </div>
 
     <main class="page-content">
         <h1>Privacy Policy</h1>
 
         <p>At FlashSuite, we value the trust you place in our tools. This Privacy Policy outlines how we collect, use,
             and safeguard your information when you use our custom URL shortening services, dynamic QR code generator,
-            and administrative dashboard. Our guiding principle is data minimization: we only collect what is strictly
+            PDF signing and editing tools, and administrative dashboard. Our guiding principle is data minimization: we only collect what is strictly
             necessary to provide a high-performance, secure experience.</p>
+
+        <div class="alert-box">
+            <p><strong>Note on PDF Files:</strong> All PDF document editing, signing, and manipulation tools operate 100% in your browser. Your files are processed locally in RAM and are never transmitted to our servers.</p>
+        </div>
 
         <h2>1. Information We Collect</h2>
 
@@ -105,10 +141,26 @@
         <ul>
             <li><strong>Account Credentials:</strong> Usernames and hashed passwords (via Bcrypt) to secure your
                 dashboard.</li>
-            <li><strong>Session Data:</strong> We use secure cookies or JWTs to maintain your login session.</li>
+            <li><strong>Session Data:</strong> We use secure cookies to maintain your login session.</li>
         </ul>
 
-        <h2>2. How We Use Your Data</h2>
+        <h2>2. 100% Client-Side PDF Processing</h2>
+        <p>Unlike traditional online PDF editors, FlashSuite prioritizes absolute user privacy and data security. All operations on PDF files—including merging, splitting, drawing, signing, and form editing—are executed **entirely in your web browser** using local JavaScript libraries (PDF.js and PDF-lib).</p>
+        <ul>
+            <li><strong>No Backend Uploads:</strong> Selected PDF documents are read locally as an <code>ArrayBuffer</code>. Your file data is never sent to our backend servers.</li>
+            <li><strong>Zero Storage:</strong> Because your files are not uploaded, they are never saved or indexed on our systems. Closing the tab immediately purges the document from your local memory.</li>
+            <li><strong>E2E Privacy:</strong> Your sensitive documents remain completely private to you. We cannot view, modify, or leak your PDF content.</li>
+        </ul>
+
+        <h2>3. Google AdSense & Third-Party Cookies</h2>
+        <p>We display Google AdSense advertisements on FlashSuite to fund our free services. To comply with Google's policies, please note the following:</p>
+        <ul>
+            <li><strong>Third-party vendors</strong>, including Google, use cookies to serve ads based on your prior visits to our website or other websites on the Internet.</li>
+            <li><strong>Google's use of advertising cookies</strong> enables it and its partners to serve ads to our users based on their visits to our site and/or other sites on the Internet.</li>
+            <li><strong>Opt-Out Options:</strong> You can easily opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google Ads Settings</a>. Alternatively, you can opt out of a third-party vendor's use of cookies for personalized advertising by visiting <a href="https://www.aboutads.info" target="_blank" rel="noopener">www.aboutads.info</a>.</li>
+        </ul>
+
+        <h2>4. How We Use Your Data</h2>
         <p>FlashSuite uses the collected data strictly for the following purposes:</p>
         <ul>
             <li><strong>Redirection:</strong> To accurately send visitors from a short code to the destination URL.</li>
@@ -119,25 +171,20 @@
             <li><strong>System Optimization:</strong> To monitor server load and ensure "Flash-speed" performance.</li>
         </ul>
 
-        <h2>3. Data Retention & Security</h2>
+        <h2>5. Data Retention & Security</h2>
         <ul>
-            <li><strong>Storage:</strong> All data is stored in a secure SQLite database environment.</li>
-            <li><strong>Encryption:</strong> Administrative passwords are never stored in plain text; they are protected
-                using industry-standard salted hashing.</li>
+            <li><strong>Storage:</strong> All link shortener and analytics data is stored in a secure SQLite database environment.</li>
+            <li><strong>Encryption:</strong> Administrative passwords are protected using industry-standard salted hashing.</li>
             <li><strong>Retention:</strong> We retain analytics data only as long as necessary to provide historical
                 reporting. Users may delete specific links and their associated analytics at any time via the Admin
                 Dashboard.</li>
         </ul>
 
-        <h2>4. Cookies</h2>
-        <p>FlashSuite uses "Essential Cookies" only. These are required for the Admin Dashboard to recognize your
-            authenticated session. We do not use third-party tracking or advertising cookies.</p>
-
-        <h2>5. Third-Party Sharing</h2>
+        <h2>6. Third-Party Sharing</h2>
         <p>We do not sell, trade, or rent your personal information to third parties. Data is only shared when legally
             mandated by law enforcement or to protect the safety and integrity of our platform.</p>
 
-        <h2>6. Your Rights</h2>
+        <h2>7. Your Rights</h2>
         <p>Depending on your jurisdiction (such as under GDPR or CCPA), you may have the right to:</p>
         <ul>
             <li>Request a copy of the data we hold about you.</li>
@@ -145,7 +192,7 @@
             <li>Opt-out of certain data collection practices.</li>
         </ul>
 
-        <h2>7. Contact Us</h2>
+        <h2>8. Contact Us</h2>
         <p>If you have questions regarding this Privacy Policy or the security of your links, please contact our
             technical team at:</p>
         <ul>
@@ -157,13 +204,20 @@
     <footer class="site-footer">
         <nav class="footer-nav">
             <a href="/">Home</a>
-            <a href="/blog.html">Blog</a>
-            <a href="/about.html">About Us</a>
-            <a href="/privacy.html">Privacy Policy</a>
-            <a href="/terms.html">Terms of Service</a>
+            <a href="/blog">Blog</a>
+            <a href="/about">About Us</a>
+            <a href="/privacy">Privacy Policy</a>
+            <a href="/terms">Terms of Service</a>
         </nav>
         <p class="footer-copy">&copy; 2026 FlashSuite. All rights reserved.</p>
     </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+            document.getElementById('mobileMenuOverlay').classList.toggle('active');
+        }
+    </script>
 </body>
 
 </html>

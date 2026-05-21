@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign PDF Online Free - Sign PDF Document | FlashSuite</title>
-    <meta name="description" content="Sign PDF documents online for free. Draw, type, or upload your signature to place on PDF pages securely and download instantly.">
+    <meta name="description"
+        content="Sign PDF documents online for free. Draw, type, or upload your signature to place on PDF pages securely and download instantly.">
     <link rel="canonical" href="https://flashsuite.com/signpdf.html">
 
     <!-- Structured Data Schema for SEO -->
@@ -33,9 +34,11 @@
     <!-- Google Fonts & Style Libraries -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Caveat&family=Great+Vibes&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Caveat&family=Great+Vibes&family=Outfit:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    
+
     <!-- PDF & Canvas Libraries CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
@@ -48,7 +51,7 @@
         :root {
             --sidebar-width: 250px;
             --properties-width: 320px;
-            --primary-accent: #1ABC9C; /* Distinct green-cyan theme for signing */
+            --primary-accent: #9D1C44;
             --dark-gray: #1E1E24;
             --border-color: rgba(0, 0, 0, 0.08);
             --bg-canvas: #E2E8F0;
@@ -59,6 +62,10 @@
             height: 100vh;
         }
 
+        body.studio-active .site-footer {
+            display: none !important;
+        }
+
         .navbar-space {
             display: flex;
             flex-direction: column;
@@ -67,9 +74,9 @@
 
         /* 3-Panel Studio Layout */
         .studio-container {
-            display: none; /* Shown after PDF load */
+            display: none;
+            /* Shown after PDF load */
             flex: 1;
-            display: flex;
             overflow: hidden;
             background: var(--bg-canvas);
             position: relative;
@@ -84,7 +91,7 @@
             justify-content: space-between;
             padding: 8px 16px;
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
             flex-wrap: wrap;
             gap: 12px;
         }
@@ -194,7 +201,7 @@
             padding: 8px;
             cursor: pointer;
             transition: all 0.2s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -202,7 +209,7 @@
 
         .thumb-item:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 12px rgba(0,0,0,0.08);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.08);
             border-color: #CBD5E1;
         }
 
@@ -215,7 +222,7 @@
             display: block;
             border-radius: 4px;
             background: white;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         .thumb-number {
@@ -234,10 +241,10 @@
             gap: 2px;
             opacity: 0;
             transition: opacity 0.2s;
-            background: rgba(255,255,255,0.9);
+            background: rgba(255, 255, 255, 0.9);
             padding: 2px;
             border-radius: 4px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .thumb-item:hover .thumb-actions {
@@ -272,7 +279,7 @@
             flex: 1;
             overflow: auto;
             position: relative;
-            padding: 40px;
+            padding: 40px 40px 120px 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -283,7 +290,7 @@
         .page-container {
             position: relative;
             background: #ffffff;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
             border-radius: 4px;
             transition: transform 0.2s;
         }
@@ -304,13 +311,13 @@
 
         /* Floating bottom controls */
         .floating-bottom-bar {
-            position: fixed;
+            position: absolute;
             bottom: 24px;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(30, 41, 59, 0.95);
             backdrop-filter: blur(8px);
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: #ffffff;
             padding: 8px 16px;
             border-radius: 30px;
@@ -318,7 +325,7 @@
             align-items: center;
             gap: 16px;
             z-index: 1000;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
 
         .bar-group {
@@ -342,7 +349,7 @@
         }
 
         .bar-btn:hover {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             color: #ffffff;
             transform: none;
         }
@@ -360,8 +367,8 @@
 
         .page-num-input {
             width: 40px;
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             color: white;
             text-align: center;
             border-radius: 4px;
@@ -459,7 +466,7 @@
             font-weight: 700;
             border: none;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(26,188,156,0.2);
+            box-shadow: 0 4px 12px rgba(26, 188, 156, 0.2);
             transition: all 0.3s;
             display: flex;
             align-items: center;
@@ -469,18 +476,20 @@
 
         .btn-action-primary:hover {
             background: #16A085;
-            box-shadow: 0 6px 20px rgba(26,188,156,0.3);
+            box-shadow: 0 6px 20px rgba(26, 188, 156, 0.3);
         }
 
         /* Drag handle dividers */
-        .sidebar-resize-handle, .props-resize-handle {
+        .sidebar-resize-handle,
+        .props-resize-handle {
             width: 4px;
             background: transparent;
             cursor: col-resize;
             transition: background 0.2s;
         }
 
-        .sidebar-resize-handle:hover, .props-resize-handle:hover {
+        .sidebar-resize-handle:hover,
+        .props-resize-handle:hover {
             background: var(--primary-accent);
         }
 
@@ -501,7 +510,8 @@
             transition: all 0.3s;
         }
 
-        .drop-zone:hover, .drop-zone.dragover {
+        .drop-zone:hover,
+        .drop-zone.dragover {
             border-color: var(--primary-accent);
             background: rgba(26, 188, 156, 0.02);
         }
@@ -543,7 +553,10 @@
         /* Modal windows */
         .modal-overlay {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(4px);
             z-index: 2000;
@@ -555,7 +568,7 @@
         .modal-card {
             background: #ffffff;
             border-radius: 16px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
             width: 90%;
             max-width: 500px;
             overflow: hidden;
@@ -631,12 +644,64 @@
         }
 
         @keyframes modalFadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .hidden {
             display: none !important;
+        }
+
+        /* Collapsible & Responsive Sidebar Styles */
+        @media (min-width: 993px) {
+            .sidebar-left.collapsed {
+                display: none !important;
+            }
+            .properties-panel.collapsed {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .sidebar-left {
+                display: none;
+                position: absolute;
+                left: 0;
+                top: 55px;
+                bottom: 0;
+                z-index: 1001;
+                width: 250px !important;
+                background: #ffffff;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            }
+            .sidebar-left.show-mobile {
+                display: flex !important;
+            }
+            .properties-panel {
+                display: none;
+                position: absolute;
+                right: 0;
+                top: 55px;
+                bottom: 0;
+                z-index: 1001;
+                width: 320px !important;
+                background: #ffffff;
+                box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+            }
+            .properties-panel.show-mobile {
+                display: flex !important;
+            }
+            .sidebar-resize-handle,
+            .props-resize-handle {
+                display: none !important;
+            }
         }
     </style>
 </head>
@@ -648,13 +713,15 @@
             <a href="/"><img src="flashsuite_logo.png" alt="FlashSuite Logo" class="nav-logo"></a>
             <div class="nav-links">
                 <a href="/">Home</a>
-                <a href="pdftools.html" class="active">PDF Tools</a>
+                <a href="/pdftools" class="active">PDF Tools</a>
             </div>
         </nav>
 
         <!-- PDF Dropzone Panel -->
         <div class="drop-zone-wrapper" id="uploadPanel">
-            <h1 style="text-align: center; margin-bottom: 24px; font-weight: 700; color: #1E293B; font-size: 2.2rem; font-family: 'Outfit', sans-serif;">Sign PDF Document</h1>
+            <h1
+                style="text-align: center; margin-bottom: 24px; font-weight: 700; color: #1E293B; font-size: 2.2rem; font-family: 'Outfit', sans-serif;">
+                Sign PDF Document</h1>
             <div class="drop-zone" id="dropZone">
                 <i data-lucide="signature" class="upload-icon"></i>
                 <h3>Drag & Drop your PDF here to sign</h3>
@@ -693,7 +760,8 @@
             <div style="display:flex; flex-direction:column; flex:1; position:relative;">
                 <!-- Top Toolbar Options -->
                 <div class="studio-topbar">
-                    <div style="font-weight: 700; color: #1E293B; font-size: 1rem; display: flex; align-items: center; gap: 8px;">
+                    <div
+                        style="font-weight: 700; color: #1E293B; font-size: 1rem; display: flex; align-items: center; gap: 8px;">
                         <i data-lucide="signature" style="color: var(--primary-accent);"></i>
                         <span>PDF Signer Workspace</span>
                     </div>
@@ -701,18 +769,28 @@
                     <!-- Category toolbar buttons group (focused for signing) -->
                     <div class="tool-groups">
                         <button class="tool-btn" id="toolPan" title="Pan / View"><i data-lucide="hand"></i></button>
-                        <button class="tool-btn" id="toolSelect" title="Select / Move / Resize"><i data-lucide="mouse-pointer"></i></button>
+                        <button class="tool-btn" id="toolSelect" title="Select / Move / Resize"><i
+                                data-lucide="mouse-pointer"></i></button>
                         <div class="tool-divider"></div>
-                        <button class="tool-btn active" id="toolSignature" title="Sign Document" style="background: rgba(26, 188, 156, 0.08); color: var(--primary-accent); border: 1px dashed rgba(26, 188, 156, 0.35); padding: 6px 12px; gap: 6px; font-weight: 600;"><i data-lucide="signature"></i>Place Signature</button>
+                        <button class="tool-btn active" id="toolSignature" title="Sign Document"
+                            style="background: rgba(26, 188, 156, 0.08); color: var(--primary-accent); border: 1px dashed rgba(26, 188, 156, 0.35); padding: 6px 12px; gap: 6px; font-weight: 600;"><i
+                                data-lucide="signature"></i>Place Signature</button>
                         <div class="tool-divider"></div>
-                        <button class="tool-btn" id="toolInsert" title="Insert Initial / Stamps"><i data-lucide="image"></i></button>
-                        <button class="tool-btn" id="toolText" title="Add Textbox (e.g. Date)"><i data-lucide="type"></i></button>
+                        <button class="tool-btn" id="toolInsert" title="Insert Initial / Stamps"><i
+                                data-lucide="image"></i></button>
+                        <button class="tool-btn" id="toolText" title="Add Textbox (e.g. Date)"><i
+                                data-lucide="type"></i></button>
                     </div>
 
                     <!-- Actions -->
-                    <div style="display:flex; gap: 8px;">
-                        <button class="tool-btn" id="btnUndo" disabled title="Undo (Ctrl+Z)"><i data-lucide="undo"></i></button>
-                        <button class="tool-btn" id="btnRedo" disabled title="Redo (Ctrl+Y)"><i data-lucide="redo"></i></button>
+                    <div style="display:flex; gap: 8px; align-items: center;">
+                        <button class="tool-btn" id="btnToggleSidebar" title="Toggle Page Thumbnails"><i data-lucide="files"></i></button>
+                        <button class="tool-btn" id="btnToggleProps" title="Toggle Properties Panel"><i data-lucide="sliders"></i></button>
+                        <div class="tool-divider"></div>
+                        <button class="tool-btn" id="btnUndo" disabled title="Undo (Ctrl+Z)"><i
+                                data-lucide="undo"></i></button>
+                        <button class="tool-btn" id="btnRedo" disabled title="Redo (Ctrl+Y)"><i
+                                data-lucide="redo"></i></button>
                     </div>
                 </div>
 
@@ -722,18 +800,23 @@
                 <!-- Floating Bottom bar navigation -->
                 <div class="floating-bottom-bar">
                     <div class="bar-group">
-                        <button class="bar-btn" id="btnPrevPage" title="Previous Page"><i data-lucide="chevron-left"></i></button>
+                        <button class="bar-btn" id="btnPrevPage" title="Previous Page"><i
+                                data-lucide="chevron-left"></i></button>
                         <div class="page-indicator">
-                            Page <input type="number" id="pageNumInput" class="page-num-input" value="1" min="1"> of <span id="totalPagesLabel">1</span>
+                            Page <input type="number" id="pageNumInput" class="page-num-input" value="1" min="1"> of
+                            <span id="totalPagesLabel">1</span>
                         </div>
-                        <button class="bar-btn" id="btnNextPage" title="Next Page"><i data-lucide="chevron-right"></i></button>
+                        <button class="bar-btn" id="btnNextPage" title="Next Page"><i
+                                data-lucide="chevron-right"></i></button>
                     </div>
                     <div style="width: 1px; height: 16px; background: rgba(255,255,255,0.2);"></div>
                     <div class="bar-group">
                         <button class="bar-btn" id="btnZoomOut" title="Zoom Out"><i data-lucide="minus"></i></button>
-                        <span style="font-size:0.8rem; font-weight:700; width:40px; text-align:center;" id="zoomPercentLabel">100%</span>
+                        <span style="font-size:0.8rem; font-weight:700; width:40px; text-align:center;"
+                            id="zoomPercentLabel">100%</span>
                         <button class="bar-btn" id="btnZoomIn" title="Zoom In"><i data-lucide="plus"></i></button>
-                        <button class="bar-btn" id="btnZoomFit" title="Fit to Width / Page"><i data-lucide="maximize-2"></i></button>
+                        <button class="bar-btn" id="btnZoomFit" title="Fit to Width / Page"><i
+                                data-lucide="maximize-2"></i></button>
                     </div>
                 </div>
             </div>
@@ -751,17 +834,21 @@
                 <div class="props-content" id="propsContent">
                     <div class="prop-section">
                         <label>Actions</label>
-                        <button class="btn-action-primary" style="background:#2C3E50; box-shadow:none; gap:6px;" onclick="openModal('sigModal')">
+                        <button class="btn-action-primary" style="background:#2C3E50; box-shadow:none; gap:6px;"
+                            onclick="openModal('sigModal')">
                             <i data-lucide="plus"></i>Create New Signature
                         </button>
-                        <button class="btn-style-toggle" style="margin-top:8px; text-align:left; justify-content:flex-start; gap:8px;" onclick="openModal('stampsModal')">
+                        <button class="btn-style-toggle"
+                            style="margin-top:8px; text-align:left; justify-content:flex-start; gap:8px;"
+                            onclick="openModal('stampsModal')">
                             <i data-lucide="image"></i>Insert Stamps/Initials
                         </button>
                     </div>
 
                     <div class="prop-section" id="propsTextSection">
                         <label>Date & Text Helper</label>
-                        <button class="btn-style-toggle" style="text-align:left; justify-content:flex-start; gap:8px;" id="btnAddDateStamp">
+                        <button class="btn-style-toggle" style="text-align:left; justify-content:flex-start; gap:8px;"
+                            id="btnAddDateStamp">
                             <i data-lucide="calendar"></i>Insert Today's Date
                         </button>
                     </div>
@@ -791,23 +878,29 @@
                     <button class="sig-tab-btn" id="tabSigType">Type</button>
                     <button class="sig-tab-btn" id="tabSigUpload">Upload Image</button>
                 </div>
-                
+
                 <!-- Draw Canvas -->
                 <div class="sig-tab-content active" id="contentSigDraw">
                     <canvas id="sigCanvas" width="460" height="200"></canvas>
-                    <button class="btn-style-toggle" style="margin-top:8px; padding:6px 12px; font-size:0.8rem;" id="clearSigDraw">Clear Draw Pad</button>
+                    <button class="btn-style-toggle" style="margin-top:8px; padding:6px 12px; font-size:0.8rem;"
+                        id="clearSigDraw">Clear Draw Pad</button>
                 </div>
 
                 <!-- Type Signature -->
                 <div class="sig-tab-content" id="contentSigType">
                     <div style="display:flex; flex-direction:column; gap:8px;">
-                        <input type="text" id="sigTextInput" class="prop-input" placeholder="Type your signature here...">
+                        <input type="text" id="sigTextInput" class="prop-input"
+                            placeholder="Type your signature here...">
                         <select id="sigFontSelect" class="prop-select">
-                            <option value="Alex Brush" style="font-family:'Alex Brush'; font-size:1.5rem;">Alex Brush</option>
-                            <option value="Great Vibes" style="font-family:'Great Vibes'; font-size:1.5rem;">Great Vibes</option>
+                            <option value="Alex Brush" style="font-family:'Alex Brush'; font-size:1.5rem;">Alex Brush
+                            </option>
+                            <option value="Great Vibes" style="font-family:'Great Vibes'; font-size:1.5rem;">Great Vibes
+                            </option>
                             <option value="Caveat" style="font-family:'Caveat'; font-size:1.5rem;">Caveat</option>
                         </select>
-                        <div id="sigTypePreview" style="border:1px solid #E2E8F0; border-radius:8px; height:100px; display:flex; align-items:center; justify-content:center; font-size:2rem; background:#F8FAFC;"></div>
+                        <div id="sigTypePreview"
+                            style="border:1px solid #E2E8F0; border-radius:8px; height:100px; display:flex; align-items:center; justify-content:center; font-size:2rem; background:#F8FAFC;">
+                        </div>
                     </div>
                 </div>
 
@@ -817,14 +910,17 @@
                         <input type="file" id="sigImageFile" accept="image/*" class="prop-input">
                         <div style="display:flex; align-items:center; gap:6px; margin-top:4px;">
                             <input type="checkbox" id="sigImageTransparent" checked>
-                            <label for="sigImageTransparent" style="font-size:0.8rem; color:#475569; cursor:pointer;">Auto-transparent background</label>
+                            <label for="sigImageTransparent"
+                                style="font-size:0.8rem; color:#475569; cursor:pointer;">Auto-transparent
+                                background</label>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn-style-toggle" onclick="closeModal('sigModal')">Cancel</button>
-                <button class="btn-action-primary" style="width:auto; padding:8px 20px;" id="btnApplySignature">Insert</button>
+                <button class="btn-action-primary" style="width:auto; padding:8px 20px;"
+                    id="btnApplySignature">Insert</button>
             </div>
         </div>
     </div>
@@ -837,10 +933,18 @@
                 <button class="thumb-act-btn" onclick="closeModal('stampsModal')"><i data-lucide="x"></i></button>
             </div>
             <div class="modal-body" style="display:grid; grid-template-columns:repeat(2, 1fr); gap:12px;">
-                <button class="btn-style-toggle" style="padding:16px; flex-direction:column; font-weight:700; color:#EF4444; border-color:#FCA5A5; font-size:1.1rem;" onclick="insertStamp('REJECTED', '#EF4444')">REJECTED</button>
-                <button class="btn-style-toggle" style="padding:16px; flex-direction:column; font-weight:700; color:#22C55E; border-color:#86EFAC; font-size:1.1rem;" onclick="insertStamp('APPROVED', '#22C55E')">APPROVED</button>
-                <button class="btn-style-toggle" style="padding:16px; flex-direction:column; font-weight:700; color:#F59E0B; border-color:#FDE047; font-size:1.1rem;" onclick="insertStamp('INITIAL HERE', '#F59E0B')">INITIAL HERE</button>
-                <button class="btn-style-toggle" style="padding:16px; flex-direction:column; font-weight:700; color:#3B82F6; border-color:#93C5FD; font-size:1.1rem;" onclick="insertStamp('SIGN HERE', '#3B82F6')">SIGN HERE</button>
+                <button class="btn-style-toggle"
+                    style="padding:16px; flex-direction:column; font-weight:700; color:#EF4444; border-color:#FCA5A5; font-size:1.1rem;"
+                    onclick="insertStamp('REJECTED', '#EF4444')">REJECTED</button>
+                <button class="btn-style-toggle"
+                    style="padding:16px; flex-direction:column; font-weight:700; color:#22C55E; border-color:#86EFAC; font-size:1.1rem;"
+                    onclick="insertStamp('APPROVED', '#22C55E')">APPROVED</button>
+                <button class="btn-style-toggle"
+                    style="padding:16px; flex-direction:column; font-weight:700; color:#F59E0B; border-color:#FDE047; font-size:1.1rem;"
+                    onclick="insertStamp('INITIAL HERE', '#F59E0B')">INITIAL HERE</button>
+                <button class="btn-style-toggle"
+                    style="padding:16px; flex-direction:column; font-weight:700; color:#3B82F6; border-color:#93C5FD; font-size:1.1rem;"
+                    onclick="insertStamp('SIGN HERE', '#3B82F6')">SIGN HERE</button>
             </div>
         </div>
     </div>
@@ -858,7 +962,7 @@
         let activeTool = 'signature'; // default signature active
         let currentActivePage = 1;
         let isUndoingRedoing = false; // Lock to prevent history pollution during loads
-        
+
         let strokeColor = '#000000';
         let brushWidth = 4;
 
@@ -898,6 +1002,8 @@
             }
         });
 
+        const pdfBuffers = {};
+
         async function handleFileUpload(file) {
             if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) {
                 alert('Only PDF files are supported.');
@@ -906,40 +1012,21 @@
 
             dropZone.classList.add('hidden');
             progressContainer.style.display = 'block';
+            progressFill.style.width = '100%';
+            progressText.innerText = 'Loading vector file...';
 
-            const formData = new FormData();
-            formData.append('pdf', file);
+            try {
+                const arrayBuffer = await file.arrayBuffer();
+                fileId = crypto.randomUUID();
+                originalName = file.name;
+                pdfBuffers[fileId] = arrayBuffer;
 
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', '/api/pdf/upload', true);
-
-            xhr.upload.onprogress = (e) => {
-                if (e.lengthComputable) {
-                    const percent = Math.round((e.loaded / e.total) * 100);
-                    progressFill.style.width = `${percent}%`;
-                    progressText.innerText = `Uploading vector file... (${percent}%)`;
-                }
-            };
-
-            xhr.onload = async () => {
-                if (xhr.status === 200) {
-                    const res = JSON.parse(xhr.responseText);
-                    fileId = res.id;
-                    originalName = res.name;
-                    await initializeStudio(`/api/pdf/${fileId}`);
-                } else {
-                    const res = JSON.parse(xhr.responseText || '{}');
-                    alert(res.error || 'Failed to upload PDF.');
-                    resetUploadPanel();
-                }
-            };
-
-            xhr.onerror = () => {
-                alert('Connection failure during PDF upload.');
+                await initializeStudio(arrayBuffer);
+            } catch (e) {
+                console.error(e);
+                alert('Failed to read PDF document.');
                 resetUploadPanel();
-            };
-
-            xhr.send(formData);
+            }
         }
 
         function resetUploadPanel() {
@@ -949,17 +1036,16 @@
         }
 
         // ------------------ STUDIO INITIALIZATION ------------------
-        async function initializeStudio(pdfUrl) {
+        async function initializeStudio(pdfData) {
             try {
                 document.body.classList.add('studio-active');
                 uploadPanel.classList.add('hidden');
                 studioWorkspace.style.display = 'flex';
 
                 const loadingTask = pdfjsLib.getDocument({
-                    url: pdfUrl,
-                    rangeChunkSize: 65536 * 16
+                    data: pdfData
                 });
-                
+
                 pdfDoc = await loadingTask.promise;
                 const totalPages = pdfDoc.numPages;
 
@@ -1084,7 +1170,7 @@
             // Setup history array if not present (e.g. initial load)
             if (!page.history || page.history.length === 0) {
                 const initialJSON = page.fabricData || JSON.stringify(fCanvas.toJSON(['isSignature', 'isImage', 'stampText']));
-                page.history = [ initialJSON ];
+                page.history = [initialJSON];
                 page.historyIndex = 0;
             }
 
@@ -1196,7 +1282,7 @@
             if (num < 1 || num > pagesData.length) return;
             currentActivePage = num;
             pageNumInput.value = num;
-            
+
             document.querySelectorAll('.thumb-item').forEach(el => el.classList.remove('active'));
             const activeThumb = document.querySelector(`.thumb-item[data-pagenum="${num}"]`);
             if (activeThumb) activeThumb.classList.add('active');
@@ -1349,7 +1435,7 @@
         function saveCanvasHistory(page) {
             if (isUndoingRedoing || !page.fabricCanvas) return;
             const currentState = JSON.stringify(page.fabricCanvas.toJSON(['isSignature', 'isImage', 'stampText']));
-            
+
             // If identical to current state, ignore
             if (page.historyIndex >= 0 && page.history[page.historyIndex] === currentState) {
                 return;
@@ -1461,7 +1547,7 @@
         function insertStamp(text, color) {
             const page = pagesData.find(p => p.pageNumber === currentActivePage);
             if (!page || !page.fabricCanvas) return;
-            
+
             const stamp = new fabric.Group([
                 new fabric.Rect({
                     width: 160,
@@ -1627,7 +1713,8 @@
             });
 
             try {
-                const mainBuffer = await fetch(`/api/pdf/${fileId}`).then(r => r.arrayBuffer());
+                const mainBuffer = pdfBuffers[fileId];
+                if (!mainBuffer) throw new Error("Document buffer not found in memory.");
                 const pdfLibDoc = await PDFLib.PDFDocument.load(mainBuffer);
                 const outDoc = await PDFLib.PDFDocument.create();
                 const helveticaFont = await outDoc.embedFont(PDFLib.StandardFonts.Helvetica);
@@ -1635,7 +1722,7 @@
                 for (let pageConfig of pagesData) {
                     let [copiedPage] = await outDoc.copyPages(pdfLibDoc, [pageConfig.pageIndex - 1]);
                     copiedPage.setRotation(PDFLib.degrees(pageConfig.rotation));
-                    
+
                     const newPage = outDoc.addPage(copiedPage);
                     const { width, height } = newPage.getSize();
 
@@ -1695,14 +1782,14 @@
             if (!hex || hex === 'transparent') return null;
             if (hex.startsWith('rgba')) {
                 const parts = hex.match(/\d+(\.\d+)?/g);
-                return PDFLib.rgb(parseFloat(parts[0])/255, parseFloat(parts[1])/255, parseFloat(parts[2])/255);
+                return PDFLib.rgb(parseFloat(parts[0]) / 255, parseFloat(parts[1]) / 255, parseFloat(parts[2]) / 255);
             }
             if (hex.startsWith('#')) {
                 const cleanHex = hex.replace('#', '');
                 const num = parseInt(cleanHex, 16);
                 return PDFLib.rgb(((num >> 16) & 255) / 255, ((num >> 8) & 255) / 255, (num & 255) / 255);
             }
-            return PDFLib.rgb(0,0,0);
+            return PDFLib.rgb(0, 0, 0);
         }
 
         function downloadBlob(blob, name) {
@@ -1713,6 +1800,49 @@
             link.click();
             document.body.removeChild(link);
         }
+
+        // Toggle panel logic for mobile and desktop sidebars
+        function setupTogglePanels() {
+            const btnToggleSidebar = document.getElementById('btnToggleSidebar');
+            const btnToggleProps = document.getElementById('btnToggleProps');
+            const sidebarLeft = document.getElementById('sidebarLeft');
+            const propertiesPanel = document.getElementById('propertiesPanel');
+            const sidebarHandle = document.getElementById('sidebarHandle');
+            const propsHandle = document.getElementById('propsHandle');
+
+            if (btnToggleSidebar) {
+                btnToggleSidebar.addEventListener('click', () => {
+                    const isCollapsed = sidebarLeft.classList.toggle('collapsed');
+                    sidebarLeft.classList.toggle('show-mobile');
+                    btnToggleSidebar.classList.toggle('active');
+                    if (sidebarHandle) {
+                        if (isCollapsed || sidebarLeft.classList.contains('show-mobile')) {
+                            sidebarHandle.style.display = 'none';
+                        } else {
+                            sidebarHandle.style.display = '';
+                        }
+                    }
+                });
+            }
+
+            if (btnToggleProps) {
+                btnToggleProps.addEventListener('click', () => {
+                    const isCollapsed = propertiesPanel.classList.toggle('collapsed');
+                    propertiesPanel.classList.toggle('show-mobile');
+                    btnToggleProps.classList.toggle('active');
+                    if (propsHandle) {
+                        if (isCollapsed || propertiesPanel.classList.contains('show-mobile')) {
+                            propsHandle.style.display = 'none';
+                        } else {
+                            propsHandle.style.display = '';
+                        }
+                    }
+                });
+            }
+        }
+
+        // Run panel toggles setup
+        setupTogglePanels();
     </script>
 </body>
 

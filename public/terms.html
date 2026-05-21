@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms of Service | FlashSuite Custom URL Shortener & QR Code Generator</title>
+    <title>Terms of Service | FlashSuite Custom URL Shortener & PDF Tools</title>
     <meta name="description"
-        content="Read the Terms of Service for FlashSuite's custom URL shortener and QR code generator platform. Understand your rights and responsibilities.">
+        content="Read the Terms of Service for FlashSuite. Understand our client-side processing architecture, user responsibilities, and terms of use.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -21,57 +21,88 @@
             flex: 1;
             font-family: 'Source Code Pro', monospace;
             color: #333;
-            font-size: 0.85rem;
         }
 
         .page-content h1 {
-            color: var(--primary, #6366f1);
+            color: var(--primary, #9D1C44);
             margin-bottom: 20px;
-            border-bottom: 2px solid var(--primary, #6366f1);
+            border-bottom: 2px solid var(--primary, #9D1C44);
             padding-bottom: 10px;
             display: inline-block;
             font-family: 'Source Code Pro', monospace;
-            font-size: 1.75rem;
-            font-weight: 700;
+            font-size: 2rem;
+            font-weight: 800;
             letter-spacing: -0.01em;
         }
 
         .page-content h2 {
-            color: var(--secondary, #1f2937);
-            margin-top: 25px;
+            color: var(--secondary, #1A2B3C);
+            margin-top: 30px;
             margin-bottom: 15px;
             font-family: 'Source Code Pro', monospace;
-            font-size: 1.25rem;
+            font-size: 1.4rem;
             font-weight: 600;
         }
 
         .page-content p {
             line-height: 1.6;
             margin-bottom: 15px;
-            font-size: 0.85rem;
+            font-size: 1rem;
         }
 
         .page-content ul {
             line-height: 1.6;
             margin-bottom: 20px;
             padding-left: 20px;
-            font-size: 0.85rem;
+            font-size: 1rem;
         }
 
         .page-content li {
             margin-bottom: 8px;
         }
+
+        .alert-box {
+            background: rgba(157, 28, 68, 0.05);
+            padding: 15px;
+            border-left: 4px solid var(--primary, #9D1C44);
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .alert-box p {
+            margin: 0;
+            font-size: 0.95rem;
+            font-style: italic;
+            color: #555;
+        }
     </style>
 </head>
 
 <body>
-    <header style="text-align: center; padding: 30px 0;">
+    <!-- Navigation -->
+    <nav class="glass-nav">
         <a href="/"><img src="flashsuite_logo.png" alt="FlashSuite Logo" class="nav-logo"></a>
-    </header>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/#hero">URL Shortener</a>
+            <a href="/#hero">QR Generator</a>
+            <a href="/pdftools">PDF Tools</a>
+        </div>
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="/" onclick="toggleMobileMenu()">Home</a>
+        <a href="/#hero" onclick="toggleMobileMenu()">URL Shortener</a>
+        <a href="/#hero" onclick="toggleMobileMenu()">QR Generator</a>
+        <a href="/pdftools" onclick="toggleMobileMenu()">PDF Tools</a>
+    </div>
 
     <main class="page-content">
         <h1>Terms of Service</h1>
-        <p>Welcome to FlashSuite. By accessing our website, using our custom URL shortener, generating QR codes, or
+        <p>Welcome to FlashSuite. By accessing our website, using our custom URL shortener, generating QR codes, using our PDF signing and editing tools, or
             using our Admin Dashboard, you agree to be bound by the following terms and conditions. Please read them
             carefully before using our services.</p>
 
@@ -79,61 +110,59 @@
         <p>By using FlashSuite, you confirm that you have read, understood, and agreed to these Terms of Service. If you
             do not agree with any part of these terms, you must immediately discontinue use of the platform.</p>
 
-        <h2>2. User Responsibilities & Prohibited Conduct</h2>
-        <p>FlashSuite is designed for professional link management and sharing. You agree not to use our service to:</p>
+        <h2>2. Browser-Side PDF Utilities & Processing</h2>
+        <div class="alert-box">
+            <p><strong>Local Processing Model:</strong> FlashSuite's PDF signing, editing, merging, and splitting tools run 100% in-browser. No document content is uploaded or stored on our servers. You process files at your own risk in local device memory.</p>
+        </div>
+        <p>Because FlashSuite PDF tools run entirely client-side using JavaScript libraries:</p>
         <ul>
-            <li><strong>Illegal Content:</strong> Create links to websites that host illegal content, including pirated
-                material, malware, or unlicensed copyrighted works.</li>
-            <li><strong>Abuse & Harassment:</strong> Shorten URLs that lead to hate speech, threats, or content intended
-                to harass individuals or groups.</li>
-            <li><strong>Spam & Phishing:</strong> Use our service for "link-masking" to conduct phishing attacks,
-                distribute spam, or deceive users into visiting malicious sites.</li>
-            <li><strong>Technical Interference:</strong> Attempt to bypass our security measures, reverse-engineer the
-                platform, or overload our infrastructure with automated scripts.</li>
-        </ul>
-        <p>FlashSuite reserves the right to disable any link or terminate any admin account found to be in violation of
-            these rules without prior notice.</p>
-
-        <h2>3. Intellectual Property</h2>
-        <ul>
-            <li><strong>The Tool:</strong> All software, design elements, logos (including the "Dark Pink" visual
-                identity), and code associated with FlashSuite are the property of FlashSuite and are protected by
-                intellectual property laws.</li>
-            <li><strong>Your Links:</strong> You retain all rights to the destination URLs you shorten. However, by
-                using our service, you grant us a non-exclusive license to process and redirect those links as part of
-                our service delivery.</li>
+            <li>We do not have access to, nor do we monitor or review, the PDF files you load or export.</li>
+            <li>We are not responsible for any local data loss, crash, or memory overflow on your device resulting from processing unusually large files.</li>
+            <li>It is your responsibility to ensure you have backup copies of any documents before signing, merging, or modifying them on our site.</li>
         </ul>
 
-        <h2>4. Availability & "As-Is" Service</h2>
-        <p>While we strive for "Flash-speed" uptime and reliability:</p>
+        <h2>3. User Responsibilities & Prohibited Conduct</h2>
+        <p>FlashSuite is designed for professional link management, QR generation, and document annotation. You agree not to use our services to:</p>
+        <ul>
+            <li><strong>Illegal Content:</strong> Create links or QR codes that direct to websites hosting illegal content, malware, or unlicensed copyrighted materials.</li>
+            <li><strong>Abuse & Harassment:</strong> Shorten URLs leading to hate speech, threats, or content intended to harass individuals.</li>
+            <li><strong>Spam & Phishing:</strong> Use our services for link-masking, phishing attacks, or distributed spam campaigns.</li>
+            <li><strong>Technical Interference:</strong> Attempt to bypass security measures, reverse-engineer the dashboard, or overload our hosting infrastructure.</li>
+        </ul>
+        <p>FlashSuite reserves the right to disable any link, QR code, or admin account found in violation of these rules without prior notice.</p>
+
+        <h2>4. Intellectual Property</h2>
+        <ul>
+            <li><strong>The Platform:</strong> All software, designs, styling layouts (including the "Dark Pink" visual theme), and code associated with FlashSuite are the property of FlashSuite and are protected by intellectual property laws.</li>
+            <li><strong>Your Content:</strong> You retain all rights to the links, QR codes, and PDF files you process. By using our service, you grant us a non-exclusive license to process your inputs (such as redirecting short URLs) strictly to deliver the requested utility.</li>
+        </ul>
+
+        <h2>5. Availability & "As-Is" Service</h2>
+        <p>While we strive for high uptime and performance:</p>
         <ul>
             <li>FlashSuite is provided on an "as-is" and "as-available" basis.</li>
-            <li>We do not guarantee that the service will be uninterrupted, error-free, or that links will remain active
-                indefinitely.</li>
-            <li>We are not responsible for the content or safety of third-party websites reached through our shortened
-                links.</li>
+            <li>We do not warrant that redirects will be 100% uninterrupted, or that client-side compilation will work on all browser configurations.</li>
+            <li>We are not responsible for the contents or safety of third-party websites visited via our redirects.</li>
         </ul>
 
-        <h2>5. Limitation of Liability</h2>
+        <h2>6. Limitation of Liability</h2>
         <p>To the maximum extent permitted by law, FlashSuite and its creators shall not be liable for any direct,
             indirect, incidental, or consequential damages resulting from:</p>
         <ul>
-            <li>The use or inability to use our service.</li>
-            <li>The unauthorized access to or alteration of your data.</li>
-            <li>The content of the websites you choose to shorten.</li>
+            <li>The use or inability to use our services.</li>
+            <li>The contents of any PDF file signed, edited, or compiled using our interface.</li>
+            <li>Any unauthorized access to, or modification of, link redirection data.</li>
         </ul>
 
-        <h2>6. Administrative Accounts</h2>
-        <p>Admin users are responsible for maintaining the confidentiality of their login credentials. Any activity
+        <h2>7. Administrative Accounts</h2>
+        <p>Admin users are responsible for maintaining the confidentiality of their credentials. Any activity
             performed under your admin account is your sole responsibility. If you suspect a security breach, you must
             notify us immediately.</p>
 
-        <h2>7. Modifications to the Service</h2>
-        <p>FlashSuite is a dynamic tool. We reserve the right to modify, suspend, or discontinue any feature of the
-            service at any time. We also reserve the right to update these Terms of Service. Continued use of the
-            platform following updates constitutes acceptance of the new terms.</p>
+        <h2>8. Modifications to Terms</h2>
+        <p>We reserve the right to update these Terms of Service. Continued use of FlashSuite following updates constitutes acceptance of the new terms.</p>
 
-        <h2>8. Governing Law</h2>
+        <h2>9. Governing Law</h2>
         <p>These terms are governed by and construed in accordance with the laws of your jurisdiction, without regard to
             its conflict of law principles.</p>
     </main>
@@ -141,13 +170,20 @@
     <footer class="site-footer">
         <nav class="footer-nav">
             <a href="/">Home</a>
-            <a href="/blog.html">Blog</a>
-            <a href="/about.html">About Us</a>
-            <a href="/privacy.html">Privacy Policy</a>
-            <a href="/terms.html">Terms of Service</a>
+            <a href="/blog">Blog</a>
+            <a href="/about">About Us</a>
+            <a href="/privacy">Privacy Policy</a>
+            <a href="/terms">Terms of Service</a>
         </nav>
         <p class="footer-copy">&copy; 2026 FlashSuite. All rights reserved.</p>
     </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+            document.getElementById('mobileMenuOverlay').classList.toggle('active');
+        }
+    </script>
 </body>
 
 </html>

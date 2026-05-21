@@ -31,13 +31,13 @@ async function loadDashboardData() {
 function renderLinksTable(links) {
     const tbody = document.getElementById('linksBody');
     tbody.innerHTML = links.map(link => `
-        <tr style="border-bottom: 1px solid #eee;">
-            <td style="padding: 10px 0;"><strong>${link.short_code}</strong></td>
-            <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis;">${link.original_url}</td>
+        <tr>
+            <td><strong>${link.short_code}</strong></td>
+            <td class="url-cell">${link.original_url}</td>
             <td>
-                <button onclick="openQrModal('${window.location.origin}/${link.short_code}')" style="background:#2ECC71; padding: 5px 10px; margin-right: 5px;">QR</button>
-                <button onclick="editLink(${link.id}, '${link.original_url}')" style="background:#1A2B3C; padding: 5px 10px; margin-right: 5px;">Edit</button>
-                <button onclick="deleteLink(${link.id})" style="background:#cc0000; padding: 5px 10px;">Delete</button>
+                <button onclick="openQrModal('${window.location.origin}/${link.short_code}')" class="btn-action btn-qr">QR</button>
+                <button onclick="editLink(${link.id}, '${link.original_url}')" class="btn-action btn-edit">Edit</button>
+                <button onclick="deleteLink(${link.id})" class="btn-action btn-delete">Delete</button>
             </td>
         </tr>
     `).join('');
@@ -138,13 +138,13 @@ async function loadBlogsData() {
 
         const tbody = document.getElementById('blogsBody');
         tbody.innerHTML = blogs.map(blog => `
-            <tr style="border-bottom: 1px solid #eee;">
+            <tr>
                 <td><strong>${blog.title}</strong></td>
-                <td><span style="padding: 3px 8px; border-radius: 12px; background: ${blog.status === 'published' ? '#e6f4ea; color: #1e8e3e' : '#fce8e6; color: #d93025'}; font-size: 0.85rem; font-weight: bold;">${blog.status.toUpperCase()}</span></td>
+                <td><span class="status-badge ${blog.status}">${blog.status.toUpperCase()}</span></td>
                 <td>${new Date(blog.created_at).toLocaleDateString()}</td>
                 <td>
-                    <button onclick='startEditBlog(${JSON.stringify(blog).replace(/'/g, "&apos;")})' style="background:#1A2B3C; padding: 5px 10px; margin-right: 5px;">Edit</button>
-                    <button onclick="deleteBlog(${blog.id})" style="background:#cc0000; padding: 5px 10px;">Delete</button>
+                    <button onclick='startEditBlog(${JSON.stringify(blog).replace(/'/g, "&apos;")})' class="btn-action btn-edit">Edit</button>
+                    <button onclick="deleteBlog(${blog.id})" class="btn-action btn-delete">Delete</button>
                 </td>
             </tr>
         `).join('');

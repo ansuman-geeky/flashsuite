@@ -67,9 +67,26 @@
 </head>
 
 <body>
-    <header style="text-align: center; padding: 30px 0;">
+    <!-- Navigation -->
+    <nav class="glass-nav">
         <a href="/"><img src="flashsuite_logo.png" alt="FlashSuite Logo" class="nav-logo"></a>
-    </header>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/#hero">URL Shortener</a>
+            <a href="/#hero">QR Generator</a>
+            <a href="/pdftools">PDF Tools</a>
+        </div>
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="/" onclick="toggleMobileMenu()">Home</a>
+        <a href="/#hero" onclick="toggleMobileMenu()">URL Shortener</a>
+        <a href="/#hero" onclick="toggleMobileMenu()">QR Generator</a>
+        <a href="/pdftools" onclick="toggleMobileMenu()">PDF Tools</a>
+    </div>
 
     <main class="page-content">
         <h1>Welcome to FlashSuite</h1>
@@ -128,13 +145,20 @@
     <footer class="site-footer">
         <nav class="footer-nav">
             <a href="/">Home</a>
-            <a href="/blog.html">Blog</a>
-            <a href="/about.html">About Us</a>
-            <a href="/privacy.html">Privacy Policy</a>
-            <a href="/terms.html">Terms of Service</a>
+            <a href="/blog">Blog</a>
+            <a href="/about">About Us</a>
+            <a href="/privacy">Privacy Policy</a>
+            <a href="/terms">Terms of Service</a>
         </nav>
         <p class="footer-copy">&copy; 2026 FlashSuite. All rights reserved.</p>
     </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+            document.getElementById('mobileMenuOverlay').classList.toggle('active');
+        }
+    </script>
 </body>
 
 </html>

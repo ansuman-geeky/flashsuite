@@ -9,8 +9,7 @@
         content="Read the latest news and guides about custom URL shortening, branded links, and QR code marketing strategies.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <style>
@@ -126,11 +125,22 @@
     <nav class="glass-nav">
         <a href="/"><img src="flashsuite_logo.png" alt="FlashSuite Logo" class="nav-logo"></a>
         <div class="nav-links">
-            <a href="/#features">Features</a>
-            <a href="#">Pricing</a>
-            <a href="/login.html" class="btn-outline" style="text-decoration: none;">Login</a>
+            <a href="/">Home</a>
+            <a href="/#hero">URL Shortener</a>
+            <a href="/#hero">QR Generator</a>
+            <a href="/pdftools">PDF Tools</a>
         </div>
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
     </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="/" onclick="toggleMobileMenu()">Home</a>
+        <a href="/#hero" onclick="toggleMobileMenu()">URL Shortener</a>
+        <a href="/#hero" onclick="toggleMobileMenu()">QR Generator</a>
+        <a href="/pdftools" onclick="toggleMobileMenu()">PDF Tools</a>
+    </div>
 
     <!-- Hero Section -->
     <div class="hero-wrapper">
@@ -181,13 +191,20 @@
     <footer class="site-footer">
         <nav class="footer-nav">
             <a href="/">Home</a>
-            <a href="/blog.html">Blog</a>
-            <a href="/about.html">About Us</a>
-            <a href="/privacy.html">Privacy Policy</a>
-            <a href="/terms.html">Terms of Service</a>
+            <a href="/blog">Blog</a>
+            <a href="/about">About Us</a>
+            <a href="/privacy">Privacy Policy</a>
+            <a href="/terms">Terms of Service</a>
         </nav>
         <p class="footer-copy">&copy; 2026 FlashSuite. All rights reserved.</p>
     </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+            document.getElementById('mobileMenuOverlay').classList.toggle('active');
+        }
+    </script>
 </body>
 
 </html>

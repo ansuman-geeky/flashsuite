@@ -81,6 +81,10 @@
             height: 100vh;
         }
 
+        body.studio-active .site-footer {
+            display: none !important;
+        }
+
         .navbar-space {
             display: flex;
             flex-direction: column;
@@ -91,7 +95,6 @@
         .studio-container {
             display: none; /* Shown after PDF load */
             flex: 1;
-            display: flex;
             overflow: hidden;
             background: var(--bg-canvas);
             position: relative;
@@ -329,7 +332,7 @@
             flex: 1;
             overflow: auto;
             position: relative;
-            padding: 40px;
+            padding: 40px 40px 120px 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -414,7 +417,7 @@
 
         /* Floating bottom controls */
         .floating-bottom-bar {
-            position: fixed;
+            position: absolute;
             bottom: 24px;
             left: 50%;
             transform: translateX(-50%);
@@ -822,6 +825,51 @@
             padding: 2px;
             box-shadow: none;
         }
+
+        /* Collapsible & Responsive Sidebar Styles */
+        @media (min-width: 993px) {
+            .sidebar-left.collapsed {
+                display: none !important;
+            }
+            .properties-panel.collapsed {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .sidebar-left {
+                display: none;
+                position: absolute;
+                left: 0;
+                top: 55px;
+                bottom: 0;
+                z-index: 1001;
+                width: 250px !important;
+                background: #ffffff;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            }
+            .sidebar-left.show-mobile {
+                display: flex !important;
+            }
+            .properties-panel {
+                display: none;
+                position: absolute;
+                right: 0;
+                top: 55px;
+                bottom: 0;
+                z-index: 1001;
+                width: 320px !important;
+                background: #ffffff;
+                box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+            }
+            .properties-panel.show-mobile {
+                display: flex !important;
+            }
+            .sidebar-resize-handle,
+            .props-resize-handle {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 
@@ -832,7 +880,7 @@
             <a href="/"><img src="flashsuite_logo.png" alt="FlashSuite Logo" class="nav-logo"></a>
             <div class="nav-links">
                 <a href="/">Home</a>
-                <a href="pdftools.html" class="active">PDF Tools</a>
+                <a href="/pdftools" class="active">PDF Tools</a>
             </div>
         </nav>
 
@@ -904,7 +952,10 @@
                     </div>
 
                     <!-- Actions -->
-                    <div style="display:flex; gap: 8px;">
+                    <div style="display:flex; gap: 8px; align-items: center;">
+                        <button class="tool-btn" id="btnToggleSidebar" title="Toggle Page Thumbnails"><i data-lucide="files"></i></button>
+                        <button class="tool-btn" id="btnToggleProps" title="Toggle Properties Panel"><i data-lucide="sliders"></i></button>
+                        <div class="tool-divider"></div>
                         <button class="tool-btn" id="btnUndo" disabled title="Undo (Ctrl+Z)"><i data-lucide="undo"></i></button>
                         <button class="tool-btn" id="btnRedo" disabled title="Redo (Ctrl+Y)"><i data-lucide="redo"></i></button>
                     </div>
@@ -1177,6 +1228,8 @@
         // Predefined color palette values
         const colorsList = ['#000000', '#FFFFFF', '#EF4444', '#3B82F6', '#10B981', '#F59E0B', '#8B5CF6', '#EC4899', 'transparent'];
 
+        const pdfBuffers = {};
+
         // DOM elements cache
         const dropZone = document.getElementById('dropZone');
         const fileInput = document.getElementById('fileInput');
@@ -1223,40 +1276,21 @@
             // Show progress bar
             dropZone.classList.add('hidden');
             progressContainer.style.display = 'block';
+            progressFill.style.width = '100%';
+            progressText.innerText = 'Loading vector file...';
 
-            const formData = new FormData();
-            formData.append('pdf', file);
+            try {
+                const arrayBuffer = await file.arrayBuffer();
+                fileId = crypto.randomUUID();
+                originalName = file.name;
+                pdfBuffers[fileId] = arrayBuffer;
 
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', '/api/pdf/upload', true);
-
-            xhr.upload.onprogress = (e) => {
-                if (e.lengthComputable) {
-                    const percent = Math.round((e.loaded / e.total) * 100);
-                    progressFill.style.width = `${percent}%`;
-                    progressText.innerText = `Uploading vector file... (${percent}%)`;
-                }
-            };
-
-            xhr.onload = async () => {
-                if (xhr.status === 200) {
-                    const res = JSON.parse(xhr.responseText);
-                    fileId = res.id;
-                    originalName = res.name;
-                    await initializeStudio(`/api/pdf/${fileId}`);
-                } else {
-                    const res = JSON.parse(xhr.responseText || '{}');
-                    alert(res.error || 'Failed to upload PDF.');
-                    resetUploadPanel();
-                }
-            };
-
-            xhr.onerror = () => {
-                alert('Connection failure during PDF upload.');
+                await initializeStudio(arrayBuffer);
+            } catch (e) {
+                console.error(e);
+                alert('Failed to read PDF document.');
                 resetUploadPanel();
-            };
-
-            xhr.send(formData);
+            }
         }
 
         function resetUploadPanel() {
@@ -1266,16 +1300,14 @@
         }
 
         // ------------------ STUDIO INITIALIZATION ------------------
-        async function initializeStudio(pdfUrl) {
+        async function initializeStudio(pdfData) {
             try {
                 document.body.classList.add('studio-active');
                 uploadPanel.classList.add('hidden');
                 studioWorkspace.style.display = 'flex';
 
-                // Load via range requests supporting large files
                 const loadingTask = pdfjsLib.getDocument({
-                    url: pdfUrl,
-                    rangeChunkSize: 65536 * 16 // 1MB chunks
+                    data: pdfData
                 });
                 
                 pdfDoc = await loadingTask.promise;
@@ -2107,16 +2139,14 @@
             input.accept = '.pdf';
             input.onchange = async (e) => {
                 if (e.target.files.length > 0) {
-                    const file = e.target.files[0];
-                    const arrayBuffer = await file.arrayBuffer();
-                    const externalDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-                    
-                    // Cache the file to backend
-                    const formData = new FormData();
-                    formData.append('pdf', file);
-                    const uploadRes = await fetch('/api/pdf/upload', { method: 'POST', body: formData }).then(r => r.json());
+                    try {
+                        const file = e.target.files[0];
+                        const arrayBuffer = await file.arrayBuffer();
+                        const externalDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                        
+                        const externalFileId = crypto.randomUUID();
+                        pdfBuffers[externalFileId] = arrayBuffer;
 
-                    if (uploadRes.success) {
                         const startIdx = pagesData.length;
                         for (let i = 1; i <= externalDoc.numPages; i++) {
                             const page = await externalDoc.getPage(i);
@@ -2132,7 +2162,7 @@
                                 fabricCanvas: null,
                                 rendered: false,
                                 isMergedSource: true,
-                                sourceFileId: uploadRes.id,
+                                sourceFileId: externalFileId,
                                 history: [],
                                 historyIndex: -1
                             });
@@ -2140,6 +2170,9 @@
                         renderWorkspaceShell();
                         setupIntersectionObserver();
                         await renderThumbnails();
+                    } catch (err) {
+                        console.error(err);
+                        alert('Failed to merge PDF.');
                     }
                 }
             };
@@ -2168,8 +2201,9 @@
                     }
                 });
 
-                // Load source document
-                const mainBuffer = await fetch(`/api/pdf/${fileId}`).then(r => r.arrayBuffer());
+                // Load source document from local memory
+                const mainBuffer = pdfBuffers[fileId];
+                if (!mainBuffer) throw new Error("Document buffer not found in memory.");
                 const srcPdfDoc = await PDFLib.PDFDocument.load(mainBuffer);
                 const outPdfDoc = await PDFLib.PDFDocument.create();
 
@@ -2461,7 +2495,8 @@
 
             try {
                 // Initialize pdf-lib document
-                const mainBuffer = await fetch(`/api/pdf/${fileId}`).then(r => r.arrayBuffer());
+                const mainBuffer = pdfBuffers[fileId];
+                if (!mainBuffer) throw new Error("Document buffer not found in memory.");
                 const pdfLibDoc = await PDFLib.PDFDocument.load(mainBuffer);
                 const outDoc = await PDFLib.PDFDocument.create();
 
@@ -2474,7 +2509,8 @@
                     // Copy page from source document or external merge sources
                     let copiedPage;
                     if (pageConfig.isMergedSource) {
-                        const extBuffer = await fetch(`/api/pdf/${pageConfig.sourceFileId}`).then(r => r.arrayBuffer());
+                        const extBuffer = pdfBuffers[pageConfig.sourceFileId];
+                        if (!extBuffer) throw new Error("Merged document buffer not found in memory.");
                         const extDoc = await PDFLib.PDFDocument.load(extBuffer);
                         [copiedPage] = await outDoc.copyPages(extDoc, [pageConfig.pageIndex - 1]);
                     } else {
@@ -2644,6 +2680,49 @@
             link.click();
             document.body.removeChild(link);
         }
+
+        // Toggle panel logic for mobile and desktop sidebars
+        function setupTogglePanels() {
+            const btnToggleSidebar = document.getElementById('btnToggleSidebar');
+            const btnToggleProps = document.getElementById('btnToggleProps');
+            const sidebarLeft = document.getElementById('sidebarLeft');
+            const propertiesPanel = document.getElementById('propertiesPanel');
+            const sidebarHandle = document.getElementById('sidebarHandle');
+            const propsHandle = document.getElementById('propsHandle');
+
+            if (btnToggleSidebar) {
+                btnToggleSidebar.addEventListener('click', () => {
+                    const isCollapsed = sidebarLeft.classList.toggle('collapsed');
+                    sidebarLeft.classList.toggle('show-mobile');
+                    btnToggleSidebar.classList.toggle('active');
+                    if (sidebarHandle) {
+                        if (isCollapsed || sidebarLeft.classList.contains('show-mobile')) {
+                            sidebarHandle.style.display = 'none';
+                        } else {
+                            sidebarHandle.style.display = '';
+                        }
+                    }
+                });
+            }
+
+            if (btnToggleProps) {
+                btnToggleProps.addEventListener('click', () => {
+                    const isCollapsed = propertiesPanel.classList.toggle('collapsed');
+                    propertiesPanel.classList.toggle('show-mobile');
+                    btnToggleProps.classList.toggle('active');
+                    if (propsHandle) {
+                        if (isCollapsed || propertiesPanel.classList.contains('show-mobile')) {
+                            propsHandle.style.display = 'none';
+                        } else {
+                            propsHandle.style.display = '';
+                        }
+                    }
+                });
+            }
+        }
+
+        // Run panel toggles setup
+        setupTogglePanels();
     </script>
 </body>
 

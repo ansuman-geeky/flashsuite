@@ -81,11 +81,22 @@
     <nav class="glass-nav">
         <a href="/"><img src="flashsuite_logo.png" alt="FlashSuite Logo" class="nav-logo"></a>
         <div class="nav-links">
-            <a href="/#features">Features</a>
-            <a href="/blog.html">Blog</a>
-            <a href="/login.html" class="btn-outline" style="text-decoration: none;">Login</a>
+            <a href="/">Home</a>
+            <a href="/#hero">URL Shortener</a>
+            <a href="/#hero">QR Generator</a>
+            <a href="/pdftools">PDF Tools</a>
         </div>
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
     </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="/" onclick="toggleMobileMenu()">Home</a>
+        <a href="/#hero" onclick="toggleMobileMenu()">URL Shortener</a>
+        <a href="/#hero" onclick="toggleMobileMenu()">QR Generator</a>
+        <a href="/pdftools" onclick="toggleMobileMenu()">PDF Tools</a>
+    </div>
 
     <main class="container fade-in-up" style="padding-top: 120px;">
         <div class="post-container" id="postContainer">
@@ -100,7 +111,7 @@
             const container = document.getElementById('postContainer');
 
             if (!postId) {
-                container.innerHTML = '<div style="text-align: center;"><p style="color: #cc0000; font-size: 1.1rem;">Post not found.</p><a href="/blog.html" class="btn-outline" style="display: inline-block; margin-top: 20px; text-decoration: none;">Back to Blog</a></div>';
+                container.innerHTML = '<div style="text-align: center;"><p style="color: #cc0000; font-size: 1.1rem;">Post not found.</p><a href="/blog" class="btn-outline" style="display: inline-block; margin-top: 20px; text-decoration: none;">Back to Blog</a></div>';
                 return;
             }
 
@@ -113,7 +124,7 @@
                 document.title = blog.title + ' | FlashSuite';
 
                 container.innerHTML = `
-                    <a href="/blog.html" class="back-btn">&larr; Back to Blog</a>
+                    <a href="/blog" class="back-btn">&larr; Back to Blog</a>
                     <br>
                     <span class="post-meta">${new Date(blog.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
                     <h1 class="post-title">${blog.title}</h1>
@@ -122,7 +133,7 @@
                     </div>
                 `;
             } catch (e) {
-                container.innerHTML = '<div style="text-align: center;"><p style="color: #cc0000; font-size: 1.1rem;">Failed to load post or post does not exist.</p><a href="/blog.html" class="btn-outline" style="display: inline-block; margin-top: 20px; text-decoration: none;">Back to Blog</a></div>';
+                container.innerHTML = '<div style="text-align: center;"><p style="color: #cc0000; font-size: 1.1rem;">Failed to load post or post does not exist.</p><a href="/blog" class="btn-outline" style="display: inline-block; margin-top: 20px; text-decoration: none;">Back to Blog</a></div>';
             }
         });
     </script>
@@ -130,13 +141,20 @@
     <footer class="site-footer">
         <nav class="footer-nav">
             <a href="/">Home</a>
-            <a href="/blog.html">Blog</a>
-            <a href="/about.html">About Us</a>
-            <a href="/privacy.html">Privacy Policy</a>
-            <a href="/terms.html">Terms of Service</a>
+            <a href="/blog">Blog</a>
+            <a href="/about">About Us</a>
+            <a href="/privacy">Privacy Policy</a>
+            <a href="/terms">Terms of Service</a>
         </nav>
         <p class="footer-copy">&copy; 2026 FlashSuite. All rights reserved.</p>
     </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+            document.getElementById('mobileMenuOverlay').classList.toggle('active');
+        }
+    </script>
 </body>
 
 </html>

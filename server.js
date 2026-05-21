@@ -3,7 +3,6 @@ const session = require('express-session');
 const path = require('path');
 const db = require('./models/database');
 const apiRoutes = require('./routes/api');
-const pdfRouterData = require('./routes/pdf');
 
 // SEO Programmatic Middlewares & Routers
 const seoPrerender = require('./middleware/seo');
@@ -30,8 +29,20 @@ function isAuthenticated(req, res, next) {
     if (req.session && req.session.userId) {
         return next();
     }
-    res.redirect('/login.html');
+    res.redirect('/login');
 }
+
+// Clean URLs Middleware: Redirect .html requests to clean URLs (keeping admin.html authentication flow)
+app.use((req, res, next) => {
+    if (req.path === '/admin') {
+        return res.redirect('/admin.html');
+    }
+    if (req.path.endsWith('.html') && req.path !== '/admin.html') {
+        const cleanPath = req.path === '/index.html' ? '/' : req.path.slice(0, -5);
+        return res.redirect(301, cleanPath);
+    }
+    next();
+});
 
 // Logging Middleware
 app.use((req, res, next) => {
@@ -56,7 +67,6 @@ app.get('/health', (req, res) => res.status(200).send('OK'));
 
 // API Routes
 app.use('/api', apiRoutes);
-app.use('/api/pdf', pdfRouterData.router);
 
 // Redirection Logic
 app.get('/:code', (req, res) => {
@@ -125,9 +135,4 @@ app.get('/:code', (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`FlashSuite running at http://localhost:${PORT}`);
-    
-    // Start periodic cleanup of PDF temporary files every 15 minutes
-    setInterval(pdfRouterData.cleanupTempFiles, 15 * 60 * 1000);
-    // Run a cleanup immediately on startup
-    setTimeout(pdfRouterData.cleanupTempFiles, 2000);
 });

@@ -9,8 +9,7 @@
         content="Create branded, trackable short links and dynamic QR codes that drive conversions. Manage campaigns and analyze click data in real-time with FlashSuite.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -55,7 +54,7 @@
             <a href="/">Home</a>
             <a href="/#hero">URL Shortener</a>
             <a href="/#hero">QR Generator</a>
-            <a href="pdftools.html">PDF Tools</a>
+            <a href="/pdftools">PDF Tools</a>
         </div>
         <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
     </nav>
@@ -66,7 +65,7 @@
         <a href="/" onclick="toggleMobileMenu()">Home</a>
         <a href="/#hero" onclick="toggleMobileMenu()">URL Shortener</a>
         <a href="/#hero" onclick="toggleMobileMenu()">QR Generator</a>
-        <a href="pdftools.html" onclick="toggleMobileMenu()">PDF Tools</a>
+        <a href="/pdftools" onclick="toggleMobileMenu()">PDF Tools</a>
     </div>
 
     <!-- Hero Section -->
@@ -75,7 +74,7 @@
             <div class="container hero fade-in-up">
 
                 <div class="hero-badge">
-                    ✨ The New Standard for Link Management
+                    Branded Links • Custom QRs • <a href="/pdftools" class="badge-link">NEW: PDF Tools</a>
                 </div>
 
                 <h1>
@@ -90,13 +89,41 @@
 
                 <div class="glass-input-card fade-in-up delay-1">
                     <div class="tab-container">
-                        <button id="tabShorten" class="tab-btn active" onclick="switchActionTab('shorten')">Shorten Link</button>
+                        <button id="tabShorten" class="tab-btn active" onclick="switchActionTab('shorten')">Shorten
+                            Link</button>
                         <button id="tabQR" class="tab-btn" onclick="switchActionTab('qr')">Create QR Code</button>
+                        <button id="tabPDF" class="tab-btn" onclick="switchActionTab('pdf')">PDF Tools</button>
                     </div>
 
-                    <div class="input-group">
+                    <div class="input-group" id="inputGroupContainer">
                         <input type="url" id="longUrl" placeholder="Paste your link here..." required>
                         <button id="actionBtn" onclick="performAction()">+ Shorten</button>
+                    </div>
+
+                    <!-- PDF Quick Actions (Hidden by default) -->
+                    <div class="pdf-quick-actions" id="pdfQuickActions" style="display: none;">
+                        <a href="/mergepdf" class="quick-tool-btn">
+                            <i data-lucide="combine"></i> Merge PDF
+                        </a>
+                        <a href="/splitpdf" class="quick-tool-btn">
+                            <i data-lucide="scissors"></i> Split PDF
+                        </a>
+                        <a href="/compresspdf" class="quick-tool-btn">
+                            <i data-lucide="file-down"></i> Compress
+                        </a>
+                        <a href="/croppdf" class="quick-tool-btn">
+                            <i data-lucide="crop"></i> Crop PDF
+                        </a>
+                        <a href="/editpdf" class="quick-tool-btn">
+                            <i data-lucide="edit-3"></i> Edit PDF
+                        </a>
+                        <a href="/signpdf" class="quick-tool-btn">
+                            <i data-lucide="signature"></i> Sign PDF
+                        </a>
+                        <a href="/pdftools" class="quick-tool-btn btn-primary-quick">
+                            All Tools <i data-lucide="arrow-right"
+                                style="width: 14px; height: 14px; margin-left: 4px; margin-bottom: 0;"></i>
+                        </a>
                     </div>
                 </div>
 
@@ -107,10 +134,111 @@
                         <strong id="shortenedLink"></strong>
                     </div>
                     <div class="result-actions">
-                        <button id="qrBtn" class="btn-dark" onclick="openQrModal(document.getElementById('shortenedLink').innerText)">Generate QR</button>
+                        <button id="qrBtn" class="btn-dark"
+                            onclick="openQrModal(document.getElementById('shortenedLink').innerText)">Generate
+                            QR</button>
                         <button id="copyBtn" onclick="copyLink()">Copy Link</button>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+    <!-- PDF Tools Showcase Section -->
+    <section id="pdf-showcase" class="pdf-showcase-section">
+        <div class="container">
+            <div class="pdf-showcase-header">
+                <!-- <span class="section-badge badge-glow">NEW: PDF Suite</span> -->
+                <h2>Complete PDF Toolkit</h2>
+                <p>
+                    Supercharge your productivity with our secure, fast, and 100% free PDF management tools.
+                    No installation required — handle all your document needs right in your browser.
+                </p>
+            </div>
+
+            <div class="pdf-showcase-grid">
+                <!-- Crop PDF -->
+                <a href="/croppdf" class="pdf-showcase-card fade-in-scroll">
+                    <div class="tool-icon icon-crop"><i data-lucide="crop"></i></div>
+                    <h3>PDF Cropper</h3>
+                    <p>Crop selected areas from your PDF files with precision control.</p>
+                </a>
+
+                <!-- Merge PDF -->
+                <a href="/mergepdf" class="pdf-showcase-card fade-in-scroll">
+                    <div class="tool-icon icon-merge"><i data-lucide="combine"></i></div>
+                    <h3>Merge PDF</h3>
+                    <p>Combine multiple PDF files into a single document in seconds.</p>
+                </a>
+
+                <!-- Split PDF -->
+                <a href="/splitpdf" class="pdf-showcase-card fade-in-scroll">
+                    <div class="tool-icon icon-split"><i data-lucide="scissors"></i></div>
+                    <h3>Split PDF</h3>
+                    <p>Extract specific pages or save each page as a separate PDF.</p>
+                </a>
+
+                <!-- Compress PDF -->
+                <a href="/compresspdf" class="pdf-showcase-card fade-in-scroll">
+                    <div class="tool-icon icon-compress"><i data-lucide="file-down"></i></div>
+                    <h3>Compress PDF</h3>
+                    <p>Reduce file size dramatically while maintaining maximum quality.</p>
+                </a>
+
+                <!-- PDF to Word -->
+                <a href="/pdftodoc" class="pdf-showcase-card fade-in-scroll">
+                    <div class="tool-icon icon-word"><i data-lucide="file-text"></i></div>
+                    <h3>PDF to Word</h3>
+                    <p>Convert PDF documents to editable Word files effortlessly.</p>
+                </a>
+
+                <!-- PDF to Image -->
+                <a href="/pdftoimage" class="pdf-showcase-card fade-in-scroll">
+                    <div class="tool-icon icon-img"><i data-lucide="image"></i></div>
+                    <h3>PDF to Image</h3>
+                    <p>Extract images or convert your PDF pages into PNG/JPG format.</p>
+                </a>
+
+                <!-- Image to PDF -->
+                <a href="/imagetopdf" class="pdf-showcase-card fade-in-scroll">
+                    <div class="tool-icon icon-img"><i data-lucide="file-image"></i></div>
+                    <h3>Image to PDF</h3>
+                    <p>Convert JPG, PNG, and other image formats into a PDF document.</p>
+                </a>
+
+                <!-- Protect PDF -->
+                <a href="/protectpdf" class="pdf-showcase-card fade-in-scroll">
+                    <div class="tool-icon icon-lock"><i data-lucide="lock"></i></div>
+                    <h3>Protect PDF</h3>
+                    <p>Add secure, password encryption to your PDFs.</p>
+                </a>
+
+                <!-- Unlock PDF -->
+                <a href="/unlockpdf" class="pdf-showcase-card fade-in-scroll">
+                    <div class="tool-icon icon-unlock"><i data-lucide="unlock"></i></div>
+                    <h3>Unlock PDF</h3>
+                    <p>Remove passwords and security restrictions from your PDF files.</p>
+                </a>
+
+                <!-- Edit PDF -->
+                <a href="/editpdf" class="pdf-showcase-card fade-in-scroll">
+                    <div class="tool-icon icon-edit"><i data-lucide="edit-3"></i></div>
+                    <h3>Edit PDF</h3>
+                    <p>Modify, annotate, and write on your PDF pages online.</p>
+                </a>
+
+                <!-- Sign PDF -->
+                <a href="/signpdf" class="pdf-showcase-card fade-in-scroll">
+                    <div class="tool-icon icon-sig"><i data-lucide="signature"></i></div>
+                    <h3>Sign PDF</h3>
+                    <p>Add custom digital signatures, draw, or type your signature.</p>
+                </a>
+            </div>
+
+            <div class="pdf-showcase-cta">
+                <a href="/pdftools">
+                    <button>Explore All PDF Tools <i data-lucide="arrow-right"
+                            style="margin-left: 8px; width: 18px; height: 18px;"></i></button>
+                </a>
             </div>
         </div>
     </section>
@@ -136,15 +264,18 @@
                     <div class="steps-container">
                         <div class="step-item">
                             <div class="step-number">1</div>
-                            <div class="step-text"><strong>Paste</strong> your long, unwieldy URL into the input box.</div>
+                            <div class="step-text"><strong>Paste</strong> your long, unwieldy URL into the input box.
+                            </div>
                         </div>
                         <div class="step-item">
                             <div class="step-number">2</div>
-                            <div class="step-text">Click <strong>Shorten</strong> to instantly generate a compact link.</div>
+                            <div class="step-text">Click <strong>Shorten</strong> to instantly generate a compact link.
+                            </div>
                         </div>
                         <div class="step-item">
                             <div class="step-number">3</div>
-                            <div class="step-text"><strong>Copy</strong> and share it across your social or email campaigns.</div>
+                            <div class="step-text"><strong>Copy</strong> and share it across your social or email
+                                campaigns.</div>
                         </div>
                     </div>
                 </div>
@@ -168,28 +299,32 @@
                 <div class="feature-card fade-in-scroll">
                     <div class="feature-icon icon-pink"><i data-lucide="zap"></i></div>
                     <h3>Lightning Speed</h3>
-                    <p>Built on a cloud-native edge network, ensuring 99.9% uptime and instantaneous redirection anywhere in the world.</p>
+                    <p>Built on a cloud-native edge network, ensuring 99.9% uptime and instantaneous redirection
+                        anywhere in the world.</p>
                 </div>
 
                 <!-- Feature 2 -->
                 <div class="feature-card fade-in-scroll delay-1">
                     <div class="feature-icon icon-blue"><i data-lucide="bar-chart-3"></i></div>
                     <h3>Deep Analytics</h3>
-                    <p>Gain unparalleled insights into your audience. Track clicks, geographic locations, and top referring platforms in real-time.</p>
+                    <p>Gain unparalleled insights into your audience. Track clicks, geographic locations, and top
+                        referring platforms in real-time.</p>
                 </div>
 
                 <!-- Feature 3 -->
                 <div class="feature-card fade-in-scroll delay-2">
                     <div class="feature-icon icon-orange"><i data-lucide="target"></i></div>
                     <h3>Advanced UTM Tracking</h3>
-                    <p>Maintain your professional identity. Manage, edit, and safely route your custom branded links with UTM parameters from a secure admin dashboard.</p>
+                    <p>Maintain your professional identity. Manage, edit, and safely route your custom branded links
+                        with UTM parameters from a secure admin dashboard.</p>
                 </div>
 
                 <!-- Feature 4 -->
                 <div class="feature-card fade-in-scroll delay-2">
                     <div class="feature-icon icon-sky"><i data-lucide="qr-code"></i></div>
                     <h3>Dynamic QR Codes</h3>
-                    <p>Instantly generate fully customizable QR codes for any link. Adjust colors and error correction for perfect marketing materials.</p>
+                    <p>Instantly generate fully customizable QR codes for any link. Adjust colors and error correction
+                        for perfect marketing materials.</p>
                 </div>
             </div>
         </div>
@@ -213,7 +348,8 @@
                         What Is a URL Shortener? <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
-                        <p>A URL shortener is a simple tool that takes a long URL and turns it into whatever URL you would like it to be.</p>
+                        <p>A URL shortener is a simple tool that takes a long URL and turns it into whatever URL you
+                            would like it to be.</p>
                     </div>
                 </div>
 
@@ -222,7 +358,8 @@
                         How Does a URL Shortener Work? <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
-                        <p>It creates a redirect in our database. When someone clicks your short link, we immediately route them to your intended long destination.</p>
+                        <p>It creates a redirect in our database. When someone clicks your short link, we immediately
+                            route them to your intended long destination.</p>
                     </div>
                 </div>
 
@@ -231,7 +368,8 @@
                         What Are the Benefits of Using a Short URL? <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
-                        <p>Short URLs are cleaner, easier to share, look more professional, and allow you to track vital click analytics.</p>
+                        <p>Short URLs are cleaner, easier to share, look more professional, and allow you to track vital
+                            click analytics.</p>
                     </div>
                 </div>
 
@@ -240,7 +378,8 @@
                         How Do I Shorten a URL for Free? <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
-                        <p>Just paste your long link in the box at the top of this page and hit "Shorten". It's instantly ready to use!</p>
+                        <p>Just paste your long link in the box at the top of this page and hit "Shorten". It's
+                            instantly ready to use!</p>
                     </div>
                 </div>
 
@@ -249,7 +388,8 @@
                         How Do I Know Your Service Is Reliable and Scalable? <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
-                        <p>FlashSuite is built on modern, cloud-native infrastructure designed to handle high volumes of traffic instantly with 99.9% uptime.</p>
+                        <p>FlashSuite is built on modern, cloud-native infrastructure designed to handle high volumes of
+                            traffic instantly with 99.9% uptime.</p>
                     </div>
                 </div>
             </div>
@@ -260,10 +400,10 @@
     <footer class="site-footer">
         <nav class="footer-nav">
             <a href="/">Home</a>
-            <a href="/blog.html">Blog</a>
-            <a href="/about.html">About Us</a>
-            <a href="/privacy.html">Privacy Policy</a>
-            <a href="/terms.html">Terms of Service</a>
+            <a href="/blog">Blog</a>
+            <a href="/about">About Us</a>
+            <a href="/privacy">Privacy Policy</a>
+            <a href="/terms">Terms of Service</a>
         </nav>
         <p class="footer-copy">&copy; 2026 FlashSuite. All rights reserved.</p>
     </footer>
@@ -334,19 +474,33 @@
             currentAction = action;
             const tabShorten = document.getElementById('tabShorten');
             const tabQR = document.getElementById('tabQR');
+            const tabPDF = document.getElementById('tabPDF');
             const actionBtn = document.getElementById('actionBtn');
             const longUrlInput = document.getElementById('longUrl');
+            const inputGroupContainer = document.getElementById('inputGroupContainer');
+            const pdfQuickActions = document.getElementById('pdfQuickActions');
+
+            // Reset all active tab buttons
+            tabShorten.classList.remove('active');
+            tabQR.classList.remove('active');
+            tabPDF.classList.remove('active');
 
             if (action === 'shorten') {
                 tabShorten.classList.add('active');
-                tabQR.classList.remove('active');
+                inputGroupContainer.style.display = 'flex';
+                pdfQuickActions.style.display = 'none';
                 actionBtn.innerText = 'Shorten';
                 longUrlInput.placeholder = 'Paste your link here...';
-            } else {
+            } else if (action === 'qr') {
                 tabQR.classList.add('active');
-                tabShorten.classList.remove('active');
+                inputGroupContainer.style.display = 'flex';
+                pdfQuickActions.style.display = 'none';
                 actionBtn.innerText = 'Generate QR';
                 longUrlInput.placeholder = 'Enter URL to generate QR...';
+            } else if (action === 'pdf') {
+                tabPDF.classList.add('active');
+                inputGroupContainer.style.display = 'none';
+                pdfQuickActions.style.display = 'grid';
             }
         }
 
@@ -416,15 +570,19 @@
             const answer = btn.nextElementSibling;
             const isActive = btn.classList.contains('active');
 
-            // Close all
+            // Close all and reset icons
             document.querySelectorAll('.faq-question').forEach(q => {
                 q.classList.remove('active');
                 q.nextElementSibling.style.maxHeight = null;
+                const icon = q.querySelector('.faq-icon');
+                if (icon) icon.innerText = '+';
             });
 
             if (!isActive) {
                 btn.classList.add('active');
                 answer.style.maxHeight = answer.scrollHeight + "px";
+                const icon = btn.querySelector('.faq-icon');
+                if (icon) icon.innerText = '−';
             }
         }
         lucide.createIcons();

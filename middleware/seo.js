@@ -28,12 +28,12 @@ module.exports = function seoPrerender(req, res, next) {
             modifiedHtml = modifiedHtml
                 .replace(/href="styles\.css"/g, 'href="/styles.css"')
                 .replace(/src="flashsuite_logo\.png"/g, 'src="/flashsuite_logo.png"')
-                .replace(/href="pdftools\.html"/g, 'href="/pdftools.html"')
-                .replace(/href="imagetopdf\.html"/g, 'href="/imagetopdf.html"')
-                .replace(/href="pdftoimage\.html"/g, 'href="/pdftoimage.html"')
-                .replace(/href="pdftodoc\.html"/g, 'href="/pdftodoc.html"')
-                .replace(/href="croppdf\.html"/g, 'href="/croppdf.html"')
-                .replace(/href="editpdf\.html"/g, 'href="/editpdf.html"');
+                .replace(/href="pdftools(\.html)?"/g, 'href="/pdftools"')
+                .replace(/href="imagetopdf(\.html)?"/g, 'href="/imagetopdf"')
+                .replace(/href="pdftoimage(\.html)?"/g, 'href="/pdftoimage"')
+                .replace(/href="pdftodoc(\.html)?"/g, 'href="/pdftodoc"')
+                .replace(/href="croppdf(\.html)?"/g, 'href="/croppdf"')
+                .replace(/href="editpdf(\.html)?"/g, 'href="/editpdf"');
 
             // Inject Canonicals, OG, Twitter Metas and JSON-LD directly before </head>
             modifiedHtml = modifiedHtml.replace('</head>', `
