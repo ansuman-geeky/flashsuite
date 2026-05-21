@@ -129,7 +129,7 @@
                     <span class="post-meta">${new Date(blog.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
                     <h1 class="post-title">${blog.title}</h1>
                     <div class="post-content">
-                        ${blog.content.split('\\n').map(p => p.trim() ? '<p>' + p + '</p>' : '').join('')}
+                        ${blog.content}
                     </div>
                 `;
             } catch (e) {

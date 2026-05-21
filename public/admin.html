@@ -14,6 +14,39 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- Quill Rich Text Editor CSS & JS -->
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+    <style>
+        .ql-container {
+            font-family: 'Source Code Pro', monospace !important;
+            font-size: 0.95rem;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            min-height: 250px;
+        }
+        .ql-toolbar {
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            background: #fafafa;
+            border-color: rgba(0, 0, 0, 0.08) !important;
+        }
+        .ql-container.ql-snow {
+            border-color: rgba(0, 0, 0, 0.08) !important;
+        }
+        .blog-upload-section button {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .blog-upload-section button:hover {
+            background: var(--primary);
+        }
+    </style>
 </head>
 
 <body>
@@ -99,9 +132,25 @@
                 <div class="metric-card" style="margin-bottom: 40px;">
                     <h3>Create New Blog</h3>
                     <div class="blog-form">
-                        <input type="text" id="blogTitle" placeholder="Blog Title" class="admin-input">
-                        <textarea id="blogContent" placeholder="Blog Content (Text or HTML)" rows="10" class="admin-textarea"></textarea>
-                        <select id="blogStatus" class="admin-select">
+                        <input type="text" id="blogTitle" placeholder="Blog Title" class="admin-input" style="margin-bottom: 20px;">
+                        
+                        <!-- Upload Image Section -->
+                        <div class="blog-upload-section" style="margin-bottom: 20px; display: flex; gap: 15px; align-items: center; background: #fafafa; padding: 15px; border-radius: 12px; border: 1px dashed rgba(0,0,0,0.1);">
+                            <div style="flex-grow: 1;">
+                                <label style="display: block; font-weight: bold; margin-bottom: 5px; color: var(--secondary); font-size: 0.85rem;">Upload Image to Blog</label>
+                                <input type="file" id="blogImageFile" accept="image/*" class="admin-input" style="padding: 8px; background: white;">
+                                <span style="font-size: 0.75rem; color: #888; display: block; margin-top: 3px;">Tip: Click inside the editor below, then click Upload & Insert to place the image at your cursor.</span>
+                            </div>
+                            <button type="button" onclick="uploadBlogImage()" style="height: 42px; padding: 0 20px; margin-top: 10px;">Upload & Insert</button>
+                        </div>
+
+                        <!-- Quill Editor Container -->
+                        <div style="margin-bottom: 25px;">
+                            <label style="display: block; font-weight: bold; margin-bottom: 8px; color: var(--secondary); font-size: 0.85rem;">Blog Content (Pro Editor)</label>
+                            <div id="blogEditor" style="background: white;"></div>
+                        </div>
+
+                        <select id="blogStatus" class="admin-select" style="margin-bottom: 20px;">
                             <option value="published">Published</option>
                             <option value="draft">Draft</option>
                         </select>

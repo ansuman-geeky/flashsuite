@@ -21,7 +21,12 @@ app.use(express.json());
 app.use(session({
     secret: 'flashsuite-secure-key',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        sameSite: 'lax',
+        maxAge: 24 * 60 * 60 * 1000 // 24 hours session lifetime
+    }
 }));
 
 // Auth Middleware
@@ -39,7 +44,9 @@ app.use((req, res, next) => {
     }
     if (req.path.endsWith('.html') && req.path !== '/admin.html') {
         const cleanPath = req.path === '/index.html' ? '/' : req.path.slice(0, -5);
-        return res.redirect(301, cleanPath);
+        const queryIndex = req.url.indexOf('?');
+        const queryString = queryIndex !== -1 ? req.url.slice(queryIndex) : '';
+        return res.redirect(301, cleanPath + queryString);
     }
     next();
 });
@@ -60,7 +67,16 @@ app.get('/admin.html', isAuthenticated, (req, res, next) => {
     res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
+// Redirect authenticated users away from the login page
+app.get('/login', (req, res, next) => {
+    if (req.session && req.session.userId) {
+        return res.redirect('/admin.html');
+    }
+    next();
+});
+
 app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'] }));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Health Check
 app.get('/health', (req, res) => res.status(200).send('OK'));

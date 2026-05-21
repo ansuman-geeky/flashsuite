@@ -1,9 +1,154 @@
+let quill;
+
 document.addEventListener('DOMContentLoaded', () => {
     if (window.location.pathname.includes('admin.html')) {
         loadDashboardData();
         loadBlogsData();
+        initQuill();
     }
 });
+
+function initQuill() {
+    if (typeof Quill === 'undefined') return;
+    quill = new Quill('#blogEditor', {
+        theme: 'snow',
+        placeholder: 'Write your blog post here...',
+        modules: {
+            toolbar: {
+                container: [
+                    [{ 'header': [1, 2, 3, 4, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    ['blockquote', 'code-block'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'color': [] }, { 'background': [] }],
+                    ['link', 'image'],
+                    ['clean']
+                ],
+                handlers: {
+                    image: selectLocalImage
+                }
+            }
+        }
+    });
+}
+
+function compressImage(file, maxWidth = 1200, maxHeight = 1200, quality = 0.75) {
+    return new Promise((resolve) => {
+        if (!file.type.startsWith('image/')) {
+            return resolve(file);
+        }
+        
+        // Skip compression for GIFs (to preserve animation) or small images (< 500KB)
+        if (file.type === 'image/gif' || file.size < 500 * 1024) {
+            return resolve(file);
+        }
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+
+                if (width > maxWidth || height > maxHeight) {
+                    if (width > height) {
+                        height = Math.round((height * maxWidth) / width);
+                        width = maxWidth;
+                    } else {
+                        width = Math.round((width * maxHeight) / height);
+                        height = maxHeight;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+
+                canvas.toBlob((blob) => {
+                    if (blob) {
+                        const compressedFile = new File([blob], file.name.replace(/\.[^/.]+$/, "") + ".jpg", {
+                            type: 'image/jpeg',
+                            lastModified: Date.now()
+                        });
+                        resolve(compressedFile);
+                    } else {
+                        resolve(file);
+                    }
+                }, 'image/jpeg', quality);
+            };
+            img.onerror = () => resolve(file);
+            img.src = event.target.result;
+        };
+        reader.onerror = () => resolve(file);
+        reader.readAsDataURL(file);
+    });
+}
+
+function selectLocalImage() {
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+    input.click();
+
+    input.onchange = async () => {
+        const file = input.files[0];
+        if (!file) return;
+
+        try {
+            const compressedFile = await compressImage(file);
+            const formData = new FormData();
+            formData.append('image', compressedFile);
+
+            const res = await fetch('/api/admin/upload-image', {
+                method: 'POST',
+                body: formData
+            });
+            if (!res.ok) throw new Error("Upload failed");
+            const data = await res.json();
+            
+            const range = quill.getSelection();
+            const index = range ? range.index : quill.getLength() - 1;
+            quill.insertEmbed(index, 'image', data.imageUrl);
+            quill.setSelection(index + 1);
+        } catch (err) {
+            console.error(err);
+            alert("Failed to upload image. Please try again.");
+        }
+    };
+}
+
+async function uploadBlogImage() {
+    const fileInput = document.getElementById('blogImageFile');
+    const file = fileInput.files[0];
+    if (!file) return alert("Please select an image file first.");
+
+    try {
+        const compressedFile = await compressImage(file);
+        const formData = new FormData();
+        formData.append('image', compressedFile);
+
+        const res = await fetch('/api/admin/upload-image', {
+            method: 'POST',
+            body: formData
+        });
+        if (!res.ok) throw new Error("Upload failed");
+        const data = await res.json();
+        
+        const range = quill.getSelection();
+        const index = range ? range.index : quill.getLength() - 1;
+        quill.insertEmbed(index, 'image', data.imageUrl);
+        quill.setSelection(index + 1);
+        
+        fileInput.value = '';
+        alert("Image uploaded and inserted successfully!");
+    } catch (err) {
+        console.error(err);
+        alert("Failed to upload image. Please try again.");
+    }
+}
 
 let allLinks = [];
 let myClickChart, myRefChart;
@@ -12,7 +157,7 @@ async function loadDashboardData() {
     try {
         const response = await fetch('/api/admin/stats');
         if (!response.ok) {
-            if (response.status === 401) window.location.href = '/login.html';
+            if (response.status === 401) window.location.href = '/login';
             return;
         }
         const data = await response.json();
@@ -158,7 +303,9 @@ let editingBlogId = null;
 function startEditBlog(blog) {
     editingBlogId = blog.id;
     document.getElementById('blogTitle').value = blog.title;
-    document.getElementById('blogContent').value = blog.content;
+    if (quill) {
+        quill.root.innerHTML = blog.content || '';
+    }
     document.getElementById('blogStatus').value = blog.status;
     document.getElementById('blogSubmitBtn').innerText = "Update Blog";
     document.getElementById('blogCancelBtn').style.display = "block";
@@ -168,7 +315,9 @@ function startEditBlog(blog) {
 function cancelEditBlog() {
     editingBlogId = null;
     document.getElementById('blogTitle').value = '';
-    document.getElementById('blogContent').value = '';
+    if (quill) {
+        quill.root.innerHTML = '';
+    }
     document.getElementById('blogStatus').value = 'published';
     document.getElementById('blogSubmitBtn').innerText = "Publish Blog";
     document.getElementById('blogCancelBtn').style.display = "none";
@@ -176,7 +325,7 @@ function cancelEditBlog() {
 
 async function saveBlog() {
     const title = document.getElementById('blogTitle').value;
-    const content = document.getElementById('blogContent').value;
+    const content = quill ? quill.root.innerHTML : '';
     const status = document.getElementById('blogStatus').value;
 
     if (!title) return alert("Blog title is required");
