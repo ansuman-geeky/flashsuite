@@ -3,7 +3,21 @@ const session = require('express-session');
 const path = require('path');
 const db = require('./models/database');
 const apiRoutes = require('./routes/api');
+const pdfRouterData = require('./routes/pdf');
+
+// SEO Programmatic Middlewares & Routers
+const seoPrerender = require('./middleware/seo');
+const seoRouter = require('./routes/seo');
+const pseoRouter = require('./routes/pseo');
+
 const app = express();
+
+// Apply global SEO Prerender Hook
+app.use(seoPrerender);
+
+// Apply Sitemap, Robots, and Programmatic use-case routers before wildcards
+app.use(seoRouter);
+app.use(pseoRouter);
 app.use(express.json());
 app.use(session({
     secret: 'flashsuite-secure-key',
@@ -42,6 +56,7 @@ app.get('/health', (req, res) => res.status(200).send('OK'));
 
 // API Routes
 app.use('/api', apiRoutes);
+app.use('/api/pdf', pdfRouterData.router);
 
 // Redirection Logic
 app.get('/:code', (req, res) => {
@@ -90,6 +105,7 @@ app.get('/:code', (req, res) => {
                         <script>
                             // Attempt to trigger deep link automatically
                             window.onload = function() {
+                                // Trigger deep link
                                 setTimeout(() => {
                                     window.location.href = "${link.original_url}";
                                 }, 500);
@@ -107,4 +123,11 @@ app.get('/:code', (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`FlashSuite running at http://localhost:${PORT}`));
+app.listen(PORT, () => {
+    console.log(`FlashSuite running at http://localhost:${PORT}`);
+    
+    // Start periodic cleanup of PDF temporary files every 15 minutes
+    setInterval(pdfRouterData.cleanupTempFiles, 15 * 60 * 1000);
+    // Run a cleanup immediately on startup
+    setTimeout(pdfRouterData.cleanupTempFiles, 2000);
+});

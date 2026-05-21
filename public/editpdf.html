@@ -1,0 +1,2650 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Online PDF Editor - Edit PDF Online Free | FlashSuite</title>
+    <meta name="description" content="Free online PDF editor. Add text, edit existing text, annotations, shapes, forms, signatures and manage pages locally and securely.">
+    <link rel="canonical" href="https://flashsuite.com/editpdf.html">
+
+    <!-- Structured Data Schema for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://flashsuite.com/editpdf.html#software",
+          "name": "FlashSuite PDF Editor",
+          "operatingSystem": "All",
+          "applicationCategory": "BusinessApplication",
+          "offers": {
+            "@type": "Offer",
+            "price": "0.00",
+            "priceCurrency": "USD"
+          },
+          "description": "Free online PDF editor. Annotate, edit text, embed images, draw shapes, or draw freehand onto PDF files locally."
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://flashsuite.com/editpdf.html#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Is editing PDFs with FlashSuite secure?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Your files are temporarily cached only for range streaming, and processing is done securely client-side. No data is stored permanently."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I edit existing text in my PDF?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, FlashSuite provides an 'Edit Text' mode where you can click existing text fields to rewrite or update them."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+
+    <!-- Google Fonts & Style Libraries -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Caveat&family=Great+Vibes&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- PDF & Canvas Libraries CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+
+    <style>
+        /* PDF Studio Overrides & Reset */
+        :root {
+            --sidebar-width: 250px;
+            --properties-width: 320px;
+            --primary-accent: #9D1C44;
+            --dark-gray: #1E1E24;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --bg-canvas: #E2E8F0;
+        }
+
+        body.studio-active {
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .navbar-space {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* 3-Panel Studio Layout */
+        .studio-container {
+            display: none; /* Shown after PDF load */
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+            background: var(--bg-canvas);
+            position: relative;
+        }
+
+        /* Top Toolbar */
+        .studio-topbar {
+            background: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 16px;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .mode-selector {
+            display: flex;
+            background: #F1F5F9;
+            padding: 4px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .mode-btn {
+            padding: 6px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            color: #64748B;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: none;
+        }
+
+        .mode-btn.active {
+            background: #ffffff;
+            color: var(--primary-accent);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .mode-btn:hover {
+            transform: none;
+            opacity: 1;
+        }
+
+        .tool-groups {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: #F8FAFC;
+            padding: 4px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .tool-btn {
+            background: transparent;
+            color: #475569;
+            border: none;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            box-shadow: none;
+            position: relative;
+        }
+
+        .tool-btn:hover {
+            background: #E2E8F0;
+            color: var(--primary-accent);
+            transform: none;
+        }
+
+        .tool-btn.active {
+            background: var(--primary-accent);
+            color: #ffffff;
+        }
+
+        .tool-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .tool-divider {
+            width: 1px;
+            height: 20px;
+            background: var(--border-color);
+            margin: 0 4px;
+        }
+
+        /* Thumbnails Sidebar */
+        .sidebar-left {
+            width: var(--sidebar-width);
+            min-width: 150px;
+            max-width: 400px;
+            background: #ffffff;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .sidebar-header {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .slider-container label {
+            font-size: 0.75rem;
+            color: #64748B;
+            font-weight: 600;
+        }
+
+        .thumb-slider {
+            flex: 1;
+            height: 4px;
+            accent-color: var(--primary-accent);
+        }
+
+        .thumbnails-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .thumb-item {
+            position: relative;
+            background: #F8FAFC;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .thumb-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.08);
+            border-color: #CBD5E1;
+        }
+
+        .thumb-item.active {
+            border-color: var(--primary-accent);
+            background: rgba(157, 28, 68, 0.02);
+        }
+
+        .thumb-item canvas {
+            display: block;
+            border-radius: 4px;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .thumb-number {
+            margin-top: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #64748B;
+        }
+
+        /* Overlay Tools on Thumbnails */
+        .thumb-actions {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            display: flex;
+            gap: 2px;
+            opacity: 0;
+            transition: opacity 0.2s;
+            background: rgba(255,255,255,0.9);
+            padding: 2px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .thumb-item:hover .thumb-actions {
+            opacity: 1;
+        }
+
+        .thumb-act-btn {
+            background: transparent;
+            border: none;
+            padding: 4px;
+            border-radius: 3px;
+            cursor: pointer;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            box-shadow: none;
+        }
+
+        .thumb-act-btn:hover {
+            background: #F1F5F9;
+            color: var(--primary-accent);
+            transform: none;
+        }
+
+        .thumb-act-btn svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        /* Center Canvas Workspace */
+        .workspace-center {
+            flex: 1;
+            overflow: auto;
+            position: relative;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            scroll-behavior: smooth;
+        }
+
+        .page-container {
+            position: relative;
+            background: #ffffff;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border-radius: 4px;
+            transition: transform 0.2s;
+        }
+
+        .pdf-canvas-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .fabric-canvas-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 3;
+        }
+
+        /* pdf.js Text Layer overlay */
+        .textLayer {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            opacity: 0.2; /* Visible only for hover-detection */
+            line-height: 1.0;
+            z-index: 2;
+            pointer-events: none; /* Handled in custom select detection */
+        }
+
+        .textLayer span {
+            color: transparent;
+            position: absolute;
+            white-space: pre;
+            cursor: text;
+            transform-origin: 0% 0%;
+            pointer-events: auto;
+        }
+
+        /* Under Edit mode, show bounds */
+        .studio-edit-mode .textLayer {
+            opacity: 1;
+            z-index: 4; /* Overlay on top of fabric for clicks */
+        }
+
+        .studio-edit-mode .textLayer span {
+            border: 1px dashed rgba(157, 28, 68, 0.35);
+            background: rgba(157, 28, 68, 0.03);
+            pointer-events: auto;
+        }
+
+        .studio-edit-mode .textLayer span:hover {
+            border-color: var(--primary-accent);
+            background: rgba(157, 28, 68, 0.08);
+        }
+
+        .textLayer span.hidden-text {
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* When a Fabric textbox is actively being edited, suppress the text layer
+           so it doesn't block keyboard/mouse input to the Fabric canvas */
+        .studio-edit-mode.editing-fabric-text .textLayer {
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0.2;
+        }
+
+        /* Floating bottom controls */
+        .floating-bottom-bar {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .bar-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bar-btn {
+            background: transparent;
+            border: none;
+            color: #CBD5E1;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            box-shadow: none;
+        }
+
+        .bar-btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: #ffffff;
+            transform: none;
+        }
+
+        .bar-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .page-indicator {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #F1F5F9;
+        }
+
+        .page-num-input {
+            width: 40px;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            text-align: center;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            padding: 2px;
+            outline: none;
+        }
+
+        /* Properties Right Panel */
+        .properties-panel {
+            width: var(--properties-width);
+            min-width: 200px;
+            max-width: 500px;
+            background: #ffffff;
+            border-left: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .props-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 700;
+            color: #1E293B;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .props-content {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .prop-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .prop-section label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #64748B;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .prop-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .prop-input, .prop-select {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #CBD5E1;
+            font-size: 0.9rem;
+            outline: none;
+            background: #ffffff;
+        }
+
+        .prop-input:focus, .prop-select:focus {
+            border-color: var(--primary-accent);
+        }
+
+        /* Color bubbles */
+        .color-palette {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .color-bubble {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .color-bubble:hover {
+            transform: scale(1.1);
+        }
+
+        .color-bubble.active {
+            border-color: #64748B;
+            box-shadow: 0 0 0 2px #ffffff inset;
+        }
+
+        .btn-style-toggle {
+            background: #F1F5F9;
+            border: 1px solid #E2E8F0;
+            color: #475569;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            box-shadow: none;
+        }
+
+        .btn-style-toggle.active {
+            background: rgba(157, 28, 68, 0.08);
+            border-color: var(--primary-accent);
+            color: var(--primary-accent);
+            font-weight: 600;
+        }
+
+        .btn-style-toggle:hover {
+            transform: none;
+        }
+
+        /* Save & Action Row */
+        .sidebar-save-box {
+            margin-top: auto;
+            padding: 16px;
+            border-top: 1px solid var(--border-color);
+            background: #F8FAFC;
+        }
+
+        .btn-action-primary {
+            background: var(--primary-accent);
+            color: white;
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(157,28,68,0.2);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-action-primary:hover {
+            background: #7A1232;
+            box-shadow: 0 6px 20px rgba(157,28,68,0.3);
+        }
+
+        /* Drag handle dividers */
+        .sidebar-resize-handle, .props-resize-handle {
+            width: 4px;
+            background: transparent;
+            cursor: col-resize;
+            transition: background 0.2s;
+        }
+
+        .sidebar-resize-handle:hover, .props-resize-handle:hover {
+            background: var(--primary-accent);
+        }
+
+        /* Drop Zone Landing */
+        .drop-zone-wrapper {
+            max-width: 600px;
+            margin: 80px auto;
+            padding: 20px;
+        }
+
+        .drop-zone {
+            border: 2px dashed rgba(157, 28, 68, 0.3);
+            border-radius: 16px;
+            background: #ffffff;
+            padding: 60px 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .drop-zone:hover, .drop-zone.dragover {
+            border-color: var(--primary-accent);
+            background: rgba(157, 28, 68, 0.02);
+        }
+
+        .upload-icon {
+            color: var(--primary-accent);
+            margin-bottom: 16px;
+            width: 48px;
+            height: 48px;
+        }
+
+        .progress-container {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #E2E8F0;
+            border-radius: 4px;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-accent);
+            width: 0%;
+            transition: width 0.1s;
+        }
+
+        .progress-text {
+            font-size: 0.8rem;
+            color: #64748B;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        /* Modal windows */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            width: 90%;
+            max-width: 500px;
+            overflow: hidden;
+            animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .modal-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: #1E293B;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 12px 20px;
+            border-top: 1px solid var(--border-color);
+            background: #F8FAFC;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        /* Signature panel tabs */
+        .sig-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 16px;
+        }
+
+        .sig-tab-btn {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #64748B;
+            border-bottom: 2px solid transparent;
+            box-shadow: none;
+        }
+
+        .sig-tab-btn.active {
+            color: var(--primary-accent);
+            border-bottom-color: var(--primary-accent);
+        }
+
+        .sig-tab-content {
+            display: none;
+        }
+
+        .sig-tab-content.active {
+            display: block;
+        }
+
+        #sigCanvas {
+            border: 1px solid #CBD5E1;
+            border-radius: 8px;
+            background: #F8FAFC;
+            cursor: crosshair;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Utility classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .comment-item {
+            background: #F8FAFC;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .comment-item button {
+            background: transparent;
+            border: none;
+            color: #EF4444;
+            cursor: pointer;
+            padding: 2px;
+            box-shadow: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar-space">
+        <!-- Navigation Header -->
+        <nav class="glass-nav">
+            <a href="/"><img src="flashsuite_logo.png" alt="FlashSuite Logo" class="nav-logo"></a>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="pdftools.html" class="active">PDF Tools</a>
+            </div>
+        </nav>
+
+        <!-- PDF Dropzone Panel -->
+        <div class="drop-zone-wrapper" id="uploadPanel">
+            <h1 style="text-align: center; margin-bottom: 24px; font-weight: 700; color: #1E293B; font-size: 2.2rem; font-family: 'Outfit', sans-serif;">Free Online PDF Editor</h1>
+            <div class="drop-zone" id="dropZone">
+                <i data-lucide="upload-cloud" class="upload-icon"></i>
+                <h3>Drag & Drop your PDF here</h3>
+                <p>or click to browse from files</p>
+                <input type="file" id="fileInput" accept=".pdf" class="hidden">
+                <div class="file-limits">Supports documents up to 150MB</div>
+            </div>
+
+            <!-- Loading Progress -->
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">Uploading vector file... (0%)</div>
+            </div>
+        </div>
+
+        <!-- Professional 3-Panel PDF Studio Workspace -->
+        <div class="studio-container" id="studioWorkspace">
+            <!-- Left Thumbnail Panel -->
+            <div class="sidebar-left" id="sidebarLeft">
+                <div class="sidebar-header">
+                    <div class="slider-container">
+                        <label for="thumbZoom">Thumbnails</label>
+                        <input type="range" id="thumbZoom" class="thumb-slider" min="80" max="180" value="120">
+                    </div>
+                    <div style="display:flex; gap: 4px;">
+                        <button class="btn-style-toggle" style="padding:4px 8px; font-size:0.75rem;" id="btnMerge" title="Merge other PDFs"><i data-lucide="plus-circle" style="width:12px; height:12px; margin-right:4px;"></i>Merge</button>
+                        <button class="btn-style-toggle" style="padding:4px 8px; font-size:0.75rem;" id="btnSplit" title="Split pages"><i data-lucide="scissors" style="width:12px; height:12px; margin-right:4px;"></i>Split</button>
+                    </div>
+                </div>
+                <!-- Vertical Thumbnails list -->
+                <div class="thumbnails-list" id="thumbnailsList"></div>
+            </div>
+
+            <!-- Sidebar drag handle -->
+            <div class="sidebar-resize-handle" id="sidebarHandle"></div>
+
+            <!-- Center Work area -->
+            <div style="display:flex; flex-direction:column; flex:1; position:relative;">
+                <!-- Top Toolbar Options -->
+                <div class="studio-topbar">
+                    <!-- Modes tab switcher -->
+                    <div class="mode-selector">
+                        <button class="mode-btn active" id="modeAnnotate"><i data-lucide="edit-3"></i>Annotate</button>
+                        <button class="mode-btn" id="modeEdit"><i data-lucide="pencil"></i>Edit Text</button>
+                    </div>
+
+                    <!-- Category toolbar buttons group -->
+                    <div class="tool-groups">
+                        <button class="tool-btn active" id="toolPan" title="Pan / View"><i data-lucide="hand"></i></button>
+                        <button class="tool-btn" id="toolSelect" title="Select / Move / Resize"><i data-lucide="mouse-pointer"></i></button>
+                        <div class="tool-divider"></div>
+                        <button class="tool-btn" id="toolHighlight" title="Highlight"><i data-lucide="highlighter"></i></button>
+                        <button class="tool-btn" id="toolDraw" title="Free Draw"><i data-lucide="brush"></i></button>
+                        <button class="tool-btn" id="toolSticky" title="Add Sticky Comment"><i data-lucide="message-square"></i></button>
+                        <div class="tool-divider"></div>
+                        <button class="tool-btn" id="toolText" title="Add Textbox"><i data-lucide="type"></i></button>
+                        <button class="tool-btn" id="toolShape" title="Shapes Panel"><i data-lucide="shapes"></i></button>
+                        <button class="tool-btn" id="toolForms" title="Interactive Form Fields"><i data-lucide="check-square"></i></button>
+                        <button class="tool-btn" id="toolInsert" title="Insert Images & Stamps"><i data-lucide="image"></i></button>
+                        <button class="tool-btn" id="toolSignature" title="Sign Document" style="background: rgba(157, 28, 68, 0.08); color: var(--primary-accent); border: 1px dashed rgba(157, 28, 68, 0.35); padding: 6px 12px; gap: 6px; font-weight: 600;"><i data-lucide="signature"></i>Sign Doc</button>
+                    </div>
+
+                    <!-- Actions -->
+                    <div style="display:flex; gap: 8px;">
+                        <button class="tool-btn" id="btnUndo" disabled title="Undo (Ctrl+Z)"><i data-lucide="undo"></i></button>
+                        <button class="tool-btn" id="btnRedo" disabled title="Redo (Ctrl+Y)"><i data-lucide="redo"></i></button>
+                    </div>
+                </div>
+
+                <!-- Main Scrollable Canvas Viewport -->
+                <div class="workspace-center" id="workspaceCenter"></div>
+
+                <!-- Floating Bottom bar navigation -->
+                <div class="floating-bottom-bar">
+                    <div class="bar-group">
+                        <button class="bar-btn" id="btnPrevPage" title="Previous Page"><i data-lucide="chevron-left"></i></button>
+                        <div class="page-indicator">
+                            Page <input type="number" id="pageNumInput" class="page-num-input" value="1" min="1"> of <span id="totalPagesLabel">1</span>
+                        </div>
+                        <button class="bar-btn" id="btnNextPage" title="Next Page"><i data-lucide="chevron-right"></i></button>
+                    </div>
+                    <div style="width: 1px; height: 16px; background: rgba(255,255,255,0.2);"></div>
+                    <div class="bar-group">
+                        <button class="bar-btn" id="btnZoomOut" title="Zoom Out"><i data-lucide="minus"></i></button>
+                        <span style="font-size:0.8rem; font-weight:700; width:40px; text-align:center;" id="zoomPercentLabel">100%</span>
+                        <button class="bar-btn" id="btnZoomIn" title="Zoom In"><i data-lucide="plus"></i></button>
+                        <button class="bar-btn" id="btnZoomFit" title="Fit to Width / Page"><i data-lucide="maximize-2"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Properties Panel Resizer -->
+            <div class="props-resize-handle" id="propsHandle"></div>
+
+            <!-- Right Configuration Panel -->
+            <div class="properties-panel" id="propertiesPanel">
+                <div class="props-header">
+                    <span>Properties Inspector</span>
+                    <i data-lucide="sliders" style="width:16px; height:16px; color:#64748B;"></i>
+                </div>
+
+                <div class="props-content" id="propsContent">
+                    <!-- Text Styling Options (Contextual) -->
+                    <div class="prop-section" id="propsTextSection">
+                        <label>Text Styles</label>
+                        <div class="prop-row">
+                            <select id="textFontFamily" class="prop-select">
+                                <option value="Helvetica">Helvetica</option>
+                                <option value="Arial">Arial</option>
+                                <option value="Times New Roman">Times New Roman</option>
+                                <option value="Courier New">Courier New</option>
+                                <option value="Alex Brush">Handwriting (Alex)</option>
+                            </select>
+                            <input type="number" id="textFontSize" class="prop-input" value="12" style="width:70px;">
+                        </div>
+                        <div class="prop-row" style="margin-top:6px;">
+                            <button class="btn-style-toggle" id="btnBold" title="Bold"><b>B</b></button>
+                            <button class="btn-style-toggle" id="btnItalic" title="Italic"><i>I</i></button>
+                            <button class="btn-style-toggle" id="btnUnderline" title="Underline"><u>U</u></button>
+                            <button class="btn-style-toggle" id="btnStrike" title="Strikeout"><del>S</del></button>
+                        </div>
+                        <div class="prop-row" style="margin-top:6px;">
+                            <button class="btn-style-toggle" id="btnAlignLeft" title="Align Left"><i data-lucide="align-left" style="width:14px;"></i></button>
+                            <button class="btn-style-toggle" id="btnAlignCenter" title="Align Center"><i data-lucide="align-center" style="width:14px;"></i></button>
+                            <button class="btn-style-toggle" id="btnAlignRight" title="Align Right"><i data-lucide="align-right" style="width:14px;"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Shape Styling Options (Contextual) -->
+                    <div class="prop-section" id="propsShapeSection">
+                        <label>Shape Borders & Fills</label>
+                        <div class="prop-row">
+                            <span style="font-size:0.8rem; width:80px; color:#64748B;">Border W</span>
+                            <input type="number" id="shapeStrokeWidth" class="prop-input" value="2" min="0" max="20">
+                        </div>
+                        <div style="display:flex; flex-direction:column; gap:4px; margin-top:8px;">
+                            <span style="font-size:0.75rem; font-weight:700; color:#64748B;">Stroke Color</span>
+                            <div class="color-palette" id="shapeStrokePalette"></div>
+                        </div>
+                        <div style="display:flex; flex-direction:column; gap:4px; margin-top:8px;">
+                            <span style="font-size:0.75rem; font-weight:700; color:#64748B;">Fill Color</span>
+                            <div class="color-palette" id="shapeFillPalette"></div>
+                        </div>
+                    </div>
+
+                    <!-- Form Attributes (Contextual) -->
+                    <div class="prop-section id-hidden" id="propsFormSection">
+                        <label>Form Field Attributes</label>
+                        <div style="display:flex; flex-direction:column; gap:6px;">
+                            <span style="font-size:0.8rem; color:#64748B;">Field Name</span>
+                            <input type="text" id="formFieldName" class="prop-input" placeholder="e.g. text_field_1">
+                            <span style="font-size:0.8rem; color:#64748B;">Placeholder</span>
+                            <input type="text" id="formFieldPlaceholder" class="prop-input" placeholder="e.g. Enter name...">
+                            <div class="prop-row" style="margin-top:4px;">
+                                <input type="checkbox" id="formFieldRequired">
+                                <label for="formFieldRequired" style="text-transform:none; font-weight:normal; margin:0; cursor:pointer;">Required Field</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Global Watermark & Page Settings -->
+                    <div class="prop-section">
+                        <label>Global Document Options</label>
+                        <button class="btn-style-toggle" style="text-align:left; justify-content:flex-start; gap:8px;" id="btnWatermarkModal"><i data-lucide="droplet" style="width:14px;"></i>Watermark Settings</button>
+                        <button class="btn-style-toggle" style="text-align:left; justify-content:flex-start; gap:8px; margin-top:6px;" id="btnPageNumModal"><i data-lucide="binary" style="width:14px;"></i>Page Number Headers</button>
+                    </div>
+
+                    <!-- Comments and Sticky Notes Section -->
+                    <div class="prop-section">
+                        <label>Comments & Sticky Notes</label>
+                        <div class="comments-list" id="commentsListContainer">
+                            <div style="font-size:0.8rem; color:#94A3B8; font-style:italic;">No comments placed.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Download / Save button Box -->
+                <div class="sidebar-save-box">
+                    <button class="btn-action-primary" id="btnExportPDF">
+                        <span>Save Changes</span>
+                        <i data-lucide="arrow-right" style="width:16px; height:16px;"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Signatures Pad -->
+    <div class="modal-overlay" id="sigModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Insert Professional Signature</h3>
+                <button class="thumb-act-btn" onclick="closeModal('sigModal')"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="sig-tabs">
+                    <button class="sig-tab-btn active" id="tabSigDraw">Draw</button>
+                    <button class="sig-tab-btn" id="tabSigType">Type</button>
+                    <button class="sig-tab-btn" id="tabSigUpload">Upload Image</button>
+                </div>
+                
+                <!-- Draw Canvas -->
+                <div class="sig-tab-content active" id="contentSigDraw">
+                    <canvas id="sigCanvas" width="460" height="200"></canvas>
+                    <button class="btn-style-toggle" style="margin-top:8px; padding:6px 12px; font-size:0.8rem;" id="clearSigDraw">Clear Draw Pad</button>
+                </div>
+
+                <!-- Type Signature -->
+                <div class="sig-tab-content" id="contentSigType">
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                        <input type="text" id="sigTextInput" class="prop-input" placeholder="Type your signature here...">
+                        <select id="sigFontSelect" class="prop-select">
+                            <option value="Alex Brush" style="font-family:'Alex Brush'; font-size:1.5rem;">Alex Brush</option>
+                            <option value="Great Vibes" style="font-family:'Great Vibes'; font-size:1.5rem;">Great Vibes</option>
+                            <option value="Caveat" style="font-family:'Caveat'; font-size:1.5rem;">Caveat</option>
+                        </select>
+                        <div id="sigTypePreview" style="border:1px solid #E2E8F0; border-radius:8px; height:100px; display:flex; align-items:center; justify-content:center; font-size:2rem; background:#F8FAFC;"></div>
+                    </div>
+                </div>
+
+                <!-- Upload Image Signature -->
+                <div class="sig-tab-content" id="contentSigUpload">
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                        <input type="file" id="sigImageFile" accept="image/*" class="prop-input">
+                        <div style="display:flex; align-items:center; gap:6px; margin-top:4px;">
+                            <input type="checkbox" id="sigImageTransparent" checked>
+                            <label for="sigImageTransparent" style="font-size:0.8rem; color:#475569; cursor:pointer;">Auto-transparent background</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-style-toggle" onclick="closeModal('sigModal')">Cancel</button>
+                <button class="btn-action-primary" style="width:auto; padding:8px 20px;" id="btnApplySignature">Insert</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Stamps Panel -->
+    <div class="modal-overlay" id="stampsModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Insert Annotation Stamps</h3>
+                <button class="thumb-act-btn" onclick="closeModal('stampsModal')"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="display:grid; grid-template-columns:repeat(2, 1fr); gap:12px;">
+                <button class="btn-style-toggle" style="padding:16px; flex-direction:column; font-weight:700; color:#EF4444; border-color:#FCA5A5; font-size:1.1rem;" onclick="insertStamp('REJECTED', '#EF4444')">REJECTED</button>
+                <button class="btn-style-toggle" style="padding:16px; flex-direction:column; font-weight:700; color:#22C55E; border-color:#86EFAC; font-size:1.1rem;" onclick="insertStamp('APPROVED', '#22C55E')">APPROVED</button>
+                <button class="btn-style-toggle" style="padding:16px; flex-direction:column; font-weight:700; color:#F59E0B; border-color:#FDE047; font-size:1.1rem;" onclick="insertStamp('DRAFT', '#F59E0B')">DRAFT</button>
+                <button class="btn-style-toggle" style="padding:16px; flex-direction:column; font-weight:700; color:#3B82F6; border-color:#93C5FD; font-size:1.1rem;" onclick="insertStamp('CONFIDENTIAL', '#3B82F6')">CONFIDENTIAL</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Global Watermark -->
+    <div class="modal-overlay" id="watermarkModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Document Watermark</h3>
+                <button class="thumb-act-btn" onclick="closeModal('watermarkModal')"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="display:flex; flex-direction:column; gap:12px;">
+                <span style="font-size:0.8rem; color:#64748B; font-weight:700;">Watermark Text</span>
+                <input type="text" id="watermarkText" class="prop-input" placeholder="e.g. FLASH-COPY">
+                <span style="font-size:0.8rem; color:#64748B; font-weight:700;">Opacity</span>
+                <input type="range" id="watermarkOpacity" min="5" max="50" value="15" style="accent-color:var(--primary-accent);">
+            </div>
+            <div class="modal-footer">
+                <button class="btn-style-toggle" onclick="closeModal('watermarkModal')">Cancel</button>
+                <button class="btn-action-primary" style="width:auto; padding:8px 20px;" onclick="applyWatermarkSettings()">Apply</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Global Page Numbers -->
+    <div class="modal-overlay" id="pageNumModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Page Number Overlay</h3>
+                <button class="thumb-act-btn" onclick="closeModal('pageNumModal')"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="display:flex; flex-direction:column; gap:12px;">
+                <div style="display:flex; align-items:center; gap:6px;">
+                    <input type="checkbox" id="pageNumEnabled">
+                    <label for="pageNumEnabled" style="font-weight:700; color:#475569; cursor:pointer;">Enable Page Numbers</label>
+                </div>
+                <span style="font-size:0.8rem; color:#64748B; font-weight:700;">Format Options</span>
+                <select id="pageNumFormat" class="prop-select">
+                    <option value="simple">Page X</option>
+                    <option value="detailed">Page X of Y</option>
+                </select>
+                <span style="font-size:0.8rem; color:#64748B; font-weight:700;">Placement</span>
+                <select id="pageNumPosition" class="prop-select">
+                    <option value="bottom-right">Bottom Right</option>
+                    <option value="bottom-center">Bottom Center</option>
+                    <option value="top-right">Top Right</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-style-toggle" onclick="closeModal('pageNumModal')">Cancel</button>
+                <button class="btn-action-primary" style="width:auto; padding:8px 20px;" onclick="applyPageNumberSettings()">Apply</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global Client Studio Core Script -->
+    <script>
+        // Set PDF.js Worker Src globally
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+
+        // Editor Application State
+        let fileId = null;
+        let pdfDoc = null;
+        let originalName = 'document.pdf';
+        let pagesData = []; // Array of page objects
+        let zoomScale = 1.0;
+        let activeTool = 'pan'; // pan, select, highlight, draw, sticky, text, shape, forms, insert, signature
+        let activeMode = 'annotate'; // annotate, edit
+        let currentActivePage = 1;
+        let isUndoingRedoing = false; // Lock to prevent history pollution during loads
+        
+        // Settings/Shapes/Drawing default values
+        let strokeColor = '#EF4444';
+        let fillColor = 'transparent';
+        let brushWidth = 4;
+        
+        // Watermark & Page Number States
+        let globalWatermarkText = '';
+        let globalWatermarkOpacity = 0.15;
+        let globalPageNumbersEnabled = false;
+        let globalPageNumbersFormat = 'detailed';
+        let globalPageNumbersPosition = 'bottom-right';
+
+        // Predefined color palette values
+        const colorsList = ['#000000', '#FFFFFF', '#EF4444', '#3B82F6', '#10B981', '#F59E0B', '#8B5CF6', '#EC4899', 'transparent'];
+
+        // DOM elements cache
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const uploadPanel = document.getElementById('uploadPanel');
+        const studioWorkspace = document.getElementById('studioWorkspace');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const thumbnailsList = document.getElementById('thumbnailsList');
+        const workspaceCenter = document.getElementById('workspaceCenter');
+        const pageNumInput = document.getElementById('pageNumInput');
+        const totalPagesLabel = document.getElementById('totalPagesLabel');
+        const zoomPercentLabel = document.getElementById('zoomPercentLabel');
+
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // ------------------ PDF UPLOAD & CACHING ------------------
+        dropZone.addEventListener('click', () => fileInput.click());
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            if (e.dataTransfer.files.length > 0) {
+                handleFileUpload(e.dataTransfer.files[0]);
+            }
+        });
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFileUpload(e.target.files[0]);
+            }
+        });
+
+        async function handleFileUpload(file) {
+            if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) {
+                alert('Only PDF files are supported.');
+                return;
+            }
+
+            // Show progress bar
+            dropZone.classList.add('hidden');
+            progressContainer.style.display = 'block';
+
+            const formData = new FormData();
+            formData.append('pdf', file);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/api/pdf/upload', true);
+
+            xhr.upload.onprogress = (e) => {
+                if (e.lengthComputable) {
+                    const percent = Math.round((e.loaded / e.total) * 100);
+                    progressFill.style.width = `${percent}%`;
+                    progressText.innerText = `Uploading vector file... (${percent}%)`;
+                }
+            };
+
+            xhr.onload = async () => {
+                if (xhr.status === 200) {
+                    const res = JSON.parse(xhr.responseText);
+                    fileId = res.id;
+                    originalName = res.name;
+                    await initializeStudio(`/api/pdf/${fileId}`);
+                } else {
+                    const res = JSON.parse(xhr.responseText || '{}');
+                    alert(res.error || 'Failed to upload PDF.');
+                    resetUploadPanel();
+                }
+            };
+
+            xhr.onerror = () => {
+                alert('Connection failure during PDF upload.');
+                resetUploadPanel();
+            };
+
+            xhr.send(formData);
+        }
+
+        function resetUploadPanel() {
+            progressContainer.style.display = 'none';
+            dropZone.classList.remove('hidden');
+            fileInput.value = '';
+        }
+
+        // ------------------ STUDIO INITIALIZATION ------------------
+        async function initializeStudio(pdfUrl) {
+            try {
+                document.body.classList.add('studio-active');
+                uploadPanel.classList.add('hidden');
+                studioWorkspace.style.display = 'flex';
+
+                // Load via range requests supporting large files
+                const loadingTask = pdfjsLib.getDocument({
+                    url: pdfUrl,
+                    rangeChunkSize: 65536 * 16 // 1MB chunks
+                });
+                
+                pdfDoc = await loadingTask.promise;
+                const totalPages = pdfDoc.numPages;
+
+                totalPagesLabel.innerText = totalPages;
+                pageNumInput.max = totalPages;
+
+                pagesData = [];
+                for (let i = 1; i <= totalPages; i++) {
+                    const page = await pdfDoc.getPage(i);
+                    const viewport = page.getViewport({ scale: 1.0 });
+                    pagesData.push({
+                        pageIndex: i, // reference to actual page order in file
+                        pageNumber: i, // current layout index
+                        width: viewport.width,
+                        height: viewport.height,
+                        rotation: 0,
+                        fabricData: null, // annotations state
+                        fabricCanvas: null,
+                        rendered: false,
+                        history: [],
+                        historyIndex: -1
+                    });
+                }
+
+                // Render page frames dynamically
+                renderWorkspaceShell();
+                setupIntersectionObserver();
+                renderThumbnails();
+                setupToolEvents();
+                setupResizablePanels();
+
+                // Select first page
+                jumpToPage(1);
+
+            } catch (e) {
+                console.error(e);
+                alert('Error rendering PDF layout.');
+                resetUploadPanel();
+            }
+        }
+
+        // ------------------ WORKSPACE LAYOUT & VIRTUALIZATION ------------------
+        function renderWorkspaceShell() {
+            workspaceCenter.innerHTML = '';
+            pagesData.forEach(page => {
+                const pageId = `page-container-${page.pageNumber}`;
+                const container = document.createElement('div');
+                container.className = 'page-container';
+                container.id = pageId;
+                container.style.width = `${page.width * zoomScale}px`;
+                container.style.height = `${page.height * zoomScale}px`;
+                container.style.marginBottom = '40px';
+                container.setAttribute('data-pagenum', page.pageNumber);
+                workspaceCenter.appendChild(container);
+            });
+        }
+
+        // Intersection Observer for Virtualization / Lazy loading
+        let pageObserver;
+        function setupIntersectionObserver() {
+            if (pageObserver) pageObserver.disconnect();
+
+            const options = {
+                root: workspaceCenter,
+                rootMargin: '100px 0px 100px 0px',
+                threshold: 0.1
+            };
+
+            pageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const pageNum = parseInt(entry.target.getAttribute('data-pagenum'));
+                    const page = pagesData.find(p => p.pageNumber === pageNum);
+
+                    if (entry.isIntersecting) {
+                        if (page && !page.rendered) {
+                            renderPageCanvas(page);
+                        }
+                    } else {
+                        if (page && page.rendered) {
+                            unloadPageCanvas(page);
+                        }
+                    }
+                });
+            }, options);
+
+            document.querySelectorAll('.page-container').forEach(el => pageObserver.observe(el));
+        }
+
+        // Render visible page background (pdf.js) & overlay (fabric.js)
+        async function renderPageCanvas(page) {
+            page.rendered = true;
+            const container = document.getElementById(`page-container-${page.pageNumber}`);
+            if (!container) return;
+
+            // 1. Render PDF background
+            const bgCanvas = document.createElement('canvas');
+            bgCanvas.className = 'pdf-canvas-bg';
+            bgCanvas.width = page.width * zoomScale;
+            bgCanvas.height = page.height * zoomScale;
+            container.appendChild(bgCanvas);
+
+            const pdfPage = await pdfDoc.getPage(page.pageIndex);
+            const ctx = bgCanvas.getContext('2d');
+            const viewport = pdfPage.getViewport({ scale: zoomScale, rotation: page.rotation });
+            
+            await pdfPage.render({
+                canvasContext: ctx,
+                viewport: viewport
+            }).promise;
+
+            // 2. Render Text Layer for click-to-edit
+            const textLayerDiv = document.createElement('div');
+            textLayerDiv.className = 'textLayer';
+            container.appendChild(textLayerDiv);
+
+            const textContent = await pdfPage.getTextContent();
+            pdfjsLib.renderTextLayer({
+                textContent: textContent,
+                container: textLayerDiv,
+                viewport: viewport,
+                textDivs: []
+            });
+
+            // Bind click to textLayer spans
+            textLayerDiv.addEventListener('mousedown', (e) => {
+                if (activeMode !== 'edit' || e.target.tagName !== 'SPAN') return;
+                convertPdfTextToFabric(e.target, page);
+            });
+
+            // 3. Create Fabric Canvas Overlay
+            const overlayCanvas = document.createElement('canvas');
+            overlayCanvas.className = 'fabric-canvas-overlay';
+            overlayCanvas.id = `fabric-canvas-${page.pageNumber}`;
+            overlayCanvas.width = page.width * zoomScale;
+            overlayCanvas.height = page.height * zoomScale;
+            container.appendChild(overlayCanvas);
+
+            const fCanvas = new fabric.Canvas(overlayCanvas.id, {
+                selection: activeTool === 'select',
+                isDrawingMode: activeTool === 'draw'
+            });
+
+            page.fabricCanvas = fCanvas;
+            fCanvas.setHeight(page.height * zoomScale);
+            fCanvas.setWidth(page.width * zoomScale);
+            fCanvas.getZoom(zoomScale);
+
+            // Setup history array if not present (e.g. initial load)
+            if (!page.history || page.history.length === 0) {
+                const initialJSON = page.fabricData || JSON.stringify(fCanvas.toJSON(['isModifiedText', 'associatedSpanId', 'isWhiteoutMask', 'associatedMask', 'excludeFromExport', 'isFormField', 'fieldType', 'fieldName', 'fieldRequired', 'fieldOptions', 'isStickyNote', 'commentId', 'commentText', 'isSignature', 'isImage', 'stampText']));
+                page.history = [ initialJSON ];
+                page.historyIndex = 0;
+            }
+
+            // Re-load annotations from state
+            if (page.fabricData) {
+                isUndoingRedoing = true;
+                fCanvas.loadFromJSON(page.fabricData, () => {
+                    fCanvas.renderAll();
+                    isUndoingRedoing = false;
+                    updateObjectListeners(fCanvas, page);
+                    syncHiddenSpans(page);
+                    updateUndoRedoButtons();
+                });
+            } else {
+                updateObjectListeners(fCanvas, page);
+                syncHiddenSpans(page);
+                updateUndoRedoButtons();
+            }
+
+            // Sync drawing brush values
+            fCanvas.freeDrawingBrush.color = strokeColor;
+            fCanvas.freeDrawingBrush.width = brushWidth;
+
+            // Mouse Click interaction events depending on selected tool
+            fCanvas.on('mouse:down', (options) => {
+                handleCanvasClick(options, page);
+            });
+        }
+
+        // Unload invisible canvas to free browser RAM
+        function unloadPageCanvas(page) {
+            if (page.fabricCanvas) {
+                // Save state to pagesData with custom attributes
+                page.fabricData = JSON.stringify(page.fabricCanvas.toJSON(['isModifiedText', 'associatedSpanId', 'isWhiteoutMask', 'associatedMask', 'excludeFromExport', 'isFormField', 'fieldType', 'fieldName', 'fieldRequired', 'fieldOptions', 'isStickyNote', 'commentId', 'commentText', 'isSignature', 'isImage', 'stampText']));
+                page.fabricCanvas.dispose();
+                page.fabricCanvas = null;
+            }
+            const container = document.getElementById(`page-container-${page.pageNumber}`);
+            if (container) {
+                container.innerHTML = ''; // wipe elements
+            }
+            page.rendered = false;
+        }
+
+        // ------------------ THUMBNAILS RENDER ------------------
+        async function renderThumbnails() {
+            thumbnailsList.innerHTML = '';
+            for (let page of pagesData) {
+                const thumbItem = document.createElement('div');
+                thumbItem.className = `thumb-item ${page.pageNumber === currentActivePage ? 'active' : ''}`;
+                thumbItem.setAttribute('data-pagenum', page.pageNumber);
+                thumbItem.onclick = () => jumpToPage(page.pageNumber);
+                
+                // HTML5 Drag & Drop page reordering support
+                thumbItem.setAttribute('draggable', 'true');
+                thumbItem.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', page.pageNumber);
+                });
+                thumbItem.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                });
+                thumbItem.addEventListener('drop', async (e) => {
+                    e.preventDefault();
+                    const srcPageNum = parseInt(e.dataTransfer.getData('text/plain'));
+                    const destPageNum = page.pageNumber;
+                    if (srcPageNum === destPageNum) return;
+
+                    // Reorder pagesData
+                    const srcIndex = pagesData.findIndex(p => p.pageNumber === srcPageNum);
+                    const destIndex = pagesData.findIndex(p => p.pageNumber === destPageNum);
+
+                    const [movedPage] = pagesData.splice(srcIndex, 1);
+                    pagesData.splice(destIndex, 0, movedPage);
+
+                    // Reassign sequential pageNumbers
+                    pagesData.forEach((p, idx) => {
+                        p.pageNumber = idx + 1;
+                    });
+
+                    // Sync active fabric canvasses back to state
+                    pagesData.forEach(p => {
+                        if (p.fabricCanvas) {
+                            p.fabricData = JSON.stringify(p.fabricCanvas.toJSON(['isModifiedText', 'associatedSpanId', 'isWhiteoutMask', 'associatedMask', 'excludeFromExport', 'isFormField', 'fieldType', 'fieldName', 'fieldRequired', 'fieldOptions', 'isStickyNote', 'commentId', 'commentText', 'isSignature', 'isImage', 'stampText']));
+                        }
+                    });
+
+                    renderWorkspaceShell();
+                    setupIntersectionObserver();
+                    await renderThumbnails();
+                    jumpToPage(destPageNum);
+                });
+
+                const canvas = document.createElement('canvas');
+                canvas.width = 110;
+                canvas.height = 145;
+                thumbItem.appendChild(canvas);
+
+                const label = document.createElement('div');
+                label.className = 'thumb-number';
+                label.innerText = page.pageNumber;
+                thumbItem.appendChild(label);
+
+                // Thumbnail Actions
+                const actions = document.createElement('div');
+                actions.className = 'thumb-actions';
+                actions.innerHTML = `
+                    <button class="thumb-act-btn" onclick="rotatePage(${page.pageNumber}, event)" title="Rotate 90"><i data-lucide="rotate-cw"></i></button>
+                    <button class="thumb-act-btn" onclick="duplicatePage(${page.pageNumber}, event)" title="Duplicate Page"><i data-lucide="copy"></i></button>
+                    <button class="thumb-act-btn" onclick="deletePage(${page.pageNumber}, event)" title="Delete Page" style="color:#EF4444;"><i data-lucide="trash-2"></i></button>
+                `;
+                thumbItem.appendChild(actions);
+
+                thumbnailsList.appendChild(thumbItem);
+
+                // Render thumbnail asynchronously using pdf.js
+                const pdfPage = await pdfDoc.getPage(page.pageIndex);
+                const ctx = canvas.getContext('2d');
+                const viewport = pdfPage.getViewport({ scale: 110 / viewportWidth(pdfPage), rotation: page.rotation });
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+                await pdfPage.render({ canvasContext: ctx, viewport: viewport }).promise;
+            }
+            lucide.createIcons();
+        }
+
+        function viewportWidth(page) {
+            const vp = page.getViewport({ scale: 1.0 });
+            return vp.width;
+        }
+
+        // ------------------ VIEWER NAVIGATION & ZOOM ------------------
+        function jumpToPage(num) {
+            if (num < 1 || num > pagesData.length) return;
+            currentActivePage = num;
+            pageNumInput.value = num;
+            
+            document.querySelectorAll('.thumb-item').forEach(el => el.classList.remove('active'));
+            const activeThumb = document.querySelector(`.thumb-item[data-pagenum="${num}"]`);
+            if (activeThumb) activeThumb.classList.add('active');
+
+            const container = document.getElementById(`page-container-${num}`);
+            if (container) {
+                container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            updateUndoRedoButtons();
+        }
+
+        // Track active page scrolling
+        workspaceCenter.addEventListener('scroll', () => {
+            const containers = document.querySelectorAll('.page-container');
+            let activePage = 1;
+            let maxVisibleHeight = 0;
+            const viewportRect = workspaceCenter.getBoundingClientRect();
+
+            containers.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                const visibleHeight = Math.min(rect.bottom, viewportRect.bottom) - Math.max(rect.top, viewportRect.top);
+                if (visibleHeight > maxVisibleHeight) {
+                    maxVisibleHeight = visibleHeight;
+                    activePage = parseInt(el.getAttribute('data-pagenum'));
+                }
+            });
+
+            if (activePage !== currentActivePage) {
+                currentActivePage = activePage;
+                pageNumInput.value = activePage;
+                document.querySelectorAll('.thumb-item').forEach(el => el.classList.remove('active'));
+                const activeThumb = document.querySelector(`.thumb-item[data-pagenum="${activePage}"]`);
+                if (activeThumb) activeThumb.classList.add('active');
+                updateUndoRedoButtons();
+            }
+        });
+
+        // Zoom Operations
+        document.getElementById('btnZoomIn').onclick = () => applyZoom(zoomScale + 0.1);
+        document.getElementById('btnZoomOut').onclick = () => applyZoom(zoomScale - 0.1);
+        document.getElementById('btnZoomFit').onclick = () => {
+            const containerWidth = workspaceCenter.clientWidth - 80;
+            const docWidth = pagesData[0].width;
+            applyZoom(containerWidth / docWidth);
+        };
+
+        function applyZoom(newScale) {
+            zoomScale = Math.min(Math.max(newScale, 0.4), 2.5);
+            zoomPercentLabel.innerText = `${Math.round(zoomScale * 100)}%`;
+            
+            // Serialize all active canvases
+            pagesData.forEach(p => {
+                if (p.fabricCanvas) {
+                    p.fabricData = JSON.stringify(p.fabricCanvas.toJSON());
+                }
+            });
+
+            // Re-render layout shell
+            renderWorkspaceShell();
+            setupIntersectionObserver();
+        }
+
+        pageNumInput.onchange = (e) => jumpToPage(parseInt(e.target.value));
+
+        // ------------------ INTERACTIVE DRAWING & CLICKS ------------------
+        function handleCanvasClick(options, page) {
+            const fCanvas = page.fabricCanvas;
+            if (!fCanvas || activeTool === 'pan' || activeTool === 'select') return;
+
+            const pointer = fCanvas.getPointer(options.e);
+
+            if (activeTool === 'text') {
+                const textbox = new fabric.Textbox('Type your text here...', {
+                    left: pointer.x,
+                    top: pointer.y,
+                    width: 150,
+                    fontSize: parseInt(document.getElementById('textFontSize').value),
+                    fontFamily: document.getElementById('textFontFamily').value,
+                    fill: strokeColor,
+                    hasControls: true
+                });
+                fCanvas.add(textbox);
+                fCanvas.setActiveObject(textbox);
+                textbox.enterEditing();
+                setTool('select');
+            } else if (activeTool === 'highlight') {
+                const highlight = new fabric.Rect({
+                    left: pointer.x,
+                    top: pointer.y,
+                    width: 120,
+                    height: 24,
+                    fill: 'rgba(255, 255, 0, 0.4)',
+                    stroke: 'transparent',
+                    hasControls: true
+                });
+                fCanvas.add(highlight);
+                setTool('select');
+            } else if (activeTool === 'sticky') {
+                const comment = prompt('Enter your sticky comment text:');
+                if (comment) {
+                    addStickyNote(pointer.x, pointer.y, comment, fCanvas, page);
+                }
+                setTool('select');
+            } else if (activeTool === 'shape') {
+                createActiveShape(pointer.x, pointer.y, fCanvas);
+                setTool('select');
+            } else if (activeTool === 'forms') {
+                createFormFieldPlaceholder(pointer.x, pointer.y, fCanvas);
+                setTool('select');
+            }
+        }
+
+        // ------------------ CLICK TO EDIT TEXT CONVERSION ------------------
+        function convertPdfTextToFabric(span, page) {
+            const rect = span.getBoundingClientRect();
+            const parentRect = span.parentNode.parentNode.getBoundingClientRect();
+
+            // Compute relative location inside the page wrapper
+            const relativeLeft = (rect.left - parentRect.left) / zoomScale;
+            const relativeTop = (rect.top - parentRect.top) / zoomScale;
+            const relativeWidth = rect.width / zoomScale;
+            const relativeHeight = rect.height / zoomScale;
+
+            const textStr = span.innerText || span.textContent;
+            if (!textStr || !textStr.trim()) return; // Skip empty spans
+            
+            // Generate unique span ID or reuse existing
+            const spanId = span.getAttribute('data-span-id') || ('span-' + Math.random().toString(36).substr(2, 9));
+            span.setAttribute('data-span-id', spanId);
+            
+            // Hide clicked text element from layout
+            span.classList.add('hidden-text');
+
+            const fCanvas = page.fabricCanvas;
+            if (!fCanvas) return;
+
+            // 1. Create a white background shape to cover old vector text (Lossless whiteout mask)
+            const whiteoutMask = new fabric.Rect({
+                left: relativeLeft,
+                top: relativeTop,
+                width: relativeWidth + 4,
+                height: relativeHeight + 2,
+                fill: '#ffffff',
+                stroke: 'transparent',
+                selectable: false,
+                evented: false,
+                excludeFromExport: false,
+                isWhiteoutMask: true
+            });
+            fCanvas.add(whiteoutMask);
+            fCanvas.sendToBack(whiteoutMask);
+
+            // Extract computed text styling
+            const computedStyle = window.getComputedStyle(span);
+            let textColor = computedStyle.color || '#000000';
+            // pdf.js renders text layer spans with transparent color; default to black
+            if (textColor === 'transparent' || textColor === 'rgba(0, 0, 0, 0)' || textColor.replace(/\s/g, '') === 'rgba(0,0,0,0)') {
+                textColor = '#000000';
+            }
+
+            const computedFontSize = parseFloat(computedStyle.fontSize) / zoomScale;
+
+            // 2. Create the editable text layer directly on top
+            const editableTextbox = new fabric.Textbox(textStr, {
+                left: relativeLeft,
+                top: relativeTop - 1,
+                width: relativeWidth + 20,
+                fontSize: computedFontSize > 0 ? computedFontSize : 12,
+                fontFamily: computedStyle.fontFamily || 'Helvetica',
+                fill: textColor,
+                hasControls: true,
+                selectable: true,
+                editable: true,
+                isModifiedText: true,
+                associatedMask: whiteoutMask,
+                associatedSpanId: spanId
+            });
+
+            fCanvas.add(editableTextbox);
+
+            // 3. Suppress the text layer so the user can interact with the Fabric textbox
+            document.body.classList.add('editing-fabric-text');
+
+            // Switch to select tool so Fabric canvas is interactive
+            setTool('select');
+
+            // Small delay to let the DOM settle, then activate the textbox for editing
+            setTimeout(() => {
+                fCanvas.setActiveObject(editableTextbox);
+                editableTextbox.enterEditing();
+                editableTextbox.selectAll();
+                fCanvas.renderAll();
+            }, 50);
+
+            // Listen for when the user finishes editing this textbox
+            editableTextbox.on('editing:exited', () => {
+                // Restore the text layer overlay for further edit-mode clicks
+                document.body.classList.remove('editing-fabric-text');
+            });
+        }
+
+        // ------------------ PROPERTIES PANEL CONTROLS ------------------
+        function setupToolEvents() {
+            // Modes
+            document.getElementById('modeAnnotate').onclick = () => setMode('annotate');
+            document.getElementById('modeEdit').onclick = () => setMode('edit');
+
+            // Category Tools
+            document.getElementById('toolPan').onclick = () => setTool('pan');
+            document.getElementById('toolSelect').onclick = () => setTool('select');
+            document.getElementById('toolHighlight').onclick = () => setTool('highlight');
+            document.getElementById('toolDraw').onclick = () => setTool('draw');
+            document.getElementById('toolText').onclick = () => setTool('text');
+            document.getElementById('toolSticky').onclick = () => setTool('sticky');
+            document.getElementById('toolShape').onclick = () => setTool('shape');
+            document.getElementById('toolForms').onclick = () => setTool('forms');
+            document.getElementById('toolInsert').onclick = () => openModal('stampsModal');
+            document.getElementById('toolSignature').onclick = () => openModal('sigModal');
+
+            // Watermark & Headers
+            document.getElementById('btnWatermarkModal').onclick = () => openModal('watermarkModal');
+            document.getElementById('btnPageNumModal').onclick = () => openModal('pageNumModal');
+
+            // Text configuration bindings
+            document.getElementById('textFontFamily').onchange = (e) => updateTextProp('fontFamily', e.target.value);
+            document.getElementById('textFontSize').onchange = (e) => updateTextProp('fontSize', parseInt(e.target.value));
+            
+            document.getElementById('btnBold').onclick = () => toggleTextFormat('bold');
+            document.getElementById('btnItalic').onclick = () => toggleTextFormat('italic');
+            document.getElementById('btnUnderline').onclick = () => toggleTextFormat('underline');
+            document.getElementById('btnStrike').onclick = () => toggleTextFormat('linethrough');
+
+            document.getElementById('btnAlignLeft').onclick = () => updateTextProp('textAlign', 'left');
+            document.getElementById('btnAlignCenter').onclick = () => updateTextProp('textAlign', 'center');
+            document.getElementById('btnAlignRight').onclick = () => updateTextProp('textAlign', 'right');
+
+            // Shapes panel bindings
+            document.getElementById('shapeStrokeWidth').onchange = (e) => updateShapeProp('strokeWidth', parseInt(e.target.value));
+
+            // Color palettes rendering
+            renderColorPalette('shapeStrokePalette', colorsList, (color) => {
+                strokeColor = color;
+                updateShapeProp('stroke', color);
+                updateTextProp('fill', color);
+                pagesData.forEach(p => {
+                    if (p.fabricCanvas) {
+                        p.fabricCanvas.freeDrawingBrush.color = color;
+                    }
+                });
+            });
+
+            renderColorPalette('shapeFillPalette', colorsList, (color) => {
+                fillColor = color;
+                updateShapeProp('fill', color);
+            });
+        }
+
+        function setMode(mode) {
+            activeMode = mode;
+            document.getElementById('modeAnnotate').classList.toggle('active', mode === 'annotate');
+            document.getElementById('modeEdit').classList.toggle('active', mode === 'edit');
+            
+            if (mode === 'edit') {
+                document.body.classList.add('studio-edit-mode');
+                setTool('select');
+            } else {
+                document.body.classList.remove('studio-edit-mode');
+                document.body.classList.remove('editing-fabric-text');
+            }
+        }
+
+        function setTool(tool) {
+            activeTool = tool;
+            document.querySelectorAll('.tool-btn').forEach(el => el.classList.remove('active'));
+            
+            const btn = document.getElementById(`tool${tool.charAt(0).toUpperCase() + tool.slice(1)}`);
+            if (btn) btn.classList.add('active');
+
+            pagesData.forEach(p => {
+                const canvas = p.fabricCanvas;
+                if (!canvas) return;
+
+                canvas.selection = (tool === 'select');
+                canvas.isDrawingMode = (tool === 'draw');
+                canvas.forEachObject(obj => {
+                    obj.selectable = (tool === 'select');
+                });
+                canvas.renderAll();
+            });
+        }
+
+        function renderColorPalette(id, list, callback) {
+            const container = document.getElementById(id);
+            container.innerHTML = '';
+            list.forEach(c => {
+                const b = document.createElement('div');
+                b.className = 'color-bubble';
+                b.style.backgroundColor = c === 'transparent' ? 'white' : c;
+                if (c === 'transparent') b.style.backgroundImage = 'linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%)';
+                b.onclick = () => {
+                    container.querySelectorAll('.color-bubble').forEach(el => el.classList.remove('active'));
+                    b.classList.add('active');
+                    callback(c);
+                };
+                container.appendChild(b);
+            });
+        }
+
+        // Contextual updates on Fabric Canvas
+        function updateTextProp(prop, val) {
+            pagesData.forEach(p => {
+                if (p.fabricCanvas) {
+                    const active = p.fabricCanvas.getActiveObject();
+                    if (active && (active.type === 'textbox' || active.type === 'text')) {
+                        active.set(prop, val);
+                        p.fabricCanvas.renderAll();
+                        saveCanvasHistory(p);
+                    }
+                }
+            });
+        }
+
+        function toggleTextFormat(format) {
+            pagesData.forEach(p => {
+                if (p.fabricCanvas) {
+                    const active = p.fabricCanvas.getActiveObject();
+                    if (active && (active.type === 'textbox' || active.type === 'text')) {
+                        if (format === 'bold') active.set('fontWeight', active.fontWeight === 'bold' ? 'normal' : 'bold');
+                        if (format === 'italic') active.set('fontStyle', active.fontStyle === 'italic' ? 'normal' : 'italic');
+                        if (format === 'underline') active.set('underline', !active.underline);
+                        if (format === 'linethrough') active.set('linethrough', !active.linethrough);
+                        p.fabricCanvas.renderAll();
+                        saveCanvasHistory(p);
+                    }
+                }
+            });
+        }
+
+        function updateShapeProp(prop, val) {
+            pagesData.forEach(p => {
+                if (p.fabricCanvas) {
+                    const active = p.fabricCanvas.getActiveObject();
+                    if (active && active.type !== 'textbox' && active.type !== 'text') {
+                        active.set(prop, val);
+                        p.fabricCanvas.renderAll();
+                        saveCanvasHistory(p);
+                    }
+                }
+            });
+        }
+
+        // Listener for Undo Stack
+        function updateObjectListeners(canvas, page) {
+            canvas.on('object:added', () => saveCanvasHistory(page));
+            canvas.on('object:modified', () => saveCanvasHistory(page));
+            canvas.on('object:removed', () => saveCanvasHistory(page));
+            canvas.on('selection:created', (e) => updatePropertiesPanel(e.selected[0]));
+            canvas.on('selection:updated', (e) => updatePropertiesPanel(e.selected[0]));
+        }
+
+        function updatePropertiesPanel(obj) {
+            if (!obj) return;
+            // Update inputs in right sidebar matching selection
+            if (obj.type === 'textbox' || obj.type === 'text') {
+                document.getElementById('textFontFamily').value = obj.fontFamily || 'Helvetica';
+                document.getElementById('textFontSize').value = obj.fontSize || 12;
+            }
+        }
+
+        // ------------------ UNDO / REDO & SYNC ------------------
+        function saveCanvasHistory(page) {
+            if (isUndoingRedoing || !page.fabricCanvas) return;
+            const currentState = JSON.stringify(page.fabricCanvas.toJSON(['isModifiedText', 'associatedSpanId', 'isWhiteoutMask', 'associatedMask', 'excludeFromExport', 'isFormField', 'fieldType', 'fieldName', 'fieldRequired', 'fieldOptions', 'isStickyNote', 'commentId', 'commentText', 'isSignature', 'isImage', 'stampText']));
+            
+            // If identical to current state, ignore
+            if (page.historyIndex >= 0 && page.history[page.historyIndex] === currentState) {
+                return;
+            }
+
+            // Truncate redo
+            page.history = page.history.slice(0, page.historyIndex + 1);
+            page.history.push(currentState);
+            page.historyIndex = page.history.length - 1;
+
+            updateUndoRedoButtons();
+        }
+
+        function updateUndoRedoButtons() {
+            const page = pagesData.find(p => p.pageNumber === currentActivePage);
+            if (page && page.history && page.historyIndex !== undefined) {
+                document.getElementById('btnUndo').disabled = (page.historyIndex <= 0);
+                document.getElementById('btnRedo').disabled = (page.historyIndex >= page.history.length - 1);
+            } else {
+                document.getElementById('btnUndo').disabled = true;
+                document.getElementById('btnRedo').disabled = true;
+            }
+        }
+
+        function syncHiddenSpans(page) {
+            const container = document.getElementById(`page-container-${page.pageNumber}`);
+            if (!container) return;
+
+            // Unhide all text layer spans first
+            container.querySelectorAll('.textLayer span').forEach(span => {
+                span.classList.remove('hidden-text');
+            });
+
+            // Find all active textboxes that modify existing PDF text and hide their associated spans
+            if (page.fabricCanvas) {
+                page.fabricCanvas.forEachObject(obj => {
+                    if (obj.isModifiedText && obj.associatedSpanId) {
+                        const span = container.querySelector(`.textLayer span[data-span-id="${obj.associatedSpanId}"]`);
+                        if (span) {
+                            span.classList.add('hidden-text');
+                        }
+                    }
+                });
+            }
+        }
+
+        document.getElementById('btnUndo').onclick = () => {
+            const page = pagesData.find(p => p.pageNumber === currentActivePage);
+            if (!page || !page.fabricCanvas || page.historyIndex <= 0 || isUndoingRedoing) return;
+
+            isUndoingRedoing = true;
+            page.historyIndex--;
+            const prevState = page.history[page.historyIndex];
+
+            page.fabricCanvas.loadFromJSON(prevState, () => {
+                page.fabricCanvas.renderAll();
+                isUndoingRedoing = false;
+                syncHiddenSpans(page);
+                updateUndoRedoButtons();
+            });
+        };
+
+        document.getElementById('btnRedo').onclick = () => {
+            const page = pagesData.find(p => p.pageNumber === currentActivePage);
+            if (!page || !page.fabricCanvas || !page.history || page.historyIndex >= page.history.length - 1 || isUndoingRedoing) return;
+
+            isUndoingRedoing = true;
+            page.historyIndex++;
+            const nextState = page.history[page.historyIndex];
+
+            page.fabricCanvas.loadFromJSON(nextState, () => {
+                page.fabricCanvas.renderAll();
+                isUndoingRedoing = false;
+                syncHiddenSpans(page);
+                updateUndoRedoButtons();
+            });
+        };
+
+        // Keyboard bindings
+        window.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
+                e.preventDefault();
+                if (!document.getElementById('btnUndo').disabled) {
+                    document.getElementById('btnUndo').click();
+                }
+            }
+            if ((e.ctrlKey || e.metaKey) && e.key === 'y') {
+                e.preventDefault();
+                if (!document.getElementById('btnRedo').disabled) {
+                    document.getElementById('btnRedo').click();
+                }
+            }
+        });
+
+        // ------------------ MODALS POPUP LOGIC ------------------
+        function openModal(id) {
+            document.getElementById(id).style.display = 'flex';
+        }
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        // ------------------ PAGE TOOLS & OPERATIONS ------------------
+        async function rotatePage(num, event) {
+            if (event) event.stopPropagation();
+            const page = pagesData.find(p => p.pageNumber === num);
+            if (page) {
+                page.rotation = (page.rotation + 90) % 360;
+                
+                // Swap dimensions for 90/270 deg
+                const temp = page.width;
+                page.width = page.height;
+                page.height = temp;
+
+                // Re-render
+                renderWorkspaceShell();
+                setupIntersectionObserver();
+                await renderThumbnails();
+            }
+        }
+
+        async function duplicatePage(num, event) {
+            if (event) event.stopPropagation();
+            const page = pagesData.find(p => p.pageNumber === num);
+            if (page) {
+                if (page.fabricCanvas) {
+                    page.fabricData = JSON.stringify(page.fabricCanvas.toJSON(['isModifiedText', 'associatedSpanId', 'isWhiteoutMask', 'associatedMask', 'excludeFromExport', 'isFormField', 'fieldType', 'fieldName', 'fieldRequired', 'fieldOptions', 'isStickyNote', 'commentId', 'commentText', 'isSignature', 'isImage', 'stampText']));
+                }
+                const newPage = Object.assign({}, page);
+                newPage.pageNumber = pagesData.length + 1;
+                newPage.fabricCanvas = null;
+                newPage.rendered = false;
+                newPage.history = [];
+                newPage.historyIndex = -1;
+                pagesData.push(newPage);
+
+                renderWorkspaceShell();
+                setupIntersectionObserver();
+                await renderThumbnails();
+            }
+        }
+
+        async function deletePage(num, event) {
+            if (event) event.stopPropagation();
+            if (pagesData.length <= 1) {
+                alert('Document must contain at least one page.');
+                return;
+            }
+            pagesData = pagesData.filter(p => p.pageNumber !== num);
+            
+            // Re-order page layout numbering
+            pagesData.forEach((p, idx) => {
+                p.pageNumber = idx + 1;
+            });
+
+            renderWorkspaceShell();
+            setupIntersectionObserver();
+            await renderThumbnails();
+        }
+
+        // ------------------ MERGE & SPLIT PDFS ------------------
+        // Merging PDFs: Append uploaded document pages to the editor
+        document.getElementById('btnMerge').onclick = async () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.pdf';
+            input.onchange = async (e) => {
+                if (e.target.files.length > 0) {
+                    const file = e.target.files[0];
+                    const arrayBuffer = await file.arrayBuffer();
+                    const externalDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                    
+                    // Cache the file to backend
+                    const formData = new FormData();
+                    formData.append('pdf', file);
+                    const uploadRes = await fetch('/api/pdf/upload', { method: 'POST', body: formData }).then(r => r.json());
+
+                    if (uploadRes.success) {
+                        const startIdx = pagesData.length;
+                        for (let i = 1; i <= externalDoc.numPages; i++) {
+                            const page = await externalDoc.getPage(i);
+                            const viewport = page.getViewport({ scale: 1.0 });
+                            
+                            pagesData.push({
+                                pageIndex: i,
+                                pageNumber: startIdx + i,
+                                width: viewport.width,
+                                height: viewport.height,
+                                rotation: 0,
+                                fabricData: null,
+                                fabricCanvas: null,
+                                rendered: false,
+                                isMergedSource: true,
+                                sourceFileId: uploadRes.id,
+                                history: [],
+                                historyIndex: -1
+                            });
+                        }
+                        renderWorkspaceShell();
+                        setupIntersectionObserver();
+                        await renderThumbnails();
+                    }
+                }
+            };
+            input.click();
+        };
+
+        // Splitting PDFs: Download a sliced PDF
+        document.getElementById('btnSplit').onclick = async () => {
+            const rangeStr = prompt('Enter page numbers/ranges to split (e.g. 1-2, 4):');
+            if (!rangeStr) return;
+
+            try {
+                // Parse range string
+                const targetPages = [];
+                const parts = rangeStr.split(',');
+                parts.forEach(p => {
+                    if (p.includes('-')) {
+                        const bounds = p.split('-');
+                        const start = parseInt(bounds[0]);
+                        const end = parseInt(bounds[1]);
+                        for (let idx = start; idx <= end; idx++) {
+                            targetPages.push(idx);
+                        }
+                    } else {
+                        targetPages.push(parseInt(p));
+                    }
+                });
+
+                // Load source document
+                const mainBuffer = await fetch(`/api/pdf/${fileId}`).then(r => r.arrayBuffer());
+                const srcPdfDoc = await PDFLib.PDFDocument.load(mainBuffer);
+                const outPdfDoc = await PDFLib.PDFDocument.create();
+
+                for (let pageNum of targetPages) {
+                    if (pageNum >= 1 && pageNum <= srcPdfDoc.getPageCount()) {
+                        const [copiedPage] = await outPdfDoc.copyPages(srcPdfDoc, [pageNum - 1]);
+                        outPdfDoc.addPage(copiedPage);
+                    }
+                }
+
+                const pdfBytes = await outPdfDoc.save();
+                downloadBlob(new Blob([pdfBytes], { type: 'application/pdf' }), `split_${originalName}`);
+            } catch (e) {
+                alert('Invalid page range format.');
+            }
+        };
+
+        // ------------------ ANNOTATION INSERTS ------------------
+        function createActiveShape(x, y, canvas) {
+            // Draw dummy rectangle shape
+            const rect = new fabric.Rect({
+                left: x,
+                top: y,
+                width: 100,
+                height: 100,
+                fill: fillColor,
+                stroke: strokeColor,
+                strokeWidth: parseInt(document.getElementById('shapeStrokeWidth').value),
+                hasControls: true
+            });
+            canvas.add(rect);
+        }
+
+        function createFormFieldPlaceholder(x, y, canvas) {
+            // Render styled form control placeholder
+            const field = new fabric.Rect({
+                left: x,
+                top: y,
+                width: 140,
+                height: 30,
+                fill: 'rgba(59, 130, 246, 0.1)',
+                stroke: '#3B82F6',
+                strokeWidth: 1.5,
+                rx: 4,
+                ry: 4,
+                hasControls: true,
+                isFormField: true,
+                fieldType: 'text',
+                fieldName: `field_${Date.now()}`
+            });
+            canvas.add(field);
+        }
+
+        // Stamps
+        function insertStamp(text, color) {
+            const page = pagesData.find(p => p.pageNumber === currentActivePage);
+            if (!page || !page.fabricCanvas) return;
+            
+            const stamp = new fabric.Group([
+                new fabric.Rect({
+                    width: 160,
+                    height: 48,
+                    fill: 'transparent',
+                    stroke: color,
+                    strokeWidth: 3,
+                    rx: 8,
+                    ry: 8
+                }),
+                new fabric.Text(text, {
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    fill: color,
+                    originX: 'center',
+                    originY: 'center',
+                    left: 80,
+                    top: 24
+                })
+            ], {
+                left: 100,
+                top: 100,
+                angle: -15,
+                hasControls: true
+            });
+
+            page.fabricCanvas.add(stamp);
+            closeModal('stampsModal');
+        }
+
+        // Sticky Notes (Comments log)
+        const commentsList = [];
+        function addStickyNote(x, y, text, canvas, page) {
+            const id = Date.now();
+            const note = new fabric.Path('M 0 0 L 24 0 L 24 24 L 8 24 L 0 32 Z', {
+                left: x,
+                top: y,
+                fill: '#F59E0B',
+                stroke: '#D97706',
+                strokeWidth: 1,
+                hasControls: false,
+                isStickyNote: true,
+                commentId: id,
+                commentText: text
+            });
+            canvas.add(note);
+
+            commentsList.push({ id, text, pageNum: page.pageNumber });
+            renderCommentsLog();
+        }
+
+        function renderCommentsLog() {
+            const container = document.getElementById('commentsListContainer');
+            container.innerHTML = '';
+            if (commentsList.length === 0) {
+                container.innerHTML = '<div style="font-size:0.8rem; color:#94A3B8; font-style:italic;">No comments placed.</div>';
+                return;
+            }
+            commentsList.forEach(c => {
+                const div = document.createElement('div');
+                div.className = 'comment-item';
+                div.innerHTML = `
+                    <div>
+                        <strong>Pg ${c.pageNum}:</strong> ${c.text}
+                    </div>
+                    <button onclick="deleteComment(${c.id})"><i data-lucide="trash-2" style="width:12px;"></i></button>
+                `;
+                container.appendChild(div);
+            });
+            lucide.createIcons();
+        }
+
+        // ------------------ GLOBAL SETTINGS APPLIERS ------------------
+        function applyWatermarkSettings() {
+            globalWatermarkText = document.getElementById('watermarkText').value;
+            globalWatermarkOpacity = parseFloat(document.getElementById('watermarkOpacity').value) / 100;
+            closeModal('watermarkModal');
+        }
+
+        function applyPageNumberSettings() {
+            globalPageNumbersEnabled = document.getElementById('pageNumEnabled').checked;
+            globalPageNumbersFormat = document.getElementById('pageNumFormat').value;
+            globalPageNumbersPosition = document.getElementById('pageNumPosition').value;
+            closeModal('pageNumModal');
+        }
+
+        // ------------------ SIGNATURE PAD LOGIC ------------------
+        let sigDrawing = false;
+        const sigCanvas = document.getElementById('sigCanvas');
+        const sigCtx = sigCanvas.getContext('2d');
+
+        sigCanvas.onmousedown = (e) => {
+            sigDrawing = true;
+            sigCtx.beginPath();
+            sigCtx.moveTo(e.offsetX, e.offsetY);
+        };
+        sigCanvas.onmousemove = (e) => {
+            if (sigDrawing) {
+                sigCtx.lineTo(e.offsetX, e.offsetY);
+                sigCtx.stroke();
+            }
+        };
+        window.addEventListener('mouseup', () => sigDrawing = false);
+
+        document.getElementById('clearSigDraw').onclick = () => {
+            sigCtx.clearRect(0, 0, sigCanvas.width, sigCanvas.height);
+        };
+
+        // Tabs switcher inside Signature Modal
+        document.getElementById('tabSigDraw').onclick = () => switchSigTab('SigDraw');
+        document.getElementById('tabSigType').onclick = () => switchSigTab('SigType');
+        document.getElementById('tabSigUpload').onclick = () => switchSigTab('SigUpload');
+
+        function switchSigTab(tab) {
+            document.querySelectorAll('.sig-tab-btn').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.sig-tab-content').forEach(el => el.classList.remove('active'));
+            document.getElementById(`tab${tab}`).classList.add('active');
+            document.getElementById(`content${tab}`).classList.add('active');
+        }
+
+        // Type signature preview handler
+        document.getElementById('sigTextInput').oninput = (e) => {
+            const preview = document.getElementById('sigTypePreview');
+            preview.style.fontFamily = document.getElementById('sigFontSelect').value;
+            preview.innerText = e.target.value;
+        };
+
+        document.getElementById('sigFontSelect').onchange = (e) => {
+            const preview = document.getElementById('sigTypePreview');
+            preview.style.fontFamily = e.target.value;
+        };
+
+        // Apply signature image to active canvas
+        document.getElementById('btnApplySignature').onclick = async () => {
+            const activeTab = document.querySelector('.sig-tab-btn.active').id;
+            let imgDataUrl = '';
+
+            if (activeTab === 'tabSigDraw') {
+                imgDataUrl = sigCanvas.toDataURL();
+            } else if (activeTab === 'tabSigType') {
+                const text = document.getElementById('sigTextInput').value;
+                const font = document.getElementById('sigFontSelect').value;
+                
+                // Draw text onto temporary hidden canvas
+                const tempCanvas = document.createElement('canvas');
+                tempCanvas.width = 460;
+                tempCanvas.height = 150;
+                const tempCtx = tempCanvas.getContext('2d');
+                tempCtx.font = `48px "${font}"`;
+                tempCtx.fillStyle = '#000000';
+                tempCtx.textAlign = 'center';
+                tempCtx.textBaseline = 'middle';
+                tempCtx.fillText(text, 230, 75);
+                imgDataUrl = tempCanvas.toDataURL();
+            } else if (activeTab === 'tabSigUpload') {
+                const file = document.getElementById('sigImageFile').files[0];
+                if (!file) return;
+                imgDataUrl = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => resolve(e.target.result);
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            if (imgDataUrl) {
+                const page = pagesData.find(p => p.pageNumber === currentActivePage);
+                if (page && page.fabricCanvas) {
+                    fabric.Image.fromURL(imgDataUrl, (img) => {
+                        img.scale(0.5);
+                        img.set({
+                            left: 100,
+                            top: 100,
+                            hasControls: true
+                        });
+                        page.fabricCanvas.add(img);
+                    });
+                }
+            }
+            closeModal('sigModal');
+        };
+
+        // ------------------ PANEL RESIZING (interact.js) ------------------
+        function setupResizablePanels() {
+            interact('#sidebarLeft').resizable({
+                edges: { right: '#sidebarHandle', bottom: false, top: false, left: false },
+                listeners: {
+                    move(event) {
+                        let target = event.target;
+                        let x = (parseFloat(target.getAttribute('data-x')) || 0);
+                        target.style.width = event.rect.width + 'px';
+                        x += event.deltaRect.left;
+                        target.setAttribute('data-x', x);
+                    }
+                },
+                modifiers: [
+                    interact.modifiers.restrictSize({
+                        min: { width: 150 },
+                        max: { width: 400 }
+                    })
+                ]
+            });
+
+            interact('#propertiesPanel').resizable({
+                edges: { left: '#propsHandle', bottom: false, top: false, right: false },
+                listeners: {
+                    move(event) {
+                        let target = event.target;
+                        let x = (parseFloat(target.getAttribute('data-x')) || 0);
+                        target.style.width = event.rect.width + 'px';
+                        x += event.deltaRect.left;
+                        target.setAttribute('data-x', x);
+                    }
+                },
+                modifiers: [
+                    interact.modifiers.restrictSize({
+                        min: { width: 200 },
+                        max: { width: 500 }
+                    })
+                ]
+            });
+        }
+
+        // ------------------ COMPILATION & SAVE (pdf-lib) ------------------
+        document.getElementById('btnExportPDF').onclick = async () => {
+            // Save state from all currently open/active canvases
+            pagesData.forEach(p => {
+                if (p.fabricCanvas) {
+                    p.fabricData = JSON.stringify(p.fabricCanvas.toJSON(['isModifiedText', 'associatedSpanId', 'isWhiteoutMask', 'associatedMask', 'excludeFromExport', 'isFormField', 'fieldType', 'fieldName', 'fieldRequired', 'fieldOptions', 'isStickyNote', 'commentId', 'commentText', 'isSignature', 'isImage', 'stampText']));
+                }
+            });
+
+            try {
+                // Initialize pdf-lib document
+                const mainBuffer = await fetch(`/api/pdf/${fileId}`).then(r => r.arrayBuffer());
+                const pdfLibDoc = await PDFLib.PDFDocument.load(mainBuffer);
+                const outDoc = await PDFLib.PDFDocument.create();
+
+                // Standard Fonts embedding
+                const helveticaFont = await outDoc.embedFont(PDFLib.StandardFonts.Helvetica);
+                const form = outDoc.getForm();
+
+                // Loop through virtual page index sorting
+                for (let pageConfig of pagesData) {
+                    // Copy page from source document or external merge sources
+                    let copiedPage;
+                    if (pageConfig.isMergedSource) {
+                        const extBuffer = await fetch(`/api/pdf/${pageConfig.sourceFileId}`).then(r => r.arrayBuffer());
+                        const extDoc = await PDFLib.PDFDocument.load(extBuffer);
+                        [copiedPage] = await outDoc.copyPages(extDoc, [pageConfig.pageIndex - 1]);
+                    } else {
+                        [copiedPage] = await outDoc.copyPages(pdfLibDoc, [pageConfig.pageIndex - 1]);
+                    }
+
+                    // Set rotation
+                    copiedPage.setRotation(PDFLib.degrees(pageConfig.rotation));
+                    
+                    const newPage = outDoc.addPage(copiedPage);
+                    const { width, height } = newPage.getSize();
+
+                    // Map coordinates scale
+                    const scaleX = width / pageConfig.width;
+                    const scaleY = height / pageConfig.height;
+
+                    // Write Watermark if enabled
+                    if (globalWatermarkText) {
+                        newPage.drawText(globalWatermarkText, {
+                            x: width / 4,
+                            y: height / 2,
+                            size: 40,
+                            font: helveticaFont,
+                            color: PDFLib.rgb(0.5, 0.5, 0.5),
+                            opacity: globalWatermarkOpacity,
+                            rotate: PDFLib.degrees(45)
+                        });
+                    }
+
+                    // Draw Page Numbers if enabled
+                    if (globalPageNumbersEnabled) {
+                        let labelText = `Page ${pageConfig.pageNumber}`;
+                        if (globalPageNumbersFormat === 'detailed') {
+                            labelText += ` of ${pagesData.length}`;
+                        }
+                        
+                        let numX = width - 80;
+                        let numY = 24;
+                        if (globalPageNumbersPosition === 'bottom-center') {
+                            numX = width / 2 - 20;
+                        } else if (globalPageNumbersPosition === 'top-right') {
+                            numX = width - 80;
+                            numY = height - 24;
+                        }
+
+                        newPage.drawText(labelText, {
+                            x: numX,
+                            y: numY,
+                            size: 10,
+                            font: helveticaFont,
+                            color: PDFLib.rgb(0.2, 0.2, 0.2)
+                        });
+                    }
+
+                    // Check custom Fabric annotations overlay data
+                    if (pageConfig.fabricData) {
+                        const canvasState = JSON.parse(pageConfig.fabricData);
+                        for (let obj of canvasState.objects) {
+                            
+                            // Map coordinate axes
+                            const left = obj.left * scaleX;
+                            const bottom = (pageConfig.height - (obj.top + obj.height * obj.scaleY)) * scaleY;
+                            const w = obj.width * obj.scaleX * scaleX;
+                            const h = obj.height * obj.scaleY * scaleY;
+
+                            if (obj.type === 'textbox' || obj.type === 'text') {
+                                // Draw text box back losslessly
+                                newPage.drawText(obj.text || '', {
+                                    x: left,
+                                    y: bottom + (h - (obj.fontSize * scaleY)), // baseline vertical positioning offset
+                                    size: obj.fontSize * scaleY,
+                                    font: helveticaFont,
+                                    color: hexToPdfColor(obj.fill),
+                                    maxWidth: w,
+                                    lineHeight: (obj.fontSize * scaleY) * 1.2
+                                });
+                            } else if (obj.type === 'rect') {
+                                if (obj.isWhiteoutMask) {
+                                    // Mask rect overlay
+                                    newPage.drawRectangle({
+                                        x: left,
+                                        y: bottom,
+                                        width: w,
+                                        height: h,
+                                        color: PDFLib.rgb(1, 1, 1) // white
+                                    });
+                                } else if (obj.isFormField) {
+                                    // Add real interactive PDF Form Field
+                                    const textField = form.createTextField(`${obj.fieldName}`);
+                                    textField.setText('');
+                                    textField.addToPage(newPage, {
+                                        x: left,
+                                        y: bottom,
+                                        width: w,
+                                        height: h
+                                    });
+                                } else {
+                                    // Default shape rectangle / highlights
+                                    newPage.drawRectangle({
+                                        x: left,
+                                        y: bottom,
+                                        width: w,
+                                        height: h,
+                                        borderColor: hexToPdfColor(obj.stroke),
+                                        borderWidth: obj.strokeWidth ? obj.strokeWidth * scaleY : 0,
+                                        color: hexToPdfColor(obj.fill),
+                                        opacity: obj.fill.startsWith('rgba') ? 0.4 : 1.0
+                                    });
+                                }
+                            } else if (obj.type === 'image') {
+                                const embeddedImg = await outDoc.embedPng(obj.src);
+                                newPage.drawImage(embeddedImg, {
+                                    x: left,
+                                    y: bottom,
+                                    width: w,
+                                    height: h
+                                });
+                            } else if (obj.type === 'path') {
+                                // Vector Pen stroke lines drawing
+                                const paths = obj.path;
+                                let pathStr = '';
+                                paths.forEach(pt => {
+                                    if (pt[0] === 'M') pathStr += `M ${pt[1] * scaleX} ${(pageConfig.height - pt[2]) * scaleY} `;
+                                    if (pt[0] === 'Q') pathStr += `Q ${pt[1] * scaleX} ${(pageConfig.height - pt[2]) * scaleY} ${pt[3] * scaleX} ${(pageConfig.height - pt[4]) * scaleY} `;
+                                    if (pt[0] === 'L') pathStr += `L ${pt[1] * scaleX} ${(pageConfig.height - pt[2]) * scaleY} `;
+                                });
+                                
+                                newPage.drawSvgPath(pathStr, {
+                                    x: 0,
+                                    y: 0,
+                                    borderColor: hexToPdfColor(obj.stroke),
+                                    borderWidth: obj.strokeWidth ? obj.strokeWidth * scaleY : 2
+                                });
+                            }
+                        }
+                    }
+                }
+
+                const compiledBytes = await outDoc.save();
+                downloadBlob(new Blob([compiledBytes], { type: 'application/pdf' }), `edited_${originalName}`);
+
+            } catch (e) {
+                console.error(e);
+                alert('Export failed. Verify parameters.');
+            }
+        };
+
+        function hexToPdfColor(hex) {
+            if (!hex || hex === 'transparent') return null;
+            if (hex.startsWith('rgba')) {
+                const parts = hex.match(/\d+(\.\d+)?/g);
+                return PDFLib.rgb(parseFloat(parts[0])/255, parseFloat(parts[1])/255, parseFloat(parts[2])/255);
+            }
+            if (hex.startsWith('#')) {
+                const cleanHex = hex.replace('#', '');
+                const num = parseInt(cleanHex, 16);
+                return PDFLib.rgb(((num >> 16) & 255) / 255, ((num >> 8) & 255) / 255, (num & 255) / 255);
+            }
+            return PDFLib.rgb(0,0,0);
+        }
+
+        function downloadBlob(blob, name) {
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = name;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+
+</html>

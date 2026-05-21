@@ -38,6 +38,28 @@ db.serialize(() => {
     status TEXT DEFAULT 'published',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   )`);
+
+  // Programmatic Pages Table for pSEO
+  db.run(`CREATE TABLE IF NOT EXISTS programmatic_pages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    category TEXT NOT NULL,
+    slug TEXT UNIQUE NOT NULL,
+    keyword TEXT NOT NULL,
+    target_tool TEXT NOT NULL,
+    h1_title TEXT NOT NULL,
+    intro_p TEXT NOT NULL,
+    step_1 TEXT NOT NULL,
+    step_2 TEXT NOT NULL,
+    step_3 TEXT NOT NULL,
+    faq_1_q TEXT,
+    faq_1_a TEXT,
+    faq_2_q TEXT,
+    faq_2_a TEXT,
+    faq_3_q TEXT,
+    faq_3_a TEXT,
+    status TEXT DEFAULT 'active',
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  )`);
 });
 
 module.exports = db;

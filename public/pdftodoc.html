@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convert PDF to Word Online - Convert PDF to Doc Free | FlashSuite</title>
+    <meta name="description"
+        content="Convert fixed layout PDF documents into editable Microsoft Word (.doc) files locally in your web browser. 100% free, private, and secure.">
+    
+    <!-- Structured Data: JSON-LD Schema for SEO Rich Snippets -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://flashsuite.com/pdftodoc.html#software",
+          "name": "FlashSuite PDF to Word Converter",
+          "operatingSystem": "All",
+          "applicationCategory": "BusinessApplication",
+          "offers": {
+            "@type": "Offer",
+            "price": "0.00",
+            "priceCurrency": "USD"
+          },
+          "description": "Extract text coordinate tokens and compile editable Word (.doc) structures locally inside the browser."
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://flashsuite.com/pdftodoc.html#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How does FlashSuite convert PDF to Word without server uploads?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "FlashSuite parses character vectors and transformation matrices using local rendering libraries. It automatically groups text sequences by coordinate thresholds into flowable paragraphs or literal lines, compiling an editable Office Word document directly inside your browser's memory."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What is the difference between 'Flowable Paragraphs' and 'Preserve Lines' layout options?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "'Flowable Paragraphs' mathematically calculates horizontal and vertical line proximity, compiling them into smooth, multi-line edit blocks. 'Preserve Lines' keeps literal line breaks exactly as structured, ideal for tabular formats or code snippets."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is it safe to convert bank statements or legal agreements on FlashSuite?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "100% safe. FlashSuite converts documents entirely offline inside your browser. No files, passwords, or extracted contents are ever uploaded to an external web host, completely eliminating data interception risks."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <style>
+        .pdf-hero {
+            text-align: center;
+            padding: 80px 0 40px;
+            background: var(--bg);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .tool-card {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 24px;
+            padding: 45px 40px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.03);
+            margin-top: 10px;
+            margin-bottom: 80px;
+        }
+
+        .drop-zone {
+            border: 2px dashed rgba(41, 128, 185, 0.25);
+            border-radius: 20px;
+            background: rgba(41, 128, 185, 0.003);
+            padding: 60px 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .drop-zone:hover, .drop-zone.dragover {
+            border-color: #2980b9;
+            background: rgba(41, 128, 185, 0.04);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(41, 128, 185, 0.05);
+        }
+
+        .drop-zone input[type="file"] {
+            display: none;
+        }
+
+        .upload-icon {
+            width: 52px;
+            height: 52px;
+            color: #2980b9;
+            margin-bottom: 20px;
+            stroke-width: 1.5;
+        }
+
+        .drop-zone h3 {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin: 0 0 10px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .drop-zone p {
+            color: #666;
+            margin: 0 0 15px 0;
+            font-size: 1rem;
+        }
+
+        .file-limits {
+            display: inline-block;
+            font-size: 0.8rem;
+            color: #999;
+            background: #f3f3f3;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        /* Workspace Grid */
+        .pdftodoc-workspace {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 40px;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        .document-details-card {
+            background: #fbfbfb;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            border-radius: 20px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .doc-icon-container {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: rgba(41, 128, 185, 0.1);
+            color: #2980b9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .doc-icon-container svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .details-title h3 {
+            font-size: 1.25rem;
+            color: var(--secondary);
+            margin: 0 0 5px 0;
+            word-break: break-all;
+        }
+
+        .details-title p {
+            color: #666;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .details-stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            padding-top: 20px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #777;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        /* Config Box */
+        .config-card {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .config-title {
+            font-size: 1.3rem;
+            color: var(--secondary);
+            margin: 0;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .option-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-card {
+            border: 2px solid rgba(0, 0, 0, 0.05);
+            border-radius: 16px;
+            padding: 16px 20px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .option-card:hover {
+            border-color: rgba(41, 128, 185, 0.2);
+        }
+
+        .option-card.selected {
+            border-color: #2980b9;
+            background: rgba(41, 128, 185, 0.02);
+        }
+
+        .option-card h4 {
+            font-size: 1rem;
+            color: var(--secondary);
+            margin: 0;
+            font-weight: 750;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .option-card h4::after {
+            content: '';
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid #ccc;
+            display: inline-block;
+        }
+
+        .option-card.selected h4::after {
+            border-color: #2980b9;
+            background: #2980b9;
+            box-shadow: inset 0 0 0 3px white;
+        }
+
+        .option-card p {
+            color: #666;
+            margin: 0;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 16px;
+            margin-top: 15px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            padding-top: 25px;
+        }
+
+        .btn-clear {
+            background: transparent;
+            color: #666;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            box-shadow: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .btn-clear:hover {
+            background: rgba(0, 0, 0, 0.03);
+            color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: none;
+        }
+
+        .btn-convert {
+            background: #2980b9;
+            color: white;
+            padding: 16px 36px;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(41, 128, 185, 0.15);
+        }
+
+        .btn-convert:hover {
+            background: #21618c;
+            box-shadow: 0 8px 25px rgba(41, 128, 185, 0.25);
+        }
+
+        /* Processing State */
+        .processing-state {
+            text-align: center;
+            padding: 50px 20px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .loader-spinner {
+            width: 54px;
+            height: 54px;
+            border: 4px solid rgba(41, 128, 185, 0.1);
+            border-top: 4px solid #2980b9;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 24px auto;
+        }
+
+        .processing-state h3 {
+            color: var(--secondary);
+            margin: 0 0 10px 0;
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .processing-state p {
+            color: #666;
+            margin: 0;
+            font-size: 1.05rem;
+        }
+
+        /* Success State */
+        .success-state {
+            text-align: center;
+            padding: 20px 0;
+            animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .success-icon-pulse {
+            width: 76px;
+            height: 76px;
+            background: rgba(46, 204, 113, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2ecc71;
+            margin: 0 auto 24px auto;
+            animation: pulseSuccess 2s infinite;
+        }
+
+        .success-icon-pulse svg {
+            width: 38px;
+            height: 38px;
+            stroke-width: 2.5;
+        }
+
+        .success-state h3 {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin: 0 0 10px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .success-state p {
+            color: #666;
+            margin: 0 0 35px 0;
+            font-size: 1.05rem;
+        }
+
+        .file-summary-card {
+            background: #fafafa;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 18px;
+            padding: 24px 30px;
+            max-width: 520px;
+            margin: 0 auto 35px auto;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
+        }
+
+        .summary-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .summary-val {
+            font-weight: 700;
+            color: var(--secondary);
+            word-break: break-all;
+        }
+
+        .success-actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-download {
+            background: #2ecc71;
+            color: white;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.25);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 36px;
+        }
+
+        .btn-download:hover {
+            background: #27ae60;
+            box-shadow: 0 8px 25px rgba(46, 204, 113, 0.35);
+        }
+
+        .btn-reset {
+            background: transparent;
+            color: var(--secondary);
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            box-shadow: none;
+            padding: 16px 28px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-reset:hover {
+            background: rgba(0, 0, 0, 0.03);
+            transform: translateY(-2px);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulseSuccess {
+            0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(46, 204, 113, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .pdf-hero {
+                padding: 60px 20px 30px;
+            }
+            .tool-card {
+                padding: 30px 20px;
+                border-radius: 20px;
+            }
+            .pdftodoc-workspace {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .success-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            .success-actions button {
+                width: 100%;
+                justify-content: center;
+            }
+            .action-buttons {
+                flex-direction: column-reverse;
+                gap: 12px;
+                width: 100%;
+            }
+            .btn-clear, .btn-convert {
+                width: 100%;
+                max-width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="glass-nav">
+        <a href="/"><img src="flashsuite_logo.png" alt="FlashSuite Logo" class="nav-logo"></a>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/#hero">URL Shortener</a>
+            <a href="/#hero">QR Generator</a>
+            <a href="pdftools.html" class="active">PDF Tools</a>
+        </div>
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="/" onclick="toggleMobileMenu()">Home</a>
+        <a href="/#hero" onclick="toggleMobileMenu()">URL Shortener</a>
+        <a href="/#hero" onclick="toggleMobileMenu()">QR Generator</a>
+        <a href="pdftools.html" onclick="toggleMobileMenu()">PDF Tools</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="pdf-hero">
+        <div class="container fade-in-up">
+            <div class="hero-badge" style="background: rgba(41, 128, 185, 0.08); border-color: rgba(41, 128, 185, 0.15); color: #2980b9;">
+                📝 Flowable Text Reconstruction
+            </div>
+            <h1>
+                PDF to Word <span class="text-gradient">Converter</span>
+            </h1>
+            <p class="hero-description">
+                Convert fixed layout PDF documents into editable Microsoft Word (.doc) files instantly entirely in your browser.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Workspace Container -->
+    <main class="container" style="max-width: 960px;">
+        <div class="tool-card fade-in-up">
+            
+            <!-- Drag & Drop Zone -->
+            <div class="drop-zone" id="dropZone">
+                <div class="drop-zone-content">
+                    <i data-lucide="file-text" class="upload-icon"></i>
+                    <h3>Drag & drop your PDF file here</h3>
+                    <p>or click to select it from your device</p>
+                    <span class="file-limits">Support single PDF document</span>
+                </div>
+                <input type="file" id="fileInput" accept=".pdf">
+            </div>
+
+            <!-- Workspace Grid -->
+            <div class="pdftodoc-workspace" id="pdftodocWorkspace" style="display: none;">
+                
+                <!-- Left Details Box -->
+                <div class="document-details-card">
+                    <div class="doc-icon-container">
+                        <i data-lucide="file-text"></i>
+                    </div>
+                    <div class="details-title">
+                        <h3 id="docName">document.pdf</h3>
+                        <p>Uploaded PDF Document</p>
+                    </div>
+                    <div class="details-stat-grid">
+                        <div class="stat-item">
+                            <span class="stat-label">File Size</span>
+                            <span class="stat-value" id="docSize">0 KB</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Total Pages</span>
+                            <span class="stat-value" id="docPages">0 pages</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Config Box -->
+                <div class="config-card">
+                    <h3 class="config-title">Conversion Layout Engine</h3>
+                    
+                    <div class="option-cards">
+                        <!-- Format 1: Text Flow -->
+                        <div class="option-card selected" id="optFlow" onclick="selectLayout('flow')">
+                            <h4>Flowable Paragraphs</h4>
+                            <p>Best for standard reading. Mathematically groups coordinate strings to form responsive paragraphs, ideal for editing.</p>
+                        </div>
+                        
+                        <!-- Format 2: Line Splits -->
+                        <div class="option-card" id="optLines" onclick="selectLayout('lines')">
+                            <h4>Preserve Lines</h4>
+                            <p>Best for lists and code structures. Respects literal vertical separations to keep line separations intact.</p>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn-clear" onclick="clearWorkspace()">Cancel</button>
+                        <button class="btn-convert" onclick="processConversion()">
+                            <i data-lucide="file-text"></i> Convert to Word
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Processing Spinner -->
+            <div class="processing-state" id="processingState" style="display: none;">
+                <div class="loader-spinner"></div>
+                <h3 id="progressTitle">Analyzing text tokens...</h3>
+                <p>Decoding character layout streams and aligning paragraphs client-side. Absolute data confidentiality.</p>
+            </div>
+
+            <!-- Success State -->
+            <div class="success-state" id="successState" style="display: none;">
+                <div class="success-icon-pulse">
+                    <i data-lucide="check-circle-2"></i>
+                </div>
+                <h3>PDF Converted Successfully!</h3>
+                <p>Your editable Word document is ready to download. Open it in Microsoft Word or Google Docs.</p>
+                
+                <div class="file-summary-card">
+                    <div class="summary-item">
+                        <span class="summary-label">Word Document</span>
+                        <span class="summary-val" id="successFileName">document_editable.doc</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">File Size</span>
+                        <span class="summary-val" id="successFileSize">0 KB</span>
+                    </div>
+                </div>
+                
+                <div class="success-actions">
+                    <button class="btn-download" onclick="downloadResult()">
+                        <i data-lucide="download"></i> Download Word Doc
+                    </button>
+                    <button class="btn-reset" onclick="resetTool()">
+                        Convert More
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Premium SEO Content Section -->
+    <section class="seo-content-section">
+        <h2>How to Convert PDF to Word Online Free</h2>
+        <p>Reconstructing text from a fixed layout PDF into an editable Microsoft Word (.doc) document is quick and seamless with FlashSuite. Since our conversion algorithms execute 100% locally in your web browser, your sensitive data is kept private. Here is how to convert your PDF:</p>
+        
+        <ol>
+            <li><strong>Upload Your PDF Document:</strong> Click inside the drag & drop area above to select a file from your computer or drag your PDF directly onto it.</li>
+            <li><strong>Choose Your Conversion Layout Engine:</strong> Select the target formatting option:
+                <ul>
+                    <li><strong>Flowable Paragraphs:</strong> Best for articles, legal agreements, and ebooks. Groups words and text lines into responsive paragraphs that edit naturally in Word.</li>
+                    <li><strong>Preserve Lines:</strong> Best for technical lists, source code sheets, or data tables. Keeps literal line separation lines intact.</li>
+                </ul>
+            </li>
+            <li><strong>Convert PDF:</strong> Click the primary blue <strong>Convert to Word</strong> button.</li>
+            <li><strong>Download Editable Doc:</strong> Click the green <strong>Download Word Doc</strong> button to save the editable document directly to your device.</li>
+        </ol>
+
+        <h2>Why Choose FlashSuite's Client-Side PDF to Word Converter?</h2>
+        <p>Most online converters require uploading your sensitive bank statements, agreements, resumes, or medical records to remote web servers, creating serious privacy leaks. FlashSuite solves this security risk by running the conversion <strong>entirely inside your browser's local sandbox</strong>. Your text data is processed, sorted, and packaged in-memory, ensuring premium confidentiality, rapid processing speeds, and offline conversion availability.</p>
+
+        <h3>Elite Text Extraction Features:</h3>
+        <ul>
+            <li><strong>Local Extraction Sandbox:</strong> Absolutely no files or extracted words are uploaded to remote host servers, ensuring ultimate document privacy.</li>
+            <li><strong>Dynamic Text Flow Parser:</strong> Mathematically analyzes text line vectors to automatically group separated lines into cohesive, flowable paragraph frames.</li>
+            <li><strong>Completely Free & Unlimited:</strong> Enjoy endless document parsing with zero limits on page count, file size, or conversion frequency.</li>
+        </ul>
+
+        <h2>Frequently Asked Questions About Converting PDFs to Word</h2>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <h4>How does FlashSuite convert PDF to Word without server uploads?</h4>
+                <p>FlashSuite parses character vectors and transformation matrices using local rendering libraries. It automatically groups text sequences by coordinate thresholds into flowable paragraphs or literal lines, compiling an editable Office Word document directly inside your browser's memory.</p>
+            </div>
+            <div class="faq-item">
+                <h4>What is the difference between 'Flowable Paragraphs' and 'Preserve Lines' layout options?</h4>
+                <p>'Flowable Paragraphs' mathematically calculates horizontal and vertical line proximity, compiling them into smooth, multi-line edit blocks. 'Preserve Lines' keeps literal line breaks exactly as structured, ideal for tabular formats or code snippets.</p>
+            </div>
+            <div class="faq-item">
+                <h4>Is it safe to convert bank statements or legal agreements on FlashSuite?</h4>
+                <p>100% safe. FlashSuite converts documents entirely offline inside your browser. No files, passwords, or extracted contents are ever uploaded to an external web host, completely eliminating data interception risks.</p>
+            </div>
+            <div class="faq-item">
+                <h4>Does FlashSuite require software installations or registrations?</h4>
+                <p>No! FlashSuite is fully web-based and runs on any standard desktop or mobile device without requiring subscriptions, emails, or third-party plug-ins.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <nav class="footer-nav">
+            <a href="/">Home</a>
+            <a href="/blog.html">Blog</a>
+            <a href="/about.html">About Us</a>
+            <a href="/privacy.html">Privacy Policy</a>
+            <a href="/terms.html">Terms of Service</a>
+        </nav>
+        <p class="footer-copy">&copy; 2026 FlashSuite. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+            document.getElementById('mobileMenuOverlay').classList.toggle('active');
+        }
+
+        // Initialize PDF.js worker
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+
+        let uploadedFile = null;
+        let totalPages = 0;
+        let activeLayout = 'flow'; // 'flow' | 'lines'
+        let compiledBlob = null;
+        let compiledName = '';
+
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const pdftodocWorkspace = document.getElementById('pdftodocWorkspace');
+        const processingState = document.getElementById('processingState');
+        const successState = document.getElementById('successState');
+        
+        const docName = document.getElementById('docName');
+        const docSize = document.getElementById('docSize');
+        const docPages = document.getElementById('docPages');
+
+        const optFlow = document.getElementById('optFlow');
+        const optLines = document.getElementById('optLines');
+        const progressTitle = document.getElementById('progressTitle');
+
+        const successFileName = document.getElementById('successFileName');
+        const successFileSize = document.getElementById('successFileSize');
+
+        // Setup dropzone click triggers file browse
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        // Handle file selection
+        fileInput.addEventListener('change', handleFileSelect);
+
+        // Drag events helper
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropZone.classList.add('dragover');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+            }, false);
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if (files.length > 0) {
+                loadDocument(files[0]);
+            }
+        });
+
+        function handleFileSelect(e) {
+            if (e.target.files.length > 0) {
+                loadDocument(e.target.files[0]);
+            }
+            fileInput.value = ''; // Reset input
+        }
+
+        async function loadDocument(file) {
+            if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+                alert("Please select a valid PDF file.");
+                return;
+            }
+
+            uploadedFile = file;
+            docName.innerText = file.name;
+            docSize.innerText = formatBytes(file.size);
+            
+            // Show loading
+            dropZone.style.display = 'none';
+            processingState.style.display = 'block';
+            progressTitle.innerText = "Parsing document pages...";
+
+            try {
+                const arrayBuffer = await file.arrayBuffer();
+                const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+                const pdf = await loadingTask.promise;
+                totalPages = pdf.numPages;
+
+                docPages.innerText = totalPages + (totalPages === 1 ? ' page' : ' pages');
+                
+                processingState.style.display = 'none';
+                pdftodocWorkspace.style.display = 'grid';
+            } catch (err) {
+                console.error("Error loading PDF pages:", err);
+                alert("Failed to load PDF file. It might be password encrypted or corrupted.");
+                clearWorkspace();
+            }
+        }
+
+        function formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        }
+
+        function selectLayout(layout) {
+            activeLayout = layout;
+            if (layout === 'flow') {
+                optFlow.classList.add('selected');
+                optLines.classList.remove('selected');
+            } else {
+                optLines.classList.add('selected');
+                optFlow.classList.remove('selected');
+            }
+        }
+
+        async function processConversion() {
+            if (!uploadedFile) return;
+
+            pdftodocWorkspace.style.display = 'none';
+            processingState.style.display = 'block';
+
+            try {
+                const arrayBuffer = await uploadedFile.arrayBuffer();
+                const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+                const pdf = await loadingTask.promise;
+                
+                let extractedFormattedHtml = "";
+
+                for (let i = 1; i <= totalPages; i++) {
+                    progressTitle.innerText = `Parsing page ${i} of ${totalPages}...`;
+                    
+                    const page = await pdf.getPage(i);
+                    const content = await page.getTextContent();
+                    
+                    // Advanced paragraph & line spacing parser by tracking vertical transforms
+                    let lastY = null;
+                    let pageHtml = "";
+                    let currentParagraph = "";
+
+                    for (const item of content.items) {
+                        const str = item.str.trim();
+                        if (!str) continue;
+
+                        const currentY = item.transform[5];
+
+                        if (lastY !== null) {
+                            const yDiff = Math.abs(currentY - lastY);
+                            
+                            if (yDiff > 14) {
+                                // Substantial vertical gap implies paragraph change
+                                if (currentParagraph.trim()) {
+                                    pageHtml += `<p>${currentParagraph.trim()}</p>`;
+                                    currentParagraph = "";
+                                }
+                            } else if (yDiff > 5) {
+                                // Minor vertical gap implies simple line break
+                                if (activeLayout === 'lines') {
+                                    if (currentParagraph.trim()) {
+                                        pageHtml += `<p>${currentParagraph.trim()}</p>`;
+                                        currentParagraph = "";
+                                    }
+                                } else {
+                                    currentParagraph += " ";
+                                }
+                            } else {
+                                // Horizontal concatenation
+                                currentParagraph += " ";
+                            }
+                        }
+                        
+                        currentParagraph += item.str;
+                        lastY = currentY;
+                    }
+
+                    if (currentParagraph.trim()) {
+                        pageHtml += `<p>${currentParagraph.trim()}</p>`;
+                    }
+
+                    if (pageHtml) {
+                        extractedFormattedHtml += `<!-- Page Break -->\n${pageHtml}\n<br style="page-break-before:always; clear:both;">\n`;
+                    }
+                }
+
+                // Wrap into an Office Word compatible XML MHTML layout
+                const xmlHeader = `
+                    <html xmlns:o='urn:schemas-microsoft-com:office:office' 
+                          xmlns:w='urn:schemas-microsoft-com:office:word' 
+                          xmlns='http://www.w3.org/TR/REC-html40'>
+                    <head>
+                        <meta charset="utf-8">
+                        <title>${uploadedFile.name.replace(/\.[^/.]+$/, "")}</title>
+                        <!--[if gte mso 9]>
+                        <xml>
+                            <w:WordDocument>
+                                <w:View>Print</w:View>
+                                <w:Zoom>90</w:Zoom>
+                                <w:DoNotOptimizeForBrowser/>
+                            </w:WordDocument>
+                        </xml>
+                        <![endif]-->
+                        <style>
+                            body {
+                                font-family: 'Calibri', 'Arial', sans-serif;
+                                font-size: 11pt;
+                                line-height: 1.5;
+                                color: #333333;
+                                padding: 1in;
+                            }
+                            p {
+                                margin: 0 0 10pt 0;
+                                text-align: justify;
+                            }
+                            h1, h2, h3 {
+                                color: #2c3e50;
+                                font-family: 'Segoe UI', 'Helvetica', sans-serif;
+                                margin-top: 18pt;
+                                margin-bottom: 6pt;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                `;
+                const xmlFooter = `</body></html>`;
+                
+                const fullXmlContent = xmlHeader + extractedFormattedHtml + xmlFooter;
+                compiledBlob = new Blob(['\ufeff' + fullXmlContent], { type: 'application/msword' });
+                compiledName = uploadedFile.name.replace(/\.[^/.]+$/, "") + '_editable.doc';
+                
+                successFileName.innerText = compiledName;
+                successFileSize.innerText = formatBytes(compiledBlob.size);
+
+                setTimeout(() => {
+                    processingState.style.display = 'none';
+                    successState.style.display = 'block';
+                }, 900);
+
+            } catch (err) {
+                console.error("Conversion failed:", err);
+                alert("An error occurred during Word conversion.");
+                processingState.style.display = 'none';
+                pdftodocWorkspace.style.display = 'grid';
+            }
+        }
+
+        window.downloadResult = function() {
+            if (!compiledBlob) return;
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(compiledBlob);
+            link.download = compiledName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function clearWorkspace() {
+            uploadedFile = null;
+            totalPages = 0;
+            compiledBlob = null;
+            compiledName = '';
+            pdftodocWorkspace.style.display = 'none';
+            dropZone.style.display = 'block';
+        }
+
+        function resetTool() {
+            clearWorkspace();
+            successState.style.display = 'none';
+        }
+
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

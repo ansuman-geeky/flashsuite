@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unlock PDF Online - Remove PDF Password & Restrictions | FlashSuite</title>
+    <meta name="description"
+        content="Unlock your password-protected PDF documents locally in your browser. 100% free, secure, private, and client-side. No files are uploaded.">
+    
+    <!-- Structured Data: JSON-LD Schema for SEO Rich Snippets -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://flashsuite.com/unlockpdf.html#software",
+          "name": "FlashSuite PDF Decryptor",
+          "operatingSystem": "All",
+          "applicationCategory": "BusinessApplication",
+          "offers": {
+            "@type": "Offer",
+            "price": "0.00",
+            "priceCurrency": "USD"
+          },
+          "description": "Unlock password-protected PDF files losslessly using client-side decrypting buffers."
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://flashsuite.com/unlockpdf.html#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How does FlashSuite unlock PDF password protection?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "FlashSuite uses browser-side cryptographic engines (pdf-lib) to decrypt the document. When you provide the password, the program decrypts structural page definitions, clears user/owner permissions blocks, and compiles a completely unlocked PDF file locally."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is my confidential document secure during unlocking?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Absolutely! Everything runs entirely in your local browser's memory using client-side scripting. Not a single byte of your PDF or the key you type is transmitted to a remote server."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What happens if a PDF doesn't have password security?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "If you upload a document that isn't locked, FlashSuite will instantly inform you and let you download the clear-text file immediately."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <style>
+        .pdf-hero {
+            text-align: center;
+            padding: 80px 0 40px;
+            background: var(--bg);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .tool-card {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 24px;
+            padding: 45px 40px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.03);
+            margin-top: 10px;
+            margin-bottom: 80px;
+        }
+
+        .drop-zone {
+            border: 2px dashed rgba(26, 82, 118, 0.25);
+            border-radius: 20px;
+            background: rgba(26, 82, 118, 0.003);
+            padding: 60px 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .drop-zone:hover, .drop-zone.dragover {
+            border-color: #1a5276;
+            background: rgba(26, 82, 118, 0.04);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(26, 82, 118, 0.05);
+        }
+
+        .drop-zone input[type="file"] {
+            display: none;
+        }
+
+        .upload-icon {
+            width: 52px;
+            height: 52px;
+            color: #1a5276;
+            margin-bottom: 20px;
+            stroke-width: 1.5;
+        }
+
+        .drop-zone h3 {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin: 0 0 10px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .drop-zone p {
+            color: #666;
+            margin: 0 0 15px 0;
+            font-size: 1rem;
+        }
+
+        .file-limits {
+            display: inline-block;
+            font-size: 0.8rem;
+            color: #999;
+            background: #f3f3f3;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        /* Unlock Workspace Grid */
+        .unlock-workspace {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 40px;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        .document-details-card {
+            background: #fbfbfb;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            border-radius: 20px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .doc-icon-container {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: rgba(26, 82, 118, 0.1);
+            color: #1a5276;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .doc-icon-container svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .details-title h3 {
+            font-size: 1.25rem;
+            color: var(--secondary);
+            margin: 0 0 5px 0;
+            word-break: break-all;
+        }
+
+        .details-title p {
+            color: #666;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .details-stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            padding-top: 20px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #777;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        /* Password input card */
+        .password-form-card {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .form-title {
+            font-size: 1.3rem;
+            color: var(--secondary);
+            margin: 0;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .input-group-pass {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            position: relative;
+        }
+
+        .input-group-pass label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pass-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-password {
+            width: 100%;
+            padding: 16px 54px 16px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            outline: none;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .input-password:focus {
+            border-color: #1a5276;
+            box-shadow: 0 0 0 3px rgba(26, 82, 118, 0.08);
+        }
+
+        .btn-reveal {
+            position: absolute;
+            right: 16px;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            padding: 4px;
+            color: #777;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s;
+        }
+
+        .btn-reveal:hover {
+            color: var(--secondary);
+        }
+
+        .btn-reveal svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .error-message {
+            font-size: 0.85rem;
+            color: #e74c3c;
+            font-weight: 600;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 16px;
+            margin-top: 15px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            padding-top: 25px;
+        }
+
+        .btn-clear {
+            background: transparent;
+            color: #666;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            box-shadow: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .btn-clear:hover {
+            background: rgba(0, 0, 0, 0.03);
+            color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: none;
+        }
+
+        .btn-unlock {
+            background: #1a5276;
+            color: white;
+            padding: 16px 36px;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(26, 82, 118, 0.15);
+        }
+
+        .btn-unlock:hover {
+            background: #113f5c;
+            box-shadow: 0 8px 25px rgba(26, 82, 118, 0.25);
+        }
+
+        /* Processing State */
+        .processing-state {
+            text-align: center;
+            padding: 50px 20px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .loader-spinner {
+            width: 54px;
+            height: 54px;
+            border: 4px solid rgba(26, 82, 118, 0.1);
+            border-top: 4px solid #1a5276;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 24px auto;
+        }
+
+        .processing-state h3 {
+            color: var(--secondary);
+            margin: 0 0 10px 0;
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .processing-state p {
+            color: #666;
+            margin: 0;
+            font-size: 1.05rem;
+        }
+
+        /* Success State */
+        .success-state {
+            text-align: center;
+            padding: 20px 0;
+            animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .success-icon-pulse {
+            width: 76px;
+            height: 76px;
+            background: rgba(46, 204, 113, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2ecc71;
+            margin: 0 auto 24px auto;
+            animation: pulseSuccess 2s infinite;
+        }
+
+        .success-icon-pulse svg {
+            width: 38px;
+            height: 38px;
+            stroke-width: 2.5;
+        }
+
+        .success-state h3 {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin: 0 0 10px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .success-state p {
+            color: #666;
+            margin: 0 0 35px 0;
+            font-size: 1.05rem;
+        }
+
+        .file-summary-card {
+            background: #fafafa;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 18px;
+            padding: 24px 30px;
+            max-width: 520px;
+            margin: 0 auto 35px auto;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
+        }
+
+        .summary-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .summary-val {
+            font-weight: 700;
+            color: var(--secondary);
+            word-break: break-all;
+        }
+
+        .success-actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-download {
+            background: #2ecc71;
+            color: white;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.25);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 36px;
+        }
+
+        .btn-download:hover {
+            background: #27ae60;
+            box-shadow: 0 8px 25px rgba(46, 204, 113, 0.35);
+        }
+
+        .btn-reset {
+            background: transparent;
+            color: var(--secondary);
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            box-shadow: none;
+            padding: 16px 28px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-reset:hover {
+            background: rgba(0, 0, 0, 0.03);
+            transform: translateY(-2px);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulseSuccess {
+            0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(46, 204, 113, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .pdf-hero {
+                padding: 60px 20px 30px;
+            }
+            .tool-card {
+                padding: 30px 20px;
+                border-radius: 20px;
+            }
+            .unlock-workspace {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .success-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            .success-actions button {
+                width: 100%;
+                justify-content: center;
+            }
+            .action-buttons {
+                flex-direction: column-reverse;
+                gap: 12px;
+                width: 100%;
+            }
+            .btn-clear, .btn-unlock {
+                width: 100%;
+                max-width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="glass-nav">
+        <a href="/"><img src="flashsuite_logo.png" alt="FlashSuite Logo" class="nav-logo"></a>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/#hero">URL Shortener</a>
+            <a href="/#hero">QR Generator</a>
+            <a href="pdftools.html" class="active">PDF Tools</a>
+        </div>
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="/" onclick="toggleMobileMenu()">Home</a>
+        <a href="/#hero" onclick="toggleMobileMenu()">URL Shortener</a>
+        <a href="/#hero" onclick="toggleMobileMenu()">QR Generator</a>
+        <a href="pdftools.html" onclick="toggleMobileMenu()">PDF Tools</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="pdf-hero">
+        <div class="container fade-in-up">
+            <div class="hero-badge" style="background: rgba(26, 82, 118, 0.08); border-color: rgba(26, 82, 118, 0.15); color: #1a5276;">
+                🔓 Remove PDF Restriction & Passwords
+            </div>
+            <h1>
+                Unlock PDF <span class="text-gradient">Documents</span>
+            </h1>
+            <p class="hero-description">
+                Decrypt and remove security password locks from your PDF documents in seconds. Processed entirely local within your browser.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Workspace Container -->
+    <main class="container" style="max-width: 960px;">
+        <div class="tool-card fade-in-up">
+            
+            <!-- Drag & Drop Zone -->
+            <div class="drop-zone" id="dropZone">
+                <div class="drop-zone-content">
+                    <i data-lucide="unlock" class="upload-icon"></i>
+                    <h3>Drag & drop your secured PDF file here</h3>
+                    <p>or click to browse your computer</p>
+                    <span class="file-limits">Support single PDF document</span>
+                </div>
+                <input type="file" id="fileInput" accept=".pdf">
+            </div>
+
+            <!-- Unlock Panel Workspace -->
+            <div class="unlock-workspace" id="unlockWorkspace" style="display: none;">
+                
+                <!-- Left Details Box -->
+                <div class="document-details-card">
+                    <div class="doc-icon-container">
+                        <i data-lucide="file-text"></i>
+                    </div>
+                    <div class="details-title">
+                        <h3 id="docName">secured_document.pdf</h3>
+                        <p>Uploaded PDF Document (Protected)</p>
+                    </div>
+                    <div class="details-stat-grid">
+                        <div class="stat-item">
+                            <span class="stat-label">File Size</span>
+                            <span class="stat-value" id="docSize">0 KB</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Encryption</span>
+                            <span class="stat-value">Active 🔒</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Form Box -->
+                <div class="password-form-card">
+                    <h3 class="form-title">Enter PDF Password</h3>
+                    
+                    <div class="input-group-pass">
+                        <label for="inputPassword">Document Password</label>
+                        <div class="pass-input-wrapper">
+                            <input type="password" class="input-password" id="inputPassword" placeholder="Enter PDF password to unlock">
+                            <button class="btn-reveal" id="btnReveal" title="Reveal Password">
+                                <i data-lucide="eye"></i>
+                            </button>
+                        </div>
+                        <div class="error-message" id="errorMessage">⚠️ Incorrect password. Please try again.</div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn-clear" onclick="clearWorkspace()">Cancel</button>
+                        <button class="btn-unlock" onclick="processUnlock()">
+                            <i data-lucide="unlock"></i> Unlock PDF
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Processing Spinner -->
+            <div class="processing-state" id="processingState" style="display: none;">
+                <div class="loader-spinner"></div>
+                <h3>Decrypting your document...</h3>
+                <p>Decrypting in-memory and removing structural permissions. Zero files leave your computer.</p>
+            </div>
+
+            <!-- Success State -->
+            <div class="success-state" id="successState" style="display: none;">
+                <div class="success-icon-pulse">
+                    <i data-lucide="check-circle-2"></i>
+                </div>
+                <h3>PDF Unlocked Successfully!</h3>
+                <p>Your decrypted PDF is ready to download. All password protections have been completely removed.</p>
+                
+                <div class="file-summary-card">
+                    <div class="summary-item">
+                        <span class="summary-label">Unlocked File</span>
+                        <span class="summary-val" id="successFileName">document_unlocked.pdf</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">File Size</span>
+                        <span class="summary-val" id="successFileSize">0 KB</span>
+                    </div>
+                </div>
+                
+                <div class="success-actions">
+                    <button class="btn-download" onclick="downloadResult()">
+                        <i data-lucide="download"></i> Download PDF
+                    </button>
+                    <button class="btn-reset" onclick="resetTool()">
+                        Unlock More
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Premium SEO Content Section -->
+    <section class="seo-content-section">
+        <h2>How to Unlock PDF Online Free</h2>
+        <p>Removing passwords, restrictions, and structural permissions from your PDF documents is quick and seamless with FlashSuite. Since our decryption tool runs 100% locally inside your browser, your sensitive documents are processed safely without internet uploads. Here is how to unlock your PDF:</p>
+        
+        <ol>
+            <li><strong>Upload Your Secured PDF:</strong> Click inside the drop zone above to select a protected file from your computer or drag your locked PDF directly onto it.</li>
+            <li><strong>Provide the Password:</strong> If the document is password-protected, the tool will instantly prompt you with a password entry field. Type the document's valid user password.</li>
+            <li><strong>Decrypt & Unlock:</strong> Click the primary <strong>Unlock PDF</strong> button.</li>
+            <li><strong>Download the Unlocked Document:</strong> The decryption runs instantly. Click the green <strong>Download PDF</strong> button to save the fully unlocked file directly to your system.</li>
+        </ol>
+
+        <h2>Why Choose FlashSuite's Client-Side PDF Decryptor?</h2>
+        <p>Many online PDF unlockers require you to upload your sensitive files and passwords directly to their remote servers, creating a major security risk for financial reports, ID cards, legal files, or personal journals. FlashSuite eliminates this hazard completely. Our tool processes all file data <strong>locally within your browser's RAM buffer</strong>. Your passwords and documents are parsed, decrypted, and compiled entirely in-memory, ensuring absolute privacy, zero server storage, and zero leak windows.</p>
+
+        <h3>Elite Decryption Features:</h3>
+        <ul>
+            <li><strong>Absolute Data Protection:</strong> Because the decryption algorithms execute 100% in-browser, neither your sensitive records nor your passwords ever leave your machine.</li>
+            <li><strong>Removes Restrictions & Locks:</strong> Fully clears reader restrictions, enabling you to print, copy text, sign, or edit files without password prompts.</li>
+            <li><strong>Zero Waiting Queues:</strong> Avoids network bottlenecks and slow uploads, decrypting and saving optimized outputs in less than a second.</li>
+        </ul>
+
+        <h2>Frequently Asked Questions About Unlocking PDFs</h2>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <h4>How does FlashSuite unlock PDF password protection?</h4>
+                <p>FlashSuite uses browser-side cryptographic engines (pdf-lib) to decrypt the document. When you provide the password, the program decrypts structural page definitions, clears user/owner permissions blocks, and compiles a completely unlocked PDF file locally.</p>
+            </div>
+            <div class="faq-item">
+                <h4>Is my confidential document secure during unlocking?</h4>
+                <p>Absolutely! Everything runs entirely in your local browser's memory using client-side scripting. Not a single byte of your PDF or the key you type is transmitted to a remote server.</p>
+            </div>
+            <div class="faq-item">
+                <h4>What happens if a PDF doesn't have password security?</h4>
+                <p>If you upload a document that isn't locked, FlashSuite will instantly inform you and let you download the clear-text file immediately.</p>
+            </div>
+            <div class="faq-item">
+                <h4>Can FlashSuite unlock a PDF if I don't know the password?</h4>
+                <p>No. To decrypt and remove security restrictions, you must provide the correct password that locks the document. FlashSuite adheres strictly to compliance and encryption standards, performing official decryption rather than brute-force key cracking.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <nav class="footer-nav">
+            <a href="/">Home</a>
+            <a href="/blog.html">Blog</a>
+            <a href="/about.html">About Us</a>
+            <a href="/privacy.html">Privacy Policy</a>
+            <a href="/terms.html">Terms of Service</a>
+        </nav>
+        <p class="footer-copy">&copy; 2026 FlashSuite. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+            document.getElementById('mobileMenuOverlay').classList.toggle('active');
+        }
+
+        let uploadedFile = null;
+        let unlockedBlob = null;
+        let unlockedName = '';
+
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const unlockWorkspace = document.getElementById('unlockWorkspace');
+        const processingState = document.getElementById('processingState');
+        const successState = document.getElementById('successState');
+        
+        const docName = document.getElementById('docName');
+        const docSize = document.getElementById('docSize');
+        
+        const inputPassword = document.getElementById('inputPassword');
+        const btnReveal = document.getElementById('btnReveal');
+        const errorMessage = document.getElementById('errorMessage');
+
+        const successFileName = document.getElementById('successFileName');
+        const successFileSize = document.getElementById('successFileSize');
+
+        // Setup dropzone click triggers file browse
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        // Handle file selection
+        fileInput.addEventListener('change', handleFileSelect);
+
+        // Drag events helper
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropZone.classList.add('dragover');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+            }, false);
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if (files.length > 0) {
+                loadDocument(files[0]);
+            }
+        });
+
+        function handleFileSelect(e) {
+            if (e.target.files.length > 0) {
+                loadDocument(e.target.files[0]);
+            }
+            fileInput.value = ''; // Reset input
+        }
+
+        async function loadDocument(file) {
+            if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+                alert("Please select a valid PDF file.");
+                return;
+            }
+
+            uploadedFile = file;
+            docName.innerText = file.name;
+            docSize.innerText = formatBytes(file.size);
+            
+            // Show loading
+            dropZone.style.display = 'none';
+            processingState.style.display = 'block';
+
+            try {
+                const arrayBuffer = await file.arrayBuffer();
+                // Test if document is actually encrypted
+                try {
+                    // Try to load without a password
+                    const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+                    // If it loads, it is already unlocked!
+                    alert("This PDF document is not password encrypted. It can be parsed and modified freely.");
+                    
+                    unlockedBlob = new Blob([arrayBuffer], { type: 'application/pdf' });
+                    unlockedName = file.name.replace(/\.[^/.]+$/, "") + '_unlocked.pdf';
+                    successFileName.innerText = unlockedName;
+                    successFileSize.innerText = formatBytes(file.size);
+                    
+                    processingState.style.display = 'none';
+                    successState.style.display = 'block';
+                } catch (loadErr) {
+                    // Decryption failed without password, which means it IS encrypted!
+                    // This is exactly what we want!
+                    processingState.style.display = 'none';
+                    unlockWorkspace.style.display = 'grid';
+                    inputPassword.value = '';
+                    errorMessage.style.display = 'none';
+                }
+            } catch (err) {
+                console.error("Error loading document:", err);
+                alert("Failed to load PDF file. It might be corrupted.");
+                clearWorkspace();
+            }
+        }
+
+        function formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        }
+
+        // Reveal password toggle
+        btnReveal.addEventListener('click', () => {
+            const type = inputPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            inputPassword.setAttribute('type', type);
+            
+            const iconName = type === 'password' ? 'eye' : 'eye-off';
+            btnReveal.innerHTML = `<i data-lucide="${iconName}"></i>`;
+            lucide.createIcons();
+        });
+
+        async function processUnlock() {
+            if (!uploadedFile) return;
+
+            const password = inputPassword.value;
+            if (!password) {
+                alert("Please enter the document password.");
+                return;
+            }
+
+            unlockWorkspace.style.display = 'none';
+            processingState.style.display = 'block';
+            errorMessage.style.display = 'none';
+
+            try {
+                const arrayBuffer = await uploadedFile.arrayBuffer();
+                
+                // Decrypt the PDF document using user-provided password
+                const decryptedDoc = await PDFLib.PDFDocument.load(arrayBuffer, { password: password });
+                
+                // Save it without encryption/permissions
+                const decryptedBytes = await decryptedDoc.save();
+                
+                unlockedBlob = new Blob([decryptedBytes], { type: 'application/pdf' });
+                unlockedName = uploadedFile.name.replace(/\.[^/.]+$/, "") + '_unlocked.pdf';
+                
+                successFileName.innerText = unlockedName;
+                successFileSize.innerText = formatBytes(decryptedBytes.length);
+
+                setTimeout(() => {
+                    processingState.style.display = 'none';
+                    successState.style.display = 'block';
+                }, 900);
+
+            } catch (err) {
+                console.error("Decryption failed:", err);
+                setTimeout(() => {
+                    processingState.style.display = 'none';
+                    unlockWorkspace.style.display = 'grid';
+                    errorMessage.style.display = 'block';
+                    inputPassword.value = '';
+                }, 400);
+            }
+        }
+
+        function downloadResult() {
+            if (!unlockedBlob) return;
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(unlockedBlob);
+            link.download = unlockedName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function clearWorkspace() {
+            uploadedFile = null;
+            inputPassword.value = '';
+            errorMessage.style.display = 'none';
+            unlockWorkspace.style.display = 'none';
+            dropZone.style.display = 'block';
+        }
+
+        function resetTool() {
+            clearWorkspace();
+            successState.style.display = 'none';
+            unlockedBlob = null;
+            unlockedName = '';
+        }
+
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

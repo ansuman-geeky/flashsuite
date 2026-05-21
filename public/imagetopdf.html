@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convert Image to PDF Online - JPG & PNG to PDF Free | FlashSuite</title>
+    <meta name="description"
+        content="Convert your JPG, JPEG, and PNG images into a clean, combined, and perfectly scaled PDF document locally in your browser. 100% free, private, and secure.">
+    
+    <!-- Structured Data: JSON-LD Schema for SEO Rich Snippets -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://flashsuite.com/imagetopdf.html#software",
+          "name": "FlashSuite Image to PDF Converter",
+          "operatingSystem": "All",
+          "applicationCategory": "BusinessApplication",
+          "offers": {
+            "@type": "Offer",
+            "price": "0.00",
+            "priceCurrency": "USD"
+          },
+          "description": "Convert JPG, JPEG, and PNG image formats into stand-alone or combined multi-page PDF documents locally inside your browser."
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://flashsuite.com/imagetopdf.html#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How does FlashSuite convert images to PDF without server uploads?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "FlashSuite utilizes high-performance client-side Javascript loaders (pdf-lib) directly inside your web browser. It reads image files into standard binary array buffers, creates fresh PDF pages using selected custom layouts (Standard A4 or Fit Image size), inserts the image nodes losslessly, and saves the new PDF file directly to your local storage."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What is the difference between 'Fit Image Size' and 'Standard A4 Page' layout options?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "'Fit Image Size' creates individual pages that match the exact pixel height and width of each uploaded image, keeping original dimensions. 'Standard A4 Page' fits every photo onto standard letterhead size sheets with neat margin alignments."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I merge multiple images of different formats (JPG and PNG) into one PDF?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes! You can select any combination of PNG, JPG, and JPEG files at the same time. FlashSuite parses them sequentially and compiles them into a single, cohesive multi-page PDF document in that exact sequence."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <style>
+        .pdf-hero {
+            text-align: center;
+            padding: 80px 0 40px;
+            background: var(--bg);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .tool-card {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 24px;
+            padding: 45px 40px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.03);
+            margin-top: 10px;
+            margin-bottom: 80px;
+        }
+
+        .drop-zone {
+            border: 2px dashed rgba(142, 68, 173, 0.25);
+            border-radius: 20px;
+            background: rgba(142, 68, 173, 0.003);
+            padding: 60px 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .drop-zone:hover, .drop-zone.dragover {
+            border-color: #8e44ad;
+            background: rgba(142, 68, 173, 0.04);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(142, 68, 173, 0.05);
+        }
+
+        .drop-zone input[type="file"] {
+            display: none;
+        }
+
+        .upload-icon {
+            width: 52px;
+            height: 52px;
+            color: #8e44ad;
+            margin-bottom: 20px;
+            stroke-width: 1.5;
+        }
+
+        .drop-zone h3 {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin: 0 0 10px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .drop-zone p {
+            color: #666;
+            margin: 0 0 15px 0;
+            font-size: 1rem;
+        }
+
+        .file-limits {
+            display: inline-block;
+            font-size: 0.8rem;
+            color: #999;
+            background: #f3f3f3;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        /* Image Compile Workspace */
+        .imagetopdf-workspace {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 40px;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        .image-queue-card {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .queue-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .queue-header h3 {
+            font-size: 1.25rem;
+            color: var(--secondary);
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .btn-add-more {
+            background: transparent;
+            color: #8e44ad;
+            border: 1px solid rgba(142, 68, 173, 0.25);
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-add-more:hover {
+            background: rgba(142, 68, 173, 0.05);
+            border-color: #8e44ad;
+        }
+
+        .image-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 480px;
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+
+        .image-item-card {
+            background: #fafafa;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 16px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            transition: all 0.25s ease;
+        }
+
+        .image-item-card:hover {
+            border-color: rgba(142, 68, 173, 0.15);
+            background: #fdfefe;
+        }
+
+        .item-preview {
+            width: 52px;
+            height: 52px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            background: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .item-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .item-details {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 0;
+        }
+
+        .item-details h4 {
+            font-size: 0.95rem;
+            color: var(--secondary);
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: 700;
+        }
+
+        .item-details p {
+            font-size: 0.8rem;
+            color: #777;
+            margin: 0;
+        }
+
+        .item-controls {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-control {
+            background: transparent;
+            color: #777;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: none;
+            transition: all 0.2s;
+        }
+
+        .btn-control:hover {
+            background: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+        }
+
+        .btn-control.remove:hover {
+            background: #e74c3c;
+            color: white;
+            border-color: #e74c3c;
+        }
+
+        .btn-control svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Config Card */
+        .config-card {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .config-title {
+            font-size: 1.25rem;
+            color: var(--secondary);
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .option-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-card {
+            border: 2px solid rgba(0, 0, 0, 0.05);
+            border-radius: 16px;
+            padding: 16px 20px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .option-card:hover {
+            border-color: rgba(142, 68, 173, 0.2);
+        }
+
+        .option-card.selected {
+            border-color: #8e44ad;
+            background: rgba(142, 68, 173, 0.02);
+        }
+
+        .option-card h4 {
+            font-size: 1rem;
+            color: var(--secondary);
+            margin: 0;
+            font-weight: 750;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .option-card h4::after {
+            content: '';
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid #ccc;
+            display: inline-block;
+        }
+
+        .option-card.selected h4::after {
+            border-color: #8e44ad;
+            background: #8e44ad;
+            box-shadow: inset 0 0 0 3px white;
+        }
+
+        .option-card p {
+            color: #666;
+            margin: 0;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 16px;
+            margin-top: 15px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            padding-top: 25px;
+        }
+
+        .btn-clear {
+            background: transparent;
+            color: #666;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            box-shadow: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .btn-clear:hover {
+            background: rgba(0, 0, 0, 0.03);
+            color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: none;
+        }
+
+        .btn-compile {
+            background: #8e44ad;
+            color: white;
+            padding: 16px 36px;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(142, 68, 173, 0.15);
+        }
+
+        .btn-compile:hover {
+            background: #732d91;
+            box-shadow: 0 8px 25px rgba(142, 68, 173, 0.25);
+        }
+
+        /* Processing State */
+        .processing-state {
+            text-align: center;
+            padding: 50px 20px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .loader-spinner {
+            width: 54px;
+            height: 54px;
+            border: 4px solid rgba(142, 68, 173, 0.1);
+            border-top: 4px solid #8e44ad;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 24px auto;
+        }
+
+        .processing-state h3 {
+            color: var(--secondary);
+            margin: 0 0 10px 0;
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .processing-state p {
+            color: #666;
+            margin: 0;
+            font-size: 1.05rem;
+        }
+
+        /* Success State */
+        .success-state {
+            text-align: center;
+            padding: 20px 0;
+            animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .success-icon-pulse {
+            width: 76px;
+            height: 76px;
+            background: rgba(46, 204, 113, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2ecc71;
+            margin: 0 auto 24px auto;
+            animation: pulseSuccess 2s infinite;
+        }
+
+        .success-icon-pulse svg {
+            width: 38px;
+            height: 38px;
+            stroke-width: 2.5;
+        }
+
+        .success-state h3 {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin: 0 0 10px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .success-state p {
+            color: #666;
+            margin: 0 0 35px 0;
+            font-size: 1.05rem;
+        }
+
+        .file-summary-card {
+            background: #fafafa;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 18px;
+            padding: 24px 30px;
+            max-width: 520px;
+            margin: 0 auto 35px auto;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
+        }
+
+        .summary-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .summary-val {
+            font-weight: 700;
+            color: var(--secondary);
+            word-break: break-all;
+        }
+
+        .success-actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-download {
+            background: #2ecc71;
+            color: white;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.25);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 36px;
+        }
+
+        .btn-download:hover {
+            background: #27ae60;
+            box-shadow: 0 8px 25px rgba(46, 204, 113, 0.35);
+        }
+
+        .btn-reset {
+            background: transparent;
+            color: var(--secondary);
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            box-shadow: none;
+            padding: 16px 28px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-reset:hover {
+            background: rgba(0, 0, 0, 0.03);
+            transform: translateY(-2px);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulseSuccess {
+            0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(46, 204, 113, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .pdf-hero {
+                padding: 60px 20px 30px;
+            }
+            .tool-card {
+                padding: 30px 20px;
+                border-radius: 20px;
+            }
+            .imagetopdf-workspace {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .success-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            .success-actions button {
+                width: 100%;
+                justify-content: center;
+            }
+            .action-buttons {
+                flex-direction: column-reverse;
+                gap: 12px;
+                width: 100%;
+            }
+            .btn-clear, .btn-compile {
+                width: 100%;
+                max-width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="glass-nav">
+        <a href="/"><img src="flashsuite_logo.png" alt="FlashSuite Logo" class="nav-logo"></a>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/#hero">URL Shortener</a>
+            <a href="/#hero">QR Generator</a>
+            <a href="pdftools.html" class="active">PDF Tools</a>
+        </div>
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="/" onclick="toggleMobileMenu()">Home</a>
+        <a href="/#hero" onclick="toggleMobileMenu()">URL Shortener</a>
+        <a href="/#hero" onclick="toggleMobileMenu()">QR Generator</a>
+        <a href="pdftools.html" onclick="toggleMobileMenu()">PDF Tools</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="pdf-hero">
+        <div class="container fade-in-up">
+            <div class="hero-badge" style="background: rgba(142, 68, 173, 0.08); border-color: rgba(142, 68, 173, 0.15); color: #8e44ad;">
+                🖼️ Image to PDF Converter
+            </div>
+            <h1>
+                Image to PDF <span class="text-gradient">Compiler</span>
+            </h1>
+            <p class="hero-description">
+                Convert your PNG and JPEG photos into a clean, combined, and perfectly scaled PDF document instantly.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Workspace Container -->
+    <main class="container" style="max-width: 960px;">
+        <div class="tool-card fade-in-up">
+            
+            <!-- Drag & Drop Zone -->
+            <div class="drop-zone" id="dropZone">
+                <div class="drop-zone-content">
+                    <i data-lucide="file-image" class="upload-icon"></i>
+                    <h3>Drag & drop your images here</h3>
+                    <p>or click to select JPG, JPEG, or PNG files</p>
+                    <span class="file-limits">Supports multiple images</span>
+                </div>
+                <input type="file" id="fileInput" accept=".png, .jpg, .jpeg" multiple>
+            </div>
+
+            <!-- Workspace Grid -->
+            <div class="imagetopdf-workspace" id="imagetopdfWorkspace" style="display: none;">
+                
+                <!-- Left Queue Box -->
+                <div class="image-queue-card">
+                    <div class="queue-header">
+                        <h3 id="queueTitle">Uploaded Images (0)</h3>
+                        <button class="btn-add-more" onclick="fileInput.click()">
+                            <i data-lucide="plus"></i> Add Images
+                        </button>
+                    </div>
+
+                    <div class="image-list" id="imageList">
+                        <!-- Dynamic image cards will be appended here -->
+                    </div>
+                </div>
+
+                <!-- Right Config Box -->
+                <div class="config-card">
+                    <h3 class="config-title">Page Layout Options</h3>
+                    
+                    <div class="option-cards">
+                        <!-- Format 1: Auto Fit -->
+                        <div class="option-card selected" id="optFit" onclick="selectLayout('fit')">
+                            <h4>Fit Image Size</h4>
+                            <p>Keeps native page bounds exactly matching the original image aspect ratios. Perfect for raw photographic documents.</p>
+                        </div>
+                        
+                        <!-- Format 2: Standard A4 -->
+                        <div class="option-card" id="optA4" onclick="selectLayout('a4')">
+                            <h4>Standard A4 Page</h4>
+                            <p>Centers the images on a standard vertical A4 layout sheet with small custom protective padding.</p>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn-clear" onclick="clearWorkspace()">Cancel</button>
+                        <button class="btn-compile" onclick="processCompilation()">
+                            <i data-lucide="file-check"></i> Convert to PDF
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Processing Spinner -->
+            <div class="processing-state" id="processingState" style="display: none;">
+                <div class="loader-spinner"></div>
+                <h3>Compiling PDF document...</h3>
+                <p>Scaling high-definition media buffers and writing document structures. Fully local inside the browser.</p>
+            </div>
+
+            <!-- Success State -->
+            <div class="success-state" id="successState" style="display: none;">
+                <div class="success-icon-pulse">
+                    <i data-lucide="check-circle-2"></i>
+                </div>
+                <h3>Images Compiled Successfully!</h3>
+                <p>Your combined PDF document is fully compiled and ready to download.</p>
+                
+                <div class="file-summary-card">
+                    <div class="summary-item">
+                        <span class="summary-label">Compiled File</span>
+                        <span class="summary-val" id="successFileName">images_combined.pdf</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">File Size</span>
+                        <span class="summary-val" id="successFileSize">0 KB</span>
+                    </div>
+                </div>
+                
+                <div class="success-actions">
+                    <button class="btn-download" onclick="downloadResult()">
+                        <i data-lucide="download"></i> Download PDF
+                    </button>
+                    <button class="btn-reset" onclick="resetTool()">
+                        Convert More
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Premium SEO Content Section -->
+    <section class="seo-content-section">
+        <h2>How to Convert JPG & PNG Images to PDF Online Free</h2>
+        <p>Compiling your physical photo scans, digital layouts, screenshots, or graphical drawings into a professional PDF document is quick and seamless with FlashSuite. Because our compilation algorithms execute 100% inside your local web browser, your photographs are kept completely private. Follow these simple steps to compile your files:</p>
+        
+        <ol>
+            <li><strong>Add Your Photos:</strong> Click inside the upload zone above to select multiple JPG, JPEG, or PNG images from your device, or drag and drop your photos directly onto the target zone.</li>
+            <li><strong>Arrange Your Queue:</strong> Preview your files in an interactive queue list. You can add more photos, check dimensions, or remove cards as needed.</li>
+            <li><strong>Select Page Layout Options:</strong> Choose the best fit for your slides:
+                <ul>
+                    <li><strong>Fit Image Size:</strong> Keeps original, native image dimensions and aspect ratios for each individual sheet. Best for photography or custom graphics.</li>
+                    <li><strong>Standard A4 Page:</strong> Fits every image onto a standard A4 format sheet with neat padding margins, creating a highly cohesive multi-page workbook.</li>
+                </ul>
+            </li>
+            <li><strong>Compile & Download:</strong> Click the purple <strong>Convert to PDF</strong> button. FlashSuite compiles the PDF in a fraction of a second. Click the green <strong>Download PDF</strong> button to save the file.</li>
+        </ol>
+
+        <h2>Why Choose FlashSuite's Client-Side Image to PDF Converter?</h2>
+        <p>Conventional web-based tools require uploading your sensitive photos, receipts, or legal IDs to remote servers, putting your private information at risk. FlashSuite avoids this security risk altogether by executing the converter <strong>locally in your browser's RAM</strong>. No files ever leave your device, meaning you get absolute privacy, zero network delay, offline access, and maximum resolution output without size limits.</p>
+
+        <h3>Premium Compilation Capabilities:</h3>
+        <ul>
+            <li><strong>Complete Data Privacy:</strong> Local client-side processing guarantees that none of your documents, IDs, or receipts are ever uploaded or stored remotely.</li>
+            <li><strong>Custom Scaling Alignments:</strong> Automatically centers and fits horizontal or vertical image files without stretching, preserving correct proportions.</li>
+            <li><strong>High-Resolution Packaging:</strong> Preserves original graphic details, textures, and color balances without compression artifacts.</li>
+        </ul>
+
+        <h2>Frequently Asked Questions About Converting Images to PDFs</h2>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <h4>How does FlashSuite convert images to PDF without server uploads?</h4>
+                <p>FlashSuite utilizes high-performance client-side Javascript loaders (pdf-lib) directly inside your web browser. It reads image files into standard binary array buffers, creates fresh PDF pages using selected custom layouts (Standard A4 or Fit Image size), inserts the image nodes losslessly, and saves the new PDF file directly to your local storage.</p>
+            </div>
+            <div class="faq-item">
+                <h4>What is the difference between 'Fit Image Size' and 'Standard A4 Page' layout options?</h4>
+                <p>'Fit Image Size' creates individual pages that match the exact pixel height and width of each uploaded image, keeping original dimensions. 'Standard A4 Page' fits every photo onto standard letterhead size sheets with neat margin alignments.</p>
+            </div>
+            <div class="faq-item">
+                <h4>Can I merge multiple images of different formats (JPG and PNG) into one PDF?</h4>
+                <p>Yes! You can select any combination of PNG, JPG, and JPEG files at the same time. FlashSuite parses them sequentially and compiles them into a single, cohesive multi-page PDF document in that exact sequence.</p>
+            </div>
+            <div class="faq-item">
+                <h4>Is there a file count limit when compiling images?</h4>
+                <p>No! FlashSuite is completely free and executes locally, meaning you can compile as many images into a single PDF document as your local system can handle.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <nav class="footer-nav">
+            <a href="/">Home</a>
+            <a href="/blog.html">Blog</a>
+            <a href="/about.html">About Us</a>
+            <a href="/privacy.html">Privacy Policy</a>
+            <a href="/terms.html">Terms of Service</a>
+        </nav>
+        <p class="footer-copy">&copy; 2026 FlashSuite. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+            document.getElementById('mobileMenuOverlay').classList.toggle('active');
+        }
+
+        let uploadedImages = []; // Array of File objects
+        let compiledBlob = null;
+        let compiledName = '';
+        let activeLayout = 'fit'; // 'fit' | 'a4'
+
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const imagetopdfWorkspace = document.getElementById('imagetopdfWorkspace');
+        const processingState = document.getElementById('processingState');
+        const successState = document.getElementById('successState');
+        
+        const queueTitle = document.getElementById('queueTitle');
+        const imageList = document.getElementById('imageList');
+        
+        const optFit = document.getElementById('optFit');
+        const optA4 = document.getElementById('optA4');
+
+        const successFileName = document.getElementById('successFileName');
+        const successFileSize = document.getElementById('successFileSize');
+
+        // Setup dropzone click triggers file browse
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        // Handle file selection
+        fileInput.addEventListener('change', handleFileSelect);
+
+        // Drag events helper
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropZone.classList.add('dragover');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+            }, false);
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if (files.length > 0) {
+                loadImages(Array.from(files));
+            }
+        });
+
+        function handleFileSelect(e) {
+            if (e.target.files.length > 0) {
+                loadImages(Array.from(e.target.files));
+            }
+            fileInput.value = ''; // Reset input
+        }
+
+        function loadImages(files) {
+            const validFiles = files.filter(file => {
+                const name = file.name.toLowerCase();
+                return file.type.startsWith('image/') || name.endsWith('.png') || name.endsWith('.jpg') || name.endsWith('.jpeg');
+            });
+
+            if (validFiles.length === 0) {
+                alert("Please select valid image files (JPG, JPEG, or PNG).");
+                return;
+            }
+
+            uploadedImages = [...uploadedImages, ...validFiles];
+            dropZone.style.display = 'none';
+            imagetopdfWorkspace.style.display = 'grid';
+            
+            renderQueue();
+        }
+
+        function renderQueue() {
+            queueTitle.innerText = `Uploaded Images (${uploadedImages.length})`;
+            imageList.innerHTML = '';
+            
+            uploadedImages.forEach((file, index) => {
+                const card = document.createElement('div');
+                card.className = 'image-item-card';
+                
+                const objectUrl = URL.createObjectURL(file);
+                
+                card.innerHTML = `
+                    <div class="item-preview">
+                        <img src="${objectUrl}" alt="Preview">
+                    </div>
+                    <div class="item-details">
+                        <h4>${file.name}</h4>
+                        <p>${formatBytes(file.size)} • ${file.type.split('/')[1].toUpperCase()}</p>
+                    </div>
+                    <div class="item-controls">
+                        <button class="btn-control" onclick="moveItem(${index}, -1)" ${index === 0 ? 'disabled' : ''} title="Move Up">
+                            <i data-lucide="chevron-up"></i>
+                        </button>
+                        <button class="btn-control" onclick="moveItem(${index}, 1)" ${index === uploadedImages.length - 1 ? 'disabled' : ''} title="Move Down">
+                            <i data-lucide="chevron-down"></i>
+                        </button>
+                        <button class="btn-control remove" onclick="removeItem(${index})" title="Remove Image">
+                            <i data-lucide="trash-2"></i>
+                        </button>
+                    </div>
+                `;
+                imageList.appendChild(card);
+            });
+            
+            lucide.createIcons();
+        }
+
+        window.moveItem = function(index, direction) {
+            const targetIndex = index + direction;
+            if (targetIndex < 0 || targetIndex >= uploadedImages.length) return;
+            
+            const temp = uploadedImages[index];
+            uploadedImages[index] = uploadedImages[targetIndex];
+            uploadedImages[targetIndex] = temp;
+            
+            renderQueue();
+        }
+
+        window.removeItem = function(index) {
+            uploadedImages.splice(index, 1);
+            if (uploadedImages.length === 0) {
+                clearWorkspace();
+            } else {
+                renderQueue();
+            }
+        }
+
+        function selectLayout(layout) {
+            activeLayout = layout;
+            if (layout === 'fit') {
+                optFit.classList.add('selected');
+                optA4.classList.remove('selected');
+            } else {
+                optA4.classList.add('selected');
+                optFit.classList.remove('selected');
+            }
+        }
+
+        function formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        }
+
+        async function processCompilation() {
+            if (uploadedImages.length === 0) return;
+
+            imagetopdfWorkspace.style.display = 'none';
+            processingState.style.display = 'block';
+
+            try {
+                // Compile PDF using pdf-lib
+                const pdfDoc = await PDFLib.PDFDocument.create();
+                
+                for (const file of uploadedImages) {
+                    const arrayBuffer = await file.arrayBuffer();
+                    let embedImg;
+                    
+                    if (file.type === 'image/png' || file.name.toLowerCase().endsWith('.png')) {
+                        embedImg = await pdfDoc.embedPng(arrayBuffer);
+                    } else {
+                        embedImg = await pdfDoc.embedJpg(arrayBuffer);
+                    }
+                    
+                    const { width, height } = embedImg.scale(1.0);
+                    
+                    if (activeLayout === 'fit') {
+                        // Native size fit
+                        const page = pdfDoc.addPage([width, height]);
+                        page.drawImage(embedImg, { x: 0, y: 0, width, height });
+                    } else {
+                        // Standard A4 Layout (595.27 x 841.89 points)
+                        const a4Width = 595.28;
+                        const a4Height = 841.89;
+                        const page = pdfDoc.addPage([a4Width, a4Height]);
+                        
+                        // Calculate scaling maintaining ratio
+                        const scale = Math.min((a4Width - 40) / width, (a4Height - 40) / height);
+                        const drawWidth = width * scale;
+                        const drawHeight = height * scale;
+                        
+                        // Center on page
+                        const x = (a4Width - drawWidth) / 2;
+                        const y = (a4Height - drawHeight) / 2;
+                        
+                        page.drawImage(embedImg, {
+                            x: x,
+                            y: y,
+                            width: drawWidth,
+                            height: drawHeight
+                        });
+                    }
+                }
+                
+                const compiledBytes = await pdfDoc.save();
+                compiledBlob = new Blob([compiledBytes], { type: 'application/pdf' });
+                compiledName = 'images_combined.pdf';
+                
+                successFileName.innerText = compiledName;
+                successFileSize.innerText = formatBytes(compiledBytes.length);
+
+                setTimeout(() => {
+                    processingState.style.display = 'none';
+                    successState.style.display = 'block';
+                }, 900);
+
+            } catch (err) {
+                console.error("Compilation failed:", err);
+                alert("An error occurred during PDF compilation. Please verify that all image files are standard, valid formats.");
+                processingState.style.display = 'none';
+                imagetopdfWorkspace.style.display = 'grid';
+            }
+        }
+
+        window.downloadResult = function() {
+            if (!compiledBlob) return;
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(compiledBlob);
+            link.download = compiledName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function clearWorkspace() {
+            uploadedImages = [];
+            compiledBlob = null;
+            compiledName = '';
+            imagetopdfWorkspace.style.display = 'none';
+            dropZone.style.display = 'block';
+        }
+
+        function resetTool() {
+            clearWorkspace();
+            successState.style.display = 'none';
+        }
+
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
