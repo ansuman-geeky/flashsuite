@@ -2215,6 +2215,8 @@ button:active {
     font-weight: 600;
 }
 
-body.studio-active .breadcrumb-container {
+body.studio-active .breadcrumb-container,
+body.studio-active .seo-content-section,
+body.studio-active .site-footer {
     display: none !important;
 }
