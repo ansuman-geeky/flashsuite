@@ -508,11 +508,43 @@ button:active {
 
     .tab-container {
         flex-direction: column;
-        gap: 10px;
+        gap: 8px;
+        background: rgba(0, 0, 0, 0.02);
+        padding: 6px;
+        border-radius: 16px;
+        border: 1px solid rgba(0, 0, 0, 0.04);
     }
 
     .tab-btn {
         width: 100%;
+        padding: 12px 20px;
+        border-radius: 10px;
+        font-weight: 500;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        border: 1px solid transparent;
+        text-align: center;
+        background: transparent;
+    }
+
+    .tab-btn.active {
+        color: white;
+        background: linear-gradient(135deg, var(--primary) 0%, #B82E5A 100%);
+        font-weight: 700;
+        border-bottom: none;
+        box-shadow: 0 6px 15px rgba(157, 28, 68, 0.2);
+        animation: selectPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes selectPop {
+        0% {
+            transform: scale(0.95);
+        }
+        50% {
+            transform: scale(1.04);
+        }
+        100% {
+            transform: scale(1.02);
+        }
     }
 }
 
@@ -2219,4 +2251,41 @@ body.studio-active .breadcrumb-container,
 body.studio-active .seo-content-section,
 body.studio-active .site-footer {
     display: none !important;
+}
+
+/* Trust Info Banner */
+.trust-info-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(39, 174, 96, 0.04);
+    border: 1px solid rgba(39, 174, 96, 0.15);
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin: 20px auto 0 auto;
+    max-width: 600px;
+    text-align: left;
+    font-size: 0.9rem;
+    color: #27AE60;
+    line-height: 1.4;
+    animation: fadeInUp 0.4s ease;
+}
+
+.trust-info-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #27AE60;
+}
+
+.trust-info-icon svg,
+.trust-info-icon i {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2px;
+}
+
+.trust-info-text strong {
+    font-weight: 700;
 }
