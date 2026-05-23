@@ -215,7 +215,7 @@
 
         .thumb-item.active {
             border-color: var(--primary-accent);
-            background: rgba(26, 188, 156, 0.02);
+            background: rgba(157, 28, 68, 0.02);
         }
 
         .thumb-item canvas {
@@ -466,7 +466,7 @@
             font-weight: 700;
             border: none;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(26, 188, 156, 0.2);
+            box-shadow: 0 4px 12px rgba(157, 28, 68, 0.25);
             transition: all 0.3s;
             display: flex;
             align-items: center;
@@ -475,8 +475,8 @@
         }
 
         .btn-action-primary:hover {
-            background: #16A085;
-            box-shadow: 0 6px 20px rgba(26, 188, 156, 0.3);
+            background: #7A1232;
+            box-shadow: 0 6px 20px rgba(157, 28, 68, 0.35);
         }
 
         /* Drag handle dividers */
@@ -501,7 +501,7 @@
         }
 
         .drop-zone {
-            border: 2px dashed rgba(26, 188, 156, 0.3);
+            border: 2px dashed rgba(157, 28, 68, 0.25);
             border-radius: 16px;
             background: #ffffff;
             padding: 60px 40px;
@@ -513,7 +513,7 @@
         .drop-zone:hover,
         .drop-zone.dragover {
             border-color: var(--primary-accent);
-            background: rgba(26, 188, 156, 0.02);
+            background: rgba(157, 28, 68, 0.02);
         }
 
         .upload-icon {
@@ -719,6 +719,14 @@
 
         <!-- PDF Dropzone Panel -->
         <div class="drop-zone-wrapper" id="uploadPanel">
+            <!-- Breadcrumbs -->
+            <div class="breadcrumb-container" style="margin-top: -30px; margin-bottom: 20px;">
+                <ul class="breadcrumbs">
+                    <li class="breadcrumb-item"><a href="/pdftools"><i data-lucide="layout-grid"></i> PDF Tools</a></li>
+                    <li class="breadcrumb-separator"><i data-lucide="chevron-right"></i></li>
+                    <li class="breadcrumb-item active">Sign PDF</li>
+                </ul>
+            </div>
             <h1
                 style="text-align: center; margin-bottom: 24px; font-weight: 700; color: #1E293B; font-size: 2.2rem; font-family: 'Outfit', sans-serif;">
                 Sign PDF Document</h1>
@@ -773,7 +781,7 @@
                                 data-lucide="mouse-pointer"></i></button>
                         <div class="tool-divider"></div>
                         <button class="tool-btn active" id="toolSignature" title="Sign Document"
-                            style="background: rgba(26, 188, 156, 0.08); color: var(--primary-accent); border: 1px dashed rgba(26, 188, 156, 0.35); padding: 6px 12px; gap: 6px; font-weight: 600;"><i
+                            style="background: rgba(157, 28, 68, 0.08); color: var(--primary-accent); border: 1px dashed rgba(157, 28, 68, 0.35); padding: 6px 12px; gap: 6px; font-weight: 600;"><i
                                 data-lucide="signature"></i>Place Signature</button>
                         <div class="tool-divider"></div>
                         <button class="tool-btn" id="toolInsert" title="Insert Initial / Stamps"><i

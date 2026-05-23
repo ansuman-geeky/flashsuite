@@ -66,7 +66,6 @@
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <style>
         .pdf-hero {
             text-align: center;
@@ -450,9 +449,9 @@
         }
 
         .btn-download {
-            background: #2ecc71;
+            background: var(--primary);
             color: white;
-            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.25);
+            box-shadow: 0 4px 15px rgba(157, 28, 68, 0.25);
             display: flex;
             align-items: center;
             gap: 10px;
@@ -460,8 +459,8 @@
         }
 
         .btn-download:hover {
-            background: #27ae60;
-            box-shadow: 0 8px 25px rgba(46, 204, 113, 0.35);
+            background: #7A1232;
+            box-shadow: 0 8px 25px rgba(157, 28, 68, 0.35);
         }
 
         .btn-reset {
@@ -581,6 +580,15 @@
 
     <!-- Main Workspace Container -->
     <main class="container" style="max-width: 960px;">
+        <!-- Breadcrumbs -->
+        <div class="breadcrumb-container">
+            <ul class="breadcrumbs">
+                <li class="breadcrumb-item"><a href="/pdftools"><i data-lucide="layout-grid"></i> PDF Tools</a></li>
+                <li class="breadcrumb-separator"><i data-lucide="chevron-right"></i></li>
+                <li class="breadcrumb-item active">Unlock PDF</li>
+            </ul>
+        </div>
+
         <div class="tool-card fade-in-up">
             
             <!-- Drag & Drop Zone -->
@@ -742,6 +750,12 @@
             document.getElementById('mobileMenu').classList.toggle('active');
             document.getElementById('mobileMenuOverlay').classList.toggle('active');
         }
+    </script>
+
+    <!-- Modern ESM Module Controller loaded via esm.sh -->
+    <script type="module">
+        import { decryptPDF } from "https://esm.sh/@pdfsmaller/pdf-decrypt";
+        import { PDFDocument } from "https://esm.sh/pdf-lib";
 
         let uploadedFile = null;
         let unlockedBlob = null;
@@ -818,7 +832,7 @@
                 // Test if document is actually encrypted
                 try {
                     // Try to load without a password
-                    const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+                    const pdfDoc = await PDFDocument.load(arrayBuffer);
                     // If it loads, it is already unlocked!
                     alert("This PDF document is not password encrypted. It can be parsed and modified freely.");
                     
@@ -878,12 +892,13 @@
 
             try {
                 const arrayBuffer = await uploadedFile.arrayBuffer();
+                const bytes = new Uint8Array(arrayBuffer);
                 
-                // Decrypt the PDF document using user-provided password
-                const decryptedDoc = await PDFLib.PDFDocument.load(arrayBuffer, { password: password });
+                // Decrypt the PDF document using @pdfsmaller/pdf-decrypt
+                const decryptedBytes = await decryptPDF(bytes, password);
                 
-                // Save it without encryption/permissions
-                const decryptedBytes = await decryptedDoc.save();
+                // Verify that the decrypted bytes are a valid PDF
+                await PDFDocument.load(decryptedBytes);
                 
                 unlockedBlob = new Blob([decryptedBytes], { type: 'application/pdf' });
                 unlockedName = uploadedFile.name.replace(/\.[^/.]+$/, "") + '_unlocked.pdf';
@@ -931,6 +946,12 @@
             unlockedBlob = null;
             unlockedName = '';
         }
+
+        // Expose handlers to global scope
+        window.clearWorkspace = clearWorkspace;
+        window.processUnlock = processUnlock;
+        window.downloadResult = downloadResult;
+        window.resetTool = resetTool;
 
         lucide.createIcons();
     </script>

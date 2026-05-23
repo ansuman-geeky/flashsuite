@@ -483,9 +483,9 @@
         }
 
         .btn-download {
-            background: #2ecc71;
+            background: var(--primary);
             color: white;
-            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.25);
+            box-shadow: 0 4px 15px rgba(157, 28, 68, 0.25);
             display: flex;
             align-items: center;
             gap: 10px;
@@ -493,8 +493,8 @@
         }
 
         .btn-download:hover {
-            background: #27ae60;
-            box-shadow: 0 8px 25px rgba(46, 204, 113, 0.35);
+            background: #7A1232;
+            box-shadow: 0 8px 25px rgba(157, 28, 68, 0.35);
         }
 
         .btn-reset {
@@ -614,6 +614,15 @@
 
     <!-- Main Workspace Container -->
     <main class="container" style="max-width: 960px;">
+        <!-- Breadcrumbs -->
+        <div class="breadcrumb-container">
+            <ul class="breadcrumbs">
+                <li class="breadcrumb-item"><a href="/pdftools"><i data-lucide="layout-grid"></i> PDF Tools</a></li>
+                <li class="breadcrumb-separator"><i data-lucide="chevron-right"></i></li>
+                <li class="breadcrumb-item active">Protect PDF</li>
+            </ul>
+        </div>
+
         <div class="tool-card fade-in-up">
             
             <!-- Drag & Drop Zone -->
