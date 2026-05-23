@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convert Excel to PDF Online - Free Spreadsheet to PDF | FlashSuite</title>
+    <meta name="description"
+        content="Convert XLSX, XLS, CSV, and ODS spreadsheets into clean, professional PDF tables locally in your web browser. 100% free, private, and secure.">
+    
+    <!-- Structured Data: JSON-LD Schema for SEO Rich Snippets -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://flashsuite.com/exceltopdf.html#software",
+          "name": "FlashSuite Excel to PDF Converter",
+          "operatingSystem": "All",
+          "applicationCategory": "BusinessApplication",
+          "offers": {
+            "@type": "Offer",
+            "price": "0.00",
+            "priceCurrency": "USD"
+          },
+          "description": "Convert Excel spreadsheets (.xlsx, .xls, .csv, .ods) into neat multi-page PDF document tables locally in the browser."
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://flashsuite.com/exceltopdf.html#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How does FlashSuite convert Excel to PDF without server uploads?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "FlashSuite converts files 100% client-side. We use SheetJS to read and parse the Excel worksheet structures, and jsPDF along with the autoTable plugin to render clean, readable data grids as PDF page tables directly in your browser memory."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Are my financial spreadsheets safe on FlashSuite?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Completely. Because FlashSuite processes files offline inside your browser, no file data ever leaves your computer or gets uploaded to our servers, keeping sensitive corporate or personal financials entirely private."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Sheets Parsing and PDF Generation Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        // Define global jsPDF for autoTable plugin registration compatibility
+        window.jsPDF = window.jspdf.jsPDF;
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        .pdf-hero {
+            text-align: center;
+            padding: 80px 0 40px;
+            background: var(--bg);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .tool-card {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 24px;
+            padding: 45px 40px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.03);
+            margin-top: 10px;
+            margin-bottom: 80px;
+        }
+
+        .drop-zone {
+            border: 2px dashed rgba(39, 174, 96, 0.25);
+            border-radius: 20px;
+            background: rgba(39, 174, 96, 0.003);
+            padding: 60px 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .drop-zone:hover, .drop-zone.dragover {
+            border-color: #27ae60;
+            background: rgba(39, 174, 96, 0.04);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(39, 174, 96, 0.05);
+        }
+
+        .drop-zone input[type="file"] {
+            display: none;
+        }
+
+        .upload-icon {
+            width: 52px;
+            height: 52px;
+            color: #27ae60;
+            margin-bottom: 20px;
+            stroke-width: 1.5;
+        }
+
+        .drop-zone h3 {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin: 0 0 10px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .drop-zone p {
+            color: #666;
+            margin: 0 0 15px 0;
+            font-size: 1rem;
+        }
+
+        .file-limits {
+            display: inline-block;
+            font-size: 0.8rem;
+            color: #999;
+            background: #f3f3f3;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        /* Workspace Grid Layout */
+        .workspace-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 40px;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        .file-info-panel {
+            background: #fafafa;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .doc-detail-card {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .doc-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(39, 174, 96, 0.1);
+            color: #27ae60;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .doc-meta {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .doc-meta h4 {
+            margin: 0 0 4px 0;
+            font-size: 1rem;
+            color: var(--secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .doc-meta span {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .sheet-selection-card h3 {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+
+        .sheet-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 250px;
+            overflow-y: auto;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            padding: 12px;
+            background: white;
+        }
+
+        .sheet-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        .sheet-item:hover {
+            background: rgba(39, 174, 96, 0.04);
+        }
+
+        .sheet-item input[type="checkbox"] {
+            accent-color: #27ae60;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .settings-panel {
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .settings-panel h3 {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .setting-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .setting-group label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .setting-group select {
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1.5px solid rgba(0, 0, 0, 0.08);
+            font-size: 0.95rem;
+            font-family: inherit;
+            color: var(--secondary);
+            background: white;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .setting-group select:focus {
+            border-color: #27ae60;
+        }
+
+        .setting-checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-top: 5px;
+        }
+
+        .setting-checkbox-label input[type="checkbox"] {
+            accent-color: #27ae60;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .workspace-actions {
+            grid-column: span 2;
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            padding-top: 25px;
+        }
+
+        .btn-action-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(157, 28, 68, 0.2);
+        }
+
+        .btn-action-outline {
+            background: transparent;
+            color: #666;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: none;
+        }
+
+        .btn-action-outline:hover {
+            background: #fafafa;
+            border-color: rgba(0, 0, 0, 0.2);
+            color: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        /* Success & Processing UI */
+        .processing-state, .success-state {
+            text-align: center;
+            padding: 50px 0;
+        }
+
+        .success-state {
+            animation: scaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .processing-icon {
+            width: 52px;
+            height: 52px;
+            color: var(--primary);
+            animation: spin 1.5s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        .success-icon {
+            width: 64px;
+            height: 64px;
+            color: #27ae60;
+            background: rgba(39, 174, 96, 0.1);
+            border-radius: 50%;
+            padding: 12px;
+            margin-bottom: 25px;
+            stroke-width: 2.5;
+        }
+
+        .processing-state h3, .success-state h3 {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin: 0 0 10px 0;
+        }
+
+        .processing-state p, .success-state p {
+            color: #666;
+            margin: 0 0 25px 0;
+        }
+
+        .success-card {
+            background: #fafafa;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 16px;
+            padding: 20px;
+            max-width: 420px;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-align: left;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .workspace-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .workspace-actions {
+                grid-column: span 1;
+                flex-direction: column-reverse;
+            }
+            .workspace-actions button {
+                width: 100%;
+            }
+            .tool-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="glass-nav">
+        <a href="/"><img src="flashsuite_logo.png" alt="FlashSuite Logo" class="nav-logo"></a>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/#hero">URL Shortener</a>
+            <a href="/#hero">QR Generator</a>
+            <a href="/pdftools">PDF Tools</a>
+        </div>
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="/" onclick="toggleMobileMenu()">Home</a>
+        <a href="/#hero" onclick="toggleMobileMenu()">URL Shortener</a>
+        <a href="/#hero" onclick="toggleMobileMenu()">QR Generator</a>
+        <a href="/pdftools" onclick="toggleMobileMenu()">PDF Tools</a>
+    </div>
+
+    <!-- Breadcrumbs -->
+    <div class="breadcrumb-container">
+        <div class="container">
+            <ul class="breadcrumbs">
+                <li class="breadcrumb-item"><a href="/pdftools"><i data-lucide="arrow-left"></i> PDF Tools</a></li>
+                <li class="breadcrumb-separator"><i data-lucide="chevron-right"></i></li>
+                <li class="breadcrumb-item active">Excel to PDF</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="container">
+        <div class="tool-card">
+            <!-- File Drop Zone -->
+            <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+                <i data-lucide="file-spreadsheet" class="upload-icon"></i>
+                <h3>Upload Excel file</h3>
+                <p>Select or drag and drop your spreadsheet (.xlsx, .xls, .csv, .ods)</p>
+                <span class="file-limits">Up to 10 MB • Local Processing</span>
+                <input type="file" id="fileInput" accept=".xlsx, .xls, .csv, .ods" onchange="handleFileSelect(event)">
+            </div>
+
+            <!-- Processing Spinner State -->
+            <div class="processing-state" id="processingState" style="display: none;">
+                <i data-lucide="loader" class="processing-icon"></i>
+                <h3 id="progressTitle">Parsing document...</h3>
+                <p>Processing files completely client-side. Your data never leaves your computer.</p>
+            </div>
+
+            <!-- Workspace Panel (Hidden by default) -->
+            <div class="workspace-grid" id="workspace" style="display: none;">
+                <!-- Left Details Column -->
+                <div class="file-info-panel">
+                    <div class="doc-detail-card">
+                        <div class="doc-icon">
+                            <i data-lucide="file-spreadsheet"></i>
+                        </div>
+                        <div class="doc-meta">
+                            <h4 id="docName">document.xlsx</h4>
+                            <span id="docSize">0 KB</span>
+                        </div>
+                    </div>
+
+                    <!-- Worksheet Checklist -->
+                    <div class="sheet-selection-card">
+                        <h3>Select Sheets to Convert</h3>
+                        <div class="sheet-list" id="sheetSelectionContainer">
+                            <!-- Sheets checkboxes will populate here dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Settings Column -->
+                <div class="settings-panel">
+                    <h3>Page & Table Layout</h3>
+                    
+                    <div class="setting-group">
+                        <label for="optOrientation">Page Orientation</label>
+                        <select id="optOrientation">
+                            <option value="l" selected>Landscape (Recommended for sheets)</option>
+                            <option value="p">Portrait</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-group">
+                        <label for="optTheme">Table Theme</label>
+                        <select id="optTheme">
+                            <option value="grid" selected>Grid Borders</option>
+                            <option value="striped">Striped Rows</option>
+                            <option value="plain">Minimal Plain</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-group">
+                        <label for="optFontSize">Font Size</label>
+                        <select id="optFontSize">
+                            <option value="7">Small (7pt - fits wide tables)</option>
+                            <option value="9" selected>Medium (9pt)</option>
+                            <option value="11">Large (11pt)</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-group">
+                        <label for="optHeaderColor">Header Background Color</label>
+                        <input type="color" id="optHeaderColor" value="#9D1C44" style="width: 100%; height: 45px; border-radius: 12px; border: 1.5px solid rgba(0,0,0,0.08); padding: 5px; cursor: pointer; background: white;">
+                    </div>
+
+                    <label class="setting-checkbox-label">
+                        <input type="checkbox" id="optUseHeaderColor" checked onchange="document.getElementById('optHeaderColor').disabled = !this.checked; document.getElementById('optHeaderColor').style.opacity = this.checked ? 1 : 0.5;">
+                        <span>Apply custom header color</span>
+                    </label>
+
+                    <label class="setting-checkbox-label">
+                        <input type="checkbox" id="optPageBreaks" checked>
+                        <span>Start each sheet on a new page</span>
+                    </label>
+                </div>
+
+                <!-- Workspace Actions Bar -->
+                <div class="workspace-actions">
+                    <button class="btn-action-outline" onclick="resetTool()">Cancel</button>
+                    <button class="btn-action-primary" onclick="processConversion()">Convert to PDF</button>
+                </div>
+            </div>
+
+            <!-- Success Download State -->
+            <div class="success-state" id="successState" style="display: none;">
+                <i data-lucide="check-circle" class="success-icon"></i>
+                <h3>Excel Converted Successfully!</h3>
+                <p>Your PDF file is ready for download.</p>
+                
+                <div class="success-card">
+                    <div class="doc-icon">
+                        <i data-lucide="file-check"></i>
+                    </div>
+                    <div class="doc-meta">
+                        <h4 id="successFileName">document.pdf</h4>
+                        <span id="successFileSize">0 KB</span>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                    <button class="btn-action-outline" onclick="resetTool()">Convert Another</button>
+                    <button class="btn-action-primary" onclick="downloadResult()">Download PDF</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <nav class="footer-nav">
+            <a href="/">Home</a>
+            <a href="/blog">Blog</a>
+            <a href="/about">About Us</a>
+            <a href="/privacy">Privacy Policy</a>
+            <a href="/terms">Terms of Service</a>
+        </nav>
+        <p class="footer-copy">&copy; 2026 FlashSuite. All rights reserved.</p>
+    </footer>
+
+    <!-- Script handlers and SheetJS/jsPDF wrapper logic -->
+    <script>
+        let uploadedFile = null;
+        let workbook = null;
+        let compiledBlob = null;
+        let compiledName = '';
+
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const processingState = document.getElementById('processingState');
+        const progressTitle = document.getElementById('progressTitle');
+        const workspace = document.getElementById('workspace');
+        const successState = document.getElementById('successState');
+
+        const docName = document.getElementById('docName');
+        const docSize = document.getElementById('docSize');
+        const sheetSelectionContainer = document.getElementById('sheetSelectionContainer');
+
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+            document.getElementById('mobileMenuOverlay').classList.toggle('active');
+        }
+
+        // Drag and drop event listeners
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if (files.length > 0) {
+                loadDocument(files[0]);
+            }
+        });
+
+        function handleFileSelect(e) {
+            if (e.target.files.length > 0) {
+                loadDocument(e.target.files[0]);
+            }
+            fileInput.value = '';
+        }
+
+        async function loadDocument(file) {
+            const ext = file.name.toLowerCase().split('.').pop();
+            const validExtensions = ['xlsx', 'xls', 'csv', 'ods'];
+            if (!validExtensions.includes(ext)) {
+                alert("Please select a valid Excel spreadsheet (.xlsx, .xls, .csv, or .ods).");
+                return;
+            }
+
+            uploadedFile = file;
+            docName.innerText = file.name;
+            docSize.innerText = formatBytes(file.size);
+
+            dropZone.style.display = 'none';
+            processingState.style.display = 'block';
+            progressTitle.innerText = "Parsing spreadsheet sheets...";
+
+            try {
+                const arrayBuffer = await file.arrayBuffer();
+                workbook = XLSX.read(arrayBuffer, { type: 'array', cellStyles: true });
+                
+                sheetSelectionContainer.innerHTML = '';
+                workbook.SheetNames.forEach((sheetName) => {
+                    const label = document.createElement('label');
+                    label.className = 'sheet-item';
+                    
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.value = sheetName;
+                    checkbox.checked = true;
+                    checkbox.className = 'sheet-checkbox';
+                    
+                    const span = document.createElement('span');
+                    span.innerText = sheetName;
+                    
+                    label.appendChild(checkbox);
+                    label.appendChild(span);
+                    sheetSelectionContainer.appendChild(label);
+                });
+
+                processingState.style.display = 'none';
+                workspace.style.display = 'grid';
+            } catch (err) {
+                console.error("Error reading spreadsheet:", err);
+                alert("Failed to load spreadsheet. It might be corrupted or in an unsupported format.");
+                clearWorkspace();
+            }
+        }
+
+        function formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        }
+
+        function getColLetter(index) {
+            let letter = "";
+            while (index >= 0) {
+                letter = String.fromCharCode((index % 26) + 65) + letter;
+                index = Math.floor(index / 26) - 1;
+            }
+            return letter;
+        }
+
+        function hexToRgb(hex) {
+            const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+            hex = hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? [
+                parseInt(result[1], 16),
+                parseInt(result[2], 16),
+                parseInt(result[3], 16)
+            ] : [157, 28, 68];
+        }
+
+        function getContrastColor(rgb) {
+            const luminance = (0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]) / 255;
+            return luminance > 0.5 ? [26, 43, 60] : [255, 255, 255];
+        }
+
+        async function processConversion() {
+            if (!uploadedFile || !workbook) return;
+
+            const checkboxes = document.querySelectorAll('.sheet-checkbox');
+            const selectedSheets = Array.from(checkboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+
+            if (selectedSheets.length === 0) {
+                alert("Please select at least one sheet to convert.");
+                return;
+            }
+
+            const orientation = document.getElementById('optOrientation').value;
+            const theme = document.getElementById('optTheme').value;
+            const fontSizeVal = parseInt(document.getElementById('optFontSize').value);
+            const addPageBreaks = document.getElementById('optPageBreaks').checked;
+            const useHeaderColor = document.getElementById('optUseHeaderColor').checked;
+            const headerColorHex = document.getElementById('optHeaderColor').value;
+            const headerColorRgb = hexToRgb(headerColorHex);
+            const headerTextColor = getContrastColor(headerColorRgb);
+
+            workspace.style.display = 'none';
+            processingState.style.display = 'block';
+            progressTitle.innerText = "Converting spreadsheet to PDF...";
+
+            try {
+                // Access jsPDF module correctly
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF({
+                    orientation: orientation,
+                    unit: 'pt',
+                    format: 'a4'
+                });
+
+                let isFirstPage = true;
+
+                for (const sheetName of selectedSheets) {
+                    const sheet = workbook.Sheets[sheetName];
+                    const rawData = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: "" });
+                    if (rawData.length === 0) continue;
+
+                    // Trim trailing empty rows
+                    let lastNonEmptyRowIndex = -1;
+                    for (let r = rawData.length - 1; r >= 0; r--) {
+                        const row = rawData[r];
+                        const isRowEmpty = !row || row.every(cell => cell === null || cell === undefined || String(cell).trim() === "");
+                        if (!isRowEmpty) {
+                            lastNonEmptyRowIndex = r;
+                            break;
+                        }
+                    }
+
+                    if (lastNonEmptyRowIndex === -1) continue; // all rows empty
+
+                    const trimmedData = rawData.slice(0, lastNonEmptyRowIndex + 1);
+                    const headers = trimmedData[0] || [];
+                    const rows = trimmedData.slice(1);
+
+                    // Find max columns in any row
+                    let maxCols = headers.length;
+                    for (const row of rows) {
+                        if (row && row.length > maxCols) {
+                            maxCols = row.length;
+                        }
+                    }
+
+                    if (maxCols === 0) continue;
+
+                    // Rectangular headers with letter fallback
+                    const cleanHeaders = [];
+                    for (let c = 0; c < maxCols; c++) {
+                        const headerVal = headers[c];
+                        if (headerVal !== undefined && headerVal !== null && String(headerVal).trim() !== "") {
+                            cleanHeaders.push(String(headerVal));
+                        } else {
+                            cleanHeaders.push(getColLetter(c));
+                        }
+                    }
+
+                    // Rectangular rows padding
+                    const cleanRows = [];
+                    for (const row of rows) {
+                        const cleanRow = [];
+                        for (let c = 0; c < maxCols; c++) {
+                            const cell = row ? row[c] : "";
+                            cleanRow.push(cell === null || cell === undefined ? "" : String(cell));
+                        }
+                        cleanRows.push(cleanRow);
+                    }
+
+                    if (!isFirstPage && addPageBreaks) {
+                        doc.addPage();
+                    }
+                    isFirstPage = false;
+
+                    const headStylesConfig = {
+                        fontStyle: 'bold'
+                    };
+                    if (useHeaderColor) {
+                        headStylesConfig.fillColor = headerColorRgb;
+                        headStylesConfig.textColor = headerTextColor;
+                    } else {
+                        headStylesConfig.fillColor = theme === 'plain' ? null : [242, 242, 242];
+                        headStylesConfig.textColor = [26, 43, 60];
+                    }
+
+                    doc.autoTable({
+                        head: [cleanHeaders],
+                        body: cleanRows,
+                        startY: 55,
+                        theme: theme,
+                        styles: {
+                            fontSize: fontSizeVal,
+                            cellPadding: 5,
+                            overflow: 'linebreak',
+                            font: 'helvetica'
+                        },
+                        headStyles: headStylesConfig,
+                        didParseCell: function(data) {
+                            const sheetRowIndex = data.row.section === 'head' ? 0 : data.row.index + 1;
+                            const colIndex = data.column.index;
+                            
+                            const cellAddress = XLSX.utils.encode_cell({ r: sheetRowIndex, c: colIndex });
+                            const cell = sheet[cellAddress];
+                            
+                            if (cell && cell.s) {
+                                // 1. Background fill color extraction
+                                if (cell.s.fill && cell.s.fill.fgColor && cell.s.fill.fgColor.rgb) {
+                                    const hex = String(cell.s.fill.fgColor.rgb);
+                                    const cleanHex = hex.length === 8 ? hex.substring(2) : hex;
+                                    data.cell.styles.fillColor = hexToRgb("#" + cleanHex);
+                                } else if (!useHeaderColor && data.row.section === 'head') {
+                                    data.cell.styles.fillColor = theme === 'plain' ? null : [242, 242, 242];
+                                }
+                                
+                                // 2. Font color extraction
+                                if (cell.s.font && cell.s.font.color && cell.s.font.color.rgb) {
+                                    const hex = String(cell.s.font.color.rgb);
+                                    const cleanHex = hex.length === 8 ? hex.substring(2) : hex;
+                                    data.cell.styles.textColor = hexToRgb("#" + cleanHex);
+                                }
+                                
+                                // 3. Font weight / style (bold / italic)
+                                let style = '';
+                                if (cell.s.font && cell.s.font.bold) style += 'bold';
+                                if (cell.s.font && cell.s.font.italic) style += 'italic';
+                                if (style) {
+                                    data.cell.styles.fontStyle = style;
+                                }
+                                
+                                // 4. Text alignment
+                                if (cell.s.alignment && cell.s.alignment.horizontal) {
+                                    data.cell.styles.halign = cell.s.alignment.horizontal;
+                                }
+                            } else if (!useHeaderColor && data.row.section === 'head') {
+                                data.cell.styles.fillColor = theme === 'plain' ? null : [242, 242, 242];
+                                data.cell.styles.textColor = [26, 43, 60];
+                            }
+                        },
+                        margin: { top: 50, right: 30, bottom: 40, left: 30 },
+                        didDrawPage: function(data) {
+                            doc.setFontSize(12);
+                            doc.setTextColor(26, 43, 60);
+                            doc.setFont("helvetica", "bold");
+                            doc.text(`${sheetName}`, 30, 30);
+                            
+                            const pageWidth = doc.internal.pageSize.getWidth();
+                            const pageHeight = doc.internal.pageSize.getHeight();
+                            
+                            doc.setDrawColor(220, 220, 220);
+                            doc.setLineWidth(1);
+                            doc.line(30, 38, pageWidth - 30, 38);
+
+                            doc.setFontSize(8);
+                            doc.setTextColor(150);
+                            doc.setFont("helvetica", "normal");
+                            const pageStr = "Page " + doc.internal.getNumberOfPages();
+                            doc.text(pageStr, pageWidth - 50, pageHeight - 20);
+                        }
+                    });
+                }
+
+                compiledBlob = doc.output('blob');
+                compiledName = uploadedFile.name.replace(/\.[^/.]+$/, "") + '.pdf';
+
+                document.getElementById('successFileName').innerText = compiledName;
+                document.getElementById('successFileSize').innerText = formatBytes(compiledBlob.size);
+
+                setTimeout(() => {
+                    processingState.style.display = 'none';
+                    successState.style.display = 'block';
+                }, 800);
+
+            } catch (err) {
+                console.error("Conversion to PDF failed:", err);
+                alert("An error occurred while generating the PDF document.");
+                processingState.style.display = 'none';
+                workspace.style.display = 'grid';
+            }
+        }
+
+        window.downloadResult = function() {
+            if (!compiledBlob) return;
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(compiledBlob);
+            link.download = compiledName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function clearWorkspace() {
+            uploadedFile = null;
+            workbook = null;
+            compiledBlob = null;
+            compiledName = '';
+            workspace.style.display = 'none';
+            dropZone.style.display = 'block';
+        }
+
+        function resetTool() {
+            clearWorkspace();
+            successState.style.display = 'none';
+        }
+
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

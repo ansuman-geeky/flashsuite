@@ -9,123 +9,16 @@
         content="Powerful, fast, and secure PDF tools. Merge, split, compress, and convert PDFs online for free with FlashSuite.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Material 3 Hero Design styling overrides */
         .pdf-hero {
-            position: relative;
             text-align: center;
-            padding: 100px 0 60px;
-            background: linear-gradient(180deg, rgba(250, 245, 247, 0.8) 0%, rgba(248, 249, 250, 1) 100%);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.02);
-            overflow: hidden;
-        }
-
-        /* M3 Ambient Glow Shapes */
-        .m3-shape {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(95px);
-            opacity: 0.35;
-            z-index: 1;
-            pointer-events: none;
-            transition: all 0.8s ease;
-        }
-
-        .shape-1 {
-            width: 340px;
-            height: 340px;
-            background: radial-gradient(circle, var(--primary) 0%, rgba(157, 28, 68, 0) 70%);
-            top: -100px;
-            right: 10%;
-        }
-
-        .shape-2 {
-            width: 420px;
-            height: 420px;
-            background: radial-gradient(circle, var(--secondary) 0%, rgba(26, 43, 60, 0) 70%);
-            bottom: -180px;
-            left: 2%;
-        }
-
-        .pdf-hero .container {
-            position: relative;
-            z-index: 2;
-            max-width: 800px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 24px;
-        }
-
-        /* Material 3 Assist Chip (Pill Badge) */
-        .m3-badge {
-            font-family: 'Outfit', sans-serif;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 22px;
-            background: rgba(157, 28, 68, 0.06);
-            border: 1px solid rgba(157, 28, 68, 0.16);
-            border-radius: 100px;
-            color: var(--primary);
-            font-size: 0.9rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            box-shadow: 0 2px 6px rgba(157, 28, 68, 0.04);
-            animation: m3Pulse 2.5s infinite ease-in-out;
-        }
-
-        .m3-badge-icon {
-            width: 16px;
-            height: 16px;
-            stroke-width: 2.5;
-        }
-
-        @keyframes m3Pulse {
-            0%, 100% {
-                transform: scale(1);
-                box-shadow: 0 2px 6px rgba(157, 28, 68, 0.04);
-            }
-            50% {
-                transform: scale(1.03);
-                box-shadow: 0 4px 12px rgba(157, 28, 68, 0.12);
-                border-color: rgba(157, 28, 68, 0.28);
-                background: rgba(157, 28, 68, 0.09);
-            }
-        }
-
-        /* M3 Hero Typography */
-        .m3-title {
-            font-family: 'Outfit', sans-serif;
-            font-size: 3.8rem;
-            font-weight: 800;
-            line-height: 1.15;
-            letter-spacing: -2px;
-            margin: 0;
-            color: var(--secondary);
-        }
-
-        .m3-text-gradient {
-            background: linear-gradient(135deg, var(--secondary) 15%, var(--primary) 85%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .m3-description {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.25rem;
-            line-height: 1.6;
-            color: rgba(26, 43, 60, 0.75);
-            max-width: 660px;
-            margin: 0 auto;
-            font-weight: 400;
+            padding: 80px 0 40px;
+            background: var(--bg);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
         }
 
         .pdf-grid {
@@ -182,37 +75,58 @@
             margin-bottom: 5px;
         }
 
-        .icon-merge { background: rgba(157, 28, 68, 0.1); color: var(--primary); }
-        .icon-split { background: rgba(52, 152, 219, 0.1); color: #3498DB; }
-        .icon-compress { background: rgba(46, 204, 113, 0.1); color: #2ECC71; }
-        .icon-word { background: rgba(41, 128, 185, 0.1); color: #2980B9; }
-        .icon-img { background: rgba(241, 196, 15, 0.1); color: #F1C40F; }
-        .icon-lock { background: rgba(44, 62, 80, 0.1); color: #2C3E50; }
-        .icon-crop { background: rgba(155, 89, 182, 0.1); color: #9B59B6; }
-        .icon-edit { background: rgba(230, 126, 34, 0.1); color: #E67E22; }
+        .icon-merge {
+            background: rgba(157, 28, 68, 0.1);
+            color: var(--primary);
+        }
+
+        .icon-split {
+            background: rgba(52, 152, 219, 0.1);
+            color: #3498DB;
+        }
+
+        .icon-compress {
+            background: rgba(46, 204, 113, 0.1);
+            color: #2ECC71;
+        }
+
+        .icon-word {
+            background: rgba(41, 128, 185, 0.1);
+            color: #2980B9;
+        }
+
+        .icon-img {
+            background: rgba(241, 196, 15, 0.1);
+            color: #F1C40F;
+        }
+
+        .icon-lock {
+            background: rgba(44, 62, 80, 0.1);
+            color: #2C3E50;
+        }
+
+        .icon-crop {
+            background: rgba(155, 89, 182, 0.1);
+            color: #9B59B6;
+        }
+
+        .icon-edit {
+            background: rgba(230, 126, 34, 0.1);
+            color: #E67E22;
+        }
+
         .icon-sig { background: rgba(26, 188, 156, 0.1); color: #1ABC9C; }
+        .icon-excel { background: rgba(39, 174, 96, 0.1); color: #27AE60; }
 
         @media (max-width: 768px) {
             .pdf-hero {
-                padding: 70px 20px 45px;
+                padding: 60px 20px 30px;
             }
-            .m3-title {
-                font-size: 2.6rem;
-                letter-spacing: -1px;
+
+            .pdf-hero h1 {
+                font-size: 2.5rem !important;
             }
-            .m3-description {
-                font-size: 1.05rem;
-            }
-            .shape-1 {
-                width: 200px;
-                height: 200px;
-                right: -20px;
-            }
-            .shape-2 {
-                width: 250px;
-                height: 250px;
-                left: -30px;
-            }
+
             .pdf-grid {
                 padding: 40px 20px;
                 grid-template-columns: 1fr;
@@ -245,18 +159,15 @@
 
     <!-- Hero Section -->
     <section class="pdf-hero">
-        <div class="m3-shape shape-1"></div>
-        <div class="m3-shape shape-2"></div>
         <div class="container fade-in-up">
-            <div class="m3-badge">
-                <i data-lucide="sparkles" class="m3-badge-icon"></i>
-                <span>FlashSuite PDF Tools</span>
-            </div>
-            <h1 class="m3-title">
+            <!-- <div class="hero-badge">
+                FlashSuite PDF Tools
+            </div> -->
+            <h1>
                 Every PDF Tool You Need,<br>
-                <span class="m3-text-gradient">All in One Place.</span>
+                <span class="text-gradient">All in One Place.</span>
             </h1>
-            <p class="m3-description">
+            <p class="hero-description">
                 FlashSuite PDF tools allow you to merge, split, compress, and convert documents in seconds. Secure,
                 fast, and 100% free.
             </p>
@@ -340,6 +251,13 @@
             <div class="tool-icon icon-sig"><i data-lucide="signature"></i></div>
             <h3>Sign PDF</h3>
             <p>Add digital signatures, draw, or type signature to sign PDF pages.</p>
+        </div>
+
+        <!-- Excel to PDF -->
+        <div class="pdf-card fade-in-up delay-1" onclick="location.href='/exceltopdf'">
+            <div class="tool-icon icon-excel"><i data-lucide="file-spreadsheet"></i></div>
+            <h3>Excel to PDF</h3>
+            <p>Convert Excel spreadsheets (.xlsx, .xls) to PDF documents locally.</p>
         </div>
     </main>
 
