@@ -3,6 +3,7 @@ const session = require('express-session');
 const path = require('path');
 const db = require('./models/database');
 const apiRoutes = require('./routes/api');
+const humanizeRoutes = require('./routes/humanize');
 
 // SEO Programmatic Middlewares & Routers
 const seoPrerender = require('./middleware/seo');
@@ -83,6 +84,7 @@ app.get('/health', (req, res) => res.status(200).send('OK'));
 
 // API Routes
 app.use('/api', apiRoutes);
+app.use('/api', humanizeRoutes);
 
 // Redirection Logic
 app.get('/:code', (req, res) => {

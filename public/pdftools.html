@@ -115,8 +115,15 @@
             color: #E67E22;
         }
 
-        .icon-sig { background: rgba(26, 188, 156, 0.1); color: #1ABC9C; }
-        .icon-excel { background: rgba(39, 174, 96, 0.1); color: #27AE60; }
+        .icon-sig {
+            background: rgba(26, 188, 156, 0.1);
+            color: #1ABC9C;
+        }
+
+        .icon-excel {
+            background: rgba(39, 174, 96, 0.1);
+            color: #27AE60;
+        }
 
         @media (max-width: 768px) {
             .pdf-hero {
@@ -144,6 +151,7 @@
             <a href="/#hero">URL Shortener</a>
             <a href="/#hero">QR Generator</a>
             <a href="/pdftools" class="active">PDF Tools</a>
+            <a href="/humanize">Humanize AI Texts</a>
         </div>
         <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
     </nav>
@@ -155,6 +163,7 @@
         <a href="/#hero" onclick="toggleMobileMenu()">URL Shortener</a>
         <a href="/#hero" onclick="toggleMobileMenu()">QR Generator</a>
         <a href="/pdftools" onclick="toggleMobileMenu()">PDF Tools</a>
+        <a href="/humanize" onclick="toggleMobileMenu()">Humanize AI</a>
     </div>
 
     <!-- Hero Section -->
@@ -174,7 +183,8 @@
             <div class="trust-info-banner" style="margin: 25px auto 0 auto; max-width: 650px;">
                 <div class="trust-info-icon"><i data-lucide="shield-check"></i></div>
                 <div class="trust-info-text">
-                    <strong>100% Client-Side Privacy:</strong> Your documents are processed entirely in your web browser. No files are ever uploaded, stored, or analyzed on our servers.
+                    <strong>100% Client-Side Privacy:</strong> Your documents are processed entirely in your web
+                    browser. No files are ever uploaded, stored, or analyzed on our servers.
                 </div>
             </div>
         </div>
@@ -270,43 +280,68 @@
     <!-- Premium SEO Content Section -->
     <section class="seo-content-section">
         <h2>Secure, Browser-Based PDF Tools Suite</h2>
-        <p>Managing your document formats should not mean compromising your file privacy. FlashSuite offers a full catalog of offline-capable, client-side PDF utilities. Because all operations run directly in your browser's local sandbox, your sensitive files are never sent over public network connections. Here is the layout of our specialized tools:</p>
+        <p>Managing your document formats should not mean compromising your file privacy. FlashSuite offers a full
+            catalog of offline-capable, client-side PDF utilities. Because all operations run directly in your browser's
+            local sandbox, your sensitive files are never sent over public network connections. Here is the layout of
+            our specialized tools:</p>
 
         <h3>Core Document Utilities:</h3>
         <ul>
-            <li><strong>Organize & Edit:</strong> E-sign agreements with the <strong>Sign PDF</strong> tool, make modifications with the <strong>PDF Editor</strong>, crop files using the <strong>PDF Cropper</strong>, or join and segment documents with the <strong>Merge PDF</strong> and <strong>Split PDF</strong> utilities.</li>
-            <li><strong>Convert Document Layouts:</strong> Convert transactions or tax balance sheets using the <strong>Excel to PDF</strong> spreadsheet converter, parse raw paragraphs into text files using the <strong>PDF to Word</strong> converter, or transform between visual formats with the <strong>PDF to Image</strong> and <strong>Image to PDF</strong> functions.</li>
-            <li><strong>Optimize & Protect:</strong> Minimize file size using the <strong>Compress PDF</strong> engine, or control access with the <strong>Protect PDF</strong> (add password) and <strong>Unlock PDF</strong> (remove restriction) tools.</li>
+            <li><strong>Organize & Edit:</strong> E-sign agreements with the <strong>Sign PDF</strong> tool, make
+                modifications with the <strong>PDF Editor</strong>, crop files using the <strong>PDF Cropper</strong>,
+                or join and segment documents with the <strong>Merge PDF</strong> and <strong>Split PDF</strong>
+                utilities.</li>
+            <li><strong>Convert Document Layouts:</strong> Convert transactions or tax balance sheets using the
+                <strong>Excel to PDF</strong> spreadsheet converter, parse raw paragraphs into text files using the
+                <strong>PDF to Word</strong> converter, or transform between visual formats with the <strong>PDF to
+                    Image</strong> and <strong>Image to PDF</strong> functions.</li>
+            <li><strong>Optimize & Protect:</strong> Minimize file size using the <strong>Compress PDF</strong> engine,
+                or control access with the <strong>Protect PDF</strong> (add password) and <strong>Unlock PDF</strong>
+                (remove restriction) tools.</li>
         </ul>
 
         <h2>Why Use FlashSuite's Client-Side Document Suite?</h2>
-        <p>Standard online PDF utilities upload your bank statements, client invoices, business contracts, and medical records to cloud servers, exposing you to data leaks. FlashSuite completely resolves this security gap. By utilizing local WebAssembly engines and HTML5 canvas layers, all document modifications are rendered in-memory on your device. It is 100% private, free, and secure.</p>
+        <p>Standard online PDF utilities upload your bank statements, client invoices, business contracts, and medical
+            records to cloud servers, exposing you to data leaks. FlashSuite completely resolves this security gap. By
+            utilizing local WebAssembly engines and HTML5 canvas layers, all document modifications are rendered
+            in-memory on your device. It is 100% private, free, and secure.</p>
 
         <h3>Elite Platform Features:</h3>
         <ul>
-            <li><strong>Zero Server Uploads:</strong> Complete document privacy. Files are processed entirely locally and never touch our servers.</li>
-            <li><strong>Uncompromising Speed:</strong> Avoid slow server-side queues. Local CPU rendering produces instantaneous results.</li>
-            <li><strong>Completely Free:</strong> Enjoy unlimited document formatting with no restrictions on page count, dimensions, or file size.</li>
-            <li><strong>No Installations:</strong> Use professional-grade tools directly inside any web browser on desktop, tablet, or mobile.</li>
+            <li><strong>Zero Server Uploads:</strong> Complete document privacy. Files are processed entirely locally
+                and never touch our servers.</li>
+            <li><strong>Uncompromising Speed:</strong> Avoid slow server-side queues. Local CPU rendering produces
+                instantaneous results.</li>
+            <li><strong>Completely Free:</strong> Enjoy unlimited document formatting with no restrictions on page
+                count, dimensions, or file size.</li>
+            <li><strong>No Installations:</strong> Use professional-grade tools directly inside any web browser on
+                desktop, tablet, or mobile.</li>
         </ul>
 
         <h2>Frequently Asked Questions About FlashSuite PDF Tools</h2>
         <div class="faq-grid">
             <div class="faq-item">
                 <h4>How do browser-based PDF tools work without server uploads?</h4>
-                <p>FlashSuite utilizes local rendering libraries (like PDF-Lib and PDF.js) compiled into WebAssembly. This allows your browser to read document vector matrices, apply edits, and compile new PDF output files directly in your system's RAM.</p>
+                <p>FlashSuite utilizes local rendering libraries (like PDF-Lib and PDF.js) compiled into WebAssembly.
+                    This allows your browser to read document vector matrices, apply edits, and compile new PDF output
+                    files directly in your system's RAM.</p>
             </div>
             <div class="faq-item">
                 <h4>Are client-side PDF tools safer than standard cloud converters?</h4>
-                <p>Yes. Because your files are never transmitted to any external databases or server hosts, it is mathematically impossible for third parties to intercept, access, or leak your private information.</p>
+                <p>Yes. Because your files are never transmitted to any external databases or server hosts, it is
+                    mathematically impossible for third parties to intercept, access, or leak your private information.
+                </p>
             </div>
             <div class="faq-item">
                 <h4>Do I need a paid subscription or account to use these tools?</h4>
-                <p>No. All 12 PDF utilities in the FlashSuite toolkit are 100% free, require no user account creation, and contain no watermark overlays or file limits.</p>
+                <p>No. All 12 PDF utilities in the FlashSuite toolkit are 100% free, require no user account creation,
+                    and contain no watermark overlays or file limits.</p>
             </div>
             <div class="faq-item">
                 <h4>Can I use these PDF utilities offline?</h4>
-                <p>Yes! Once the webpage is loaded in your browser window, all computation and page layout operations run entirely locally. You can compile, edit, sign, and convert documents without an active internet connection.</p>
+                <p>Yes! Once the webpage is loaded in your browser window, all computation and page layout operations
+                    run entirely locally. You can compile, edit, sign, and convert documents without an active internet
+                    connection.</p>
             </div>
         </div>
     </section>

@@ -1,0 +1,1921 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free AI Humanizer Tool | Humanize AI Text Online</title>
+    <meta name="description"
+        content="Convert AI-generated content into natural human writing instantly with our free AI Humanizer tool. 100% private, secure, and SEO friendly.">
+    
+    <!-- Google Fonts & Lucide Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Schema Markup JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://flashsuite.com/humanize#software",
+          "name": "FlashSuite AI Humanizer",
+          "operatingSystem": "All",
+          "applicationCategory": "BusinessApplication",
+          "offers": {
+            "@type": "Offer",
+            "price": "0.00",
+            "priceCurrency": "USD"
+          },
+          "description": "Convert robotic AI writing into natural human-like content in seconds. Ideal for bypassing AI detection securely."
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://flashsuite.com/humanize#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How does the AI Humanizer tool work?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "It analyzes the input text for common robotic AI patterns (like excessive passive voice or predictable transitions) and restructures the sentences to vary lengths, improve readability, and use natural contractions."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is my text data safe on FlashSuite?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, absolutely. We prioritize user data security. Our endpoints are rate-limited, secured, and we do not store your humanized outputs on our servers."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+
+    <style>
+        /* Custom Modern SaaS Styles matching the spec */
+        :root {
+            --primary-saas: #2563EB;
+            --accent-saas: #10B981;
+            --bg-saas: #F9FAFB;
+            --text-dark: #111827;
+            --border-saas: rgba(0, 0, 0, 0.06);
+            --transition-saas: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-saas);
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            color: var(--text-dark);
+            letter-spacing: -0.5px;
+        }
+
+        /* Glassmorphism Hero Section */
+        .hero-section {
+            position: relative;
+            padding: 100px 20px 50px 20px;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.03) 0%, rgba(16, 185, 129, 0.02) 100%);
+            text-align: center;
+            border-bottom: 1px solid var(--border-saas);
+            overflow: hidden;
+        }
+
+        .hero-container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(37, 99, 235, 0.08);
+            color: var(--primary-saas);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid rgba(37, 99, 235, 0.15);
+        }
+
+        .hero-title {
+            font-size: 3.2rem;
+            line-height: 1.15;
+            margin-bottom: 20px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: #4B5563;
+            max-width: 600px;
+            margin: 0 auto 35px auto;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .btn-saas {
+            background: var(--primary-saas);
+            color: white;
+            padding: 16px 36px;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+            transition: var(--transition-saas);
+            font-family: 'Outfit', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-saas:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(37, 99, 235, 0.35);
+            background: #1D4ED8;
+        }
+
+        /* Workspace Grid Container */
+        .workspace-container {
+            max-width: 1200px;
+            margin: -30px auto 80px auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .workspace-card {
+            background: white;
+            border-radius: 24px;
+            border: 1px solid var(--border-saas);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.04);
+            padding: 30px;
+        }
+
+        /* Configuration Bar */
+        .config-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--border-saas);
+            padding-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .config-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .config-label {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #4B5563;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .dropdown-select {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            font-size: 0.95rem;
+            font-weight: 550;
+            outline: none;
+            background: #fff;
+            cursor: pointer;
+            transition: var(--transition-saas);
+        }
+
+        .dropdown-select:focus {
+            border-color: var(--primary-saas);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .slider-wrapper {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 6px;
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #6B7280;
+        }
+
+        .tone-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #E5E7EB;
+            outline: none;
+            cursor: pointer;
+            transition: var(--transition-saas);
+        }
+
+        .tone-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--primary-saas);
+            border: 2px solid white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            transition: var(--transition-saas);
+        }
+
+        .tone-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        /* Dual Textareas Workspace */
+        .workspace-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 25px;
+        }
+
+        .textarea-wrapper {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 16px;
+            background: #fff;
+            overflow: hidden;
+            position: relative;
+            transition: var(--transition-saas);
+        }
+
+        .textarea-wrapper:focus-within {
+            border-color: var(--primary-saas);
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.05);
+        }
+
+        .textarea-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #F9FAFB;
+            padding: 12px 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #4B5563;
+            text-transform: uppercase;
+        }
+
+        .editor-textarea {
+            width: 100%;
+            height: 380px;
+            border: none;
+            resize: none;
+            outline: none;
+            padding: 20px;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: var(--text-dark);
+            font-family: inherit;
+        }
+
+        .textarea-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            background: #fff;
+            border-top: 1px solid rgba(0, 0, 0, 0.03);
+            font-size: 0.8rem;
+            color: #6B7280;
+        }
+
+        .textarea-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-icon-btn {
+            background: transparent;
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 8px;
+            padding: 6px 10px;
+            cursor: pointer;
+            color: #4B5563;
+            transition: var(--transition-saas);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .action-icon-btn:hover {
+            background: rgba(0,0,0,0.03);
+            color: var(--primary-saas);
+            border-color: rgba(37, 99, 235, 0.15);
+        }
+
+        /* Action Buttons Row */
+        .workspace-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        /* Shimmer Loading Overlay */
+        .shimmer-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.85);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            border-radius: 16px;
+            display: none;
+        }
+
+        .spinner-loader {
+            width: 44px;
+            height: 44px;
+            border: 3.5px solid rgba(37, 99, 235, 0.1);
+            border-top: 3.5px solid var(--primary-saas);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 16px;
+        }
+
+        .shimmer-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary-saas);
+        }
+
+        /* Score Cards Section */
+        /* Premium Detector Card styling to match the image layout */
+        .detectors-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 35px;
+            border-top: 1px solid var(--border-saas);
+            padding-top: 35px;
+        }
+
+        @media (max-width: 768px) {
+            .detectors-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .detector-card {
+            background: #fff;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            transition: var(--transition-saas);
+            text-align: left;
+        }
+
+        .detector-card:hover {
+            border-color: rgba(37, 99, 235, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+        }
+
+        .detector-body {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .detector-left {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .detector-big-percentage {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3.4rem;
+            font-weight: 800;
+            line-height: 1;
+            color: var(--text-dark);
+            letter-spacing: -2px;
+            display: flex;
+            align-items: baseline;
+        }
+
+        .detector-big-percentage::after {
+            content: '%';
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-left: 2px;
+            color: #6B7280;
+        }
+
+        .detector-big-label {
+            font-size: 0.9rem;
+            color: #4B5563;
+            font-weight: 500;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .detector-right {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 1.2;
+            min-width: 200px;
+        }
+
+        .detector-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #374151;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.02);
+            padding-bottom: 6px;
+        }
+
+        .detector-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .detector-row-label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #4B5563;
+        }
+
+        .info-icon {
+            width: 14px;
+            height: 14px;
+            color: #9CA3AF;
+            stroke-width: 2;
+            cursor: help;
+        }
+
+        .detector-row-value {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .indicator-circle {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .circle-ai {
+            background-color: #F59E0B; /* Yellow/Orange */
+        }
+
+        .circle-refined {
+            background-color: #93C5FD; /* Light Blue */
+            border: 1.5px solid #3B82F6;
+        }
+
+        .circle-human {
+            background-color: #fff;
+            border: 2px solid #10B981; /* Green outline */
+        }
+
+        .detector-footer {
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+            padding-top: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .detector-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+        }
+
+        .detector-meta-label {
+            font-weight: 700;
+            color: #4B5563;
+        }
+
+        .badge-source {
+            background-color: #ECFDF5;
+            color: #047857;
+            border: 1px solid #A7F3D0;
+        }
+
+        .badge-readability {
+            background-color: #EFF6FF;
+            color: #1D4ED8;
+            border: 1px solid #BFDBFE;
+        }
+
+
+
+        /* Compare Split Highlights */
+        .compare-section {
+            margin-top: 40px;
+            border-top: 1px solid var(--border-saas);
+            padding-top: 35px;
+            display: none; /* Shown after humanizing */
+        }
+
+        .compare-section h3 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+        }
+
+        .compare-box {
+            background: #FAFBFD;
+            border: 1px solid rgba(37, 99, 235, 0.08);
+            border-radius: 16px;
+            padding: 25px;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #374151;
+            word-break: break-word;
+        }
+
+        .diff-del {
+            color: #EF4444;
+            background-color: #FEE2E2;
+            text-decoration: line-through;
+            padding: 2px 4px;
+            border-radius: 4px;
+            margin: 0 2px;
+        }
+
+        .diff-ins {
+            color: #10B981;
+            background-color: #D1FAE5;
+            text-decoration: none;
+            padding: 2px 4px;
+            border-radius: 4px;
+            margin: 0 2px;
+            font-weight: 600;
+        }
+
+        /* Toast notifications */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--text-dark);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: var(--transition-saas);
+            pointer-events: none;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .toast-success {
+            border-left: 4px solid var(--accent-saas);
+        }
+
+        .toast-error {
+            border-left: 4px solid #EF4444;
+        }
+
+        /* Pricing Section */
+        .pricing-section {
+            background: #fff;
+            padding: 80px 20px;
+            border-bottom: 1px solid var(--border-saas);
+        }
+
+        .pricing-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 50px auto;
+        }
+
+        .pricing-header h2 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: #fff;
+            border: 1px solid var(--border-saas);
+            border-radius: 20px;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
+            transition: var(--transition-saas);
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.04);
+        }
+
+        .pricing-card.premium {
+            border-color: var(--primary-saas);
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.05);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--primary-saas);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .pricing-card h3 {
+            font-size: 1.4rem;
+            margin: 0;
+        }
+
+        .pricing-card .price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            font-family: 'Outfit', sans-serif;
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+        }
+
+        .pricing-card .price span {
+            font-size: 1rem;
+            color: #6B7280;
+            font-weight: 500;
+        }
+
+        .pricing-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .pricing-features li {
+            font-size: 0.95rem;
+            color: #4B5563;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pricing-features li svg {
+            color: var(--accent-saas);
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+        }
+
+        .pricing-btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(0,0,0,0.08);
+            background: #fff;
+            color: #4B5563;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-saas);
+            font-size: 0.95rem;
+        }
+
+        .pricing-card.premium .pricing-btn {
+            background: var(--primary-saas);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.15);
+        }
+
+        .pricing-card.premium .pricing-btn:hover {
+            background: #1D4ED8;
+        }
+
+        .pricing-btn:hover:not(.pricing-card.premium .pricing-btn) {
+            background: rgba(0,0,0,0.03);
+            color: var(--text-dark);
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            background: #F9FAFB;
+            padding: 80px 20px;
+            border-bottom: 1px solid var(--border-saas);
+        }
+
+        .faq-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 50px auto;
+        }
+
+        .faq-header h2 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .faq-card {
+            background: white;
+            border: 1px solid var(--border-saas);
+            border-radius: 16px;
+            padding: 20px 24px;
+            cursor: pointer;
+            transition: var(--transition-saas);
+        }
+
+        .faq-card h4 {
+            font-size: 1.05rem;
+            margin: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+        }
+
+        .faq-card p {
+            font-size: 0.95rem;
+            color: #4B5563;
+            margin: 12px 0 0 0;
+            line-height: 1.6;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .faq-card.active p {
+            display: block;
+        }
+
+        .faq-card.active {
+            border-color: rgba(37, 99, 235, 0.15);
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Check AI Score Button */
+        .btn-detect {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-saas);
+            background: linear-gradient(135deg, #EF4444 0%, #F97316 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-detect:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-detect:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-detect .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            display: none;
+        }
+
+        .btn-detect.loading .spinner {
+            display: inline-block;
+        }
+
+        .btn-detect.loading .btn-detect-label {
+            display: none;
+        }
+
+        /* Confidence Badge */
+        .confidence-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 6px;
+        }
+
+        .confidence-high {
+            background: #FEE2E2;
+            color: #DC2626;
+            border: 1px solid #FECACA;
+        }
+
+        .confidence-medium {
+            background: #FEF3C7;
+            color: #D97706;
+            border: 1px solid #FDE68A;
+        }
+
+        .confidence-low {
+            background: #ECFDF5;
+            color: #059669;
+            border: 1px solid #A7F3D0;
+        }
+
+        .detection-method-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 6px;
+        }
+
+        .method-llm {
+            background: linear-gradient(135deg, #EDE9FE, #FDE68A);
+            color: #7C3AED;
+        }
+
+        .method-rule {
+            background: #F3F4F6;
+            color: #6B7280;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 992px) {
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                max-width: 450px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.3rem;
+            }
+
+            .workspace-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .editor-textarea {
+                height: 280px;
+            }
+
+            .score-cards-row {
+                grid-template-columns: 1fr;
+            }
+
+            .workspace-actions {
+                flex-direction: column;
+            }
+
+            .btn-detect, .btn-saas {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Header -->
+    <nav class="glass-nav">
+        <a href="/"><img src="flashsuite_logo.png" alt="FlashSuite Logo" class="nav-logo"></a>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/pdftools">PDF Tools</a>
+            <a href="/humanize" class="active">Humanize AI</a>
+        </div>
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="/" onclick="toggleMobileMenu()">Home</a>
+        <a href="/pdftools" onclick="toggleMobileMenu()">PDF Tools</a>
+        <a href="/humanize" onclick="toggleMobileMenu()">Humanize AI</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-container">
+            <span class="hero-badge">AI bypass platform</span>
+            <h1 class="hero-title">Humanize AI Text Instantly</h1>
+            <p class="hero-subtitle">Turn robotic AI writing into natural human content in seconds. Improve readability, vary structure, and bypass standard AI detection tools completely offline.</p>
+            <button class="btn-saas" onclick="document.getElementById('aiTextInput').focus()">
+                Humanize Now <i data-lucide="sparkles"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- Main Workspace Container -->
+    <main class="workspace-container">
+        <div class="workspace-card">
+            
+            <!-- Configuration row -->
+            <div class="config-row">
+                <!-- Dropdown Mode selection -->
+                <div class="config-item">
+                    <span class="config-label">Rewriting Mode</span>
+                    <select id="modeSelect" class="dropdown-select">
+                        <option value="Standard">Standard (Balanced flow)</option>
+                        <option value="Academic">Academic (Scholarly & rigorous)</option>
+                        <option value="SEO">SEO (Rank optimization)</option>
+                        <option value="Professional">Professional (Corporate & clear)</option>
+                        <option value="Casual">Casual (Friendly & warm)</option>
+                    </select>
+                </div>
+
+                <!-- Tone slider bar -->
+                <div class="config-item">
+                    <span class="config-label">Target Tone</span>
+                    <div class="slider-wrapper">
+                        <input type="range" id="toneSlider" min="0" max="100" value="50" class="tone-slider">
+                        <div class="slider-labels">
+                            <span>More Natural</span>
+                            <span>More Professional</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Double textareas grid -->
+            <div class="workspace-grid">
+                <!-- AI Source Editor -->
+                <div class="textarea-wrapper">
+                    <div class="textarea-header">
+                        <span>Original AI Text</span>
+                    </div>
+                    <textarea id="aiTextInput" class="editor-textarea" placeholder="Paste your AI-generated text here (up to 8,000 characters)..."></textarea>
+                    <div class="textarea-footer">
+                        <span id="aiWordCount">0 words / 0 chars</span>
+                        <div class="textarea-actions">
+                            <button class="action-icon-btn" onclick="clearInput()" title="Clear Input text">
+                                <i data-lucide="trash-2"></i> Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Output Humanized Editor -->
+                <div class="textarea-wrapper">
+                    <!-- Shimmer loader overlay -->
+                    <div class="shimmer-overlay" id="loadingOverlay">
+                        <div class="spinner-loader"></div>
+                        <span class="shimmer-text">Humanizing content...</span>
+                    </div>
+
+                    <div class="textarea-header">
+                        <span>Humanized Output</span>
+                    </div>
+                    <textarea id="humanizedOutput" class="editor-textarea" readonly placeholder="Your natural humanized copy will appear here..."></textarea>
+                    <div class="textarea-footer">
+                        <span id="outWordCount">0 words / 0 chars</span>
+                        <div class="textarea-actions">
+                            <button class="action-icon-btn" id="btnCopy" onclick="copyOutput()" title="Copy humanized output to clipboard">
+                                <i data-lucide="copy"></i> Copy
+                            </button>
+                            <button class="action-icon-btn" id="btnDownload" onclick="downloadTxt()" title="Download as text file">
+                                <i data-lucide="download"></i> Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Run conversion action row -->
+            <div class="workspace-actions" style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn-detect" id="btnDetect" onclick="performDetect()">
+                    <span class="btn-detect-label"><i data-lucide="scan-search"></i> Check AI Score</span>
+                    <span class="spinner"></span>
+                    <span class="loading-text" style="display:none;">Analyzing...</span>
+                </button>
+                <button class="btn-saas" id="btnHumanize" onclick="performHumanize()">
+                    Humanize Text <i data-lucide="wand-2"></i>
+                </button>
+            </div>
+
+            <!-- Performance dynamic score cards -->
+            <div class="detectors-grid" id="detectorsGrid">
+                <!-- Original AI Detector Card -->
+                <div class="detector-card" id="originalDetector">
+                    <div style="font-size: 0.85rem; font-weight: 700; color: #6B7280; text-transform: uppercase; margin-bottom: 2px; letter-spacing: 0.5px;">Input Text Scan <span id="origDetectMethod"></span></div>
+                    <div class="detector-body">
+                        <div class="detector-left">
+                            <div class="detector-big-percentage" id="origDetectBig">0</div>
+                            <div class="detector-big-label">of text is likely AI <i data-lucide="info" class="info-icon" title="Percentage likelihood of AI patterns in text"></i></div>
+                            <div id="origConfidenceBadge"></div>
+                        </div>
+                        <div class="detector-right">
+                            <div class="detector-row">
+                                <span class="detector-row-label">AI-generated <i data-lucide="info" class="info-icon" title="Likelihood of full AI generation"></i></span>
+                                <div class="detector-row-value">
+                                    <span class="indicator-circle circle-ai"></span>
+                                    <span id="origDetectAi">0%</span>
+                                </div>
+                            </div>
+                            <div class="detector-row">
+                                <span class="detector-row-label">Human-written & AI-refined <i data-lucide="info" class="info-icon" title="AI patterns built over human structure"></i></span>
+                                <div class="detector-row-value">
+                                    <span class="indicator-circle circle-refined"></span>
+                                    <span id="origDetectRefined">0%</span>
+                                </div>
+                            </div>
+                            <div class="detector-row">
+                                <span class="detector-row-label">Human-written <i data-lucide="info" class="info-icon" title="Likelihood of genuine human authorship"></i></span>
+                                <div class="detector-row-value">
+                                    <span class="indicator-circle circle-human"></span>
+                                    <span id="origDetectHuman">0%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detector-footer">
+                        <div class="detector-meta-item">
+                            <span class="detector-meta-label">AI source(s):</span>
+                            <span class="badge badge-source" id="origDetectSource">None</span>
+                        </div>
+                        <div class="detector-meta-item">
+                            <span class="detector-meta-label">Readability:</span>
+                            <span class="badge badge-readability" id="origDetectReadability">—</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Humanized AI Detector Card -->
+                <div class="detector-card" id="humanizedDetector">
+                    <div style="font-size: 0.85rem; font-weight: 700; color: #6B7280; text-transform: uppercase; margin-bottom: 2px; letter-spacing: 0.5px;">Humanized Output Scan</div>
+                    <div class="detector-body">
+                        <div class="detector-left">
+                            <div class="detector-big-percentage" id="destDetectBig">0</div>
+                            <div class="detector-big-label">of text is likely AI <i data-lucide="info" class="info-icon" title="Percentage likelihood of AI patterns in text"></i></div>
+                        </div>
+                        <div class="detector-right">
+                            <div class="detector-row">
+                                <span class="detector-row-label">AI-generated <i data-lucide="info" class="info-icon" title="Likelihood of full AI generation"></i></span>
+                                <div class="detector-row-value">
+                                    <span class="indicator-circle circle-ai"></span>
+                                    <span id="destDetectAi">0%</span>
+                                </div>
+                            </div>
+                            <div class="detector-row">
+                                <span class="detector-row-label">Human-written & AI-refined <i data-lucide="info" class="info-icon" title="AI patterns built over human structure"></i></span>
+                                <div class="detector-row-value">
+                                    <span class="indicator-circle circle-refined"></span>
+                                    <span id="destDetectRefined">0%</span>
+                                </div>
+                            </div>
+                            <div class="detector-row">
+                                <span class="detector-row-label">Human-written <i data-lucide="info" class="info-icon" title="Likelihood of genuine human authorship"></i></span>
+                                <div class="detector-row-value">
+                                    <span class="indicator-circle circle-human"></span>
+                                    <span id="destDetectHuman">0%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detector-footer">
+                        <div class="detector-meta-item">
+                            <span class="detector-meta-label">AI source(s):</span>
+                            <span class="badge badge-source" id="destDetectSource">None</span>
+                        </div>
+                        <div class="detector-meta-item">
+                            <span class="detector-meta-label">Readability:</span>
+                            <span class="badge badge-readability" id="destDetectReadability">—</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison highlight diff split -->
+            <div class="compare-section" id="compareSection">
+                <h3>Sentence Modification Audit</h3>
+                <div class="compare-box" id="diffOutput">
+                    <!-- Dynamic comparison tokens will render here -->
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Pricing Section -->
+    <section class="pricing-section">
+        <div class="pricing-header">
+            <h2>Flexible Plans for Every Writer</h2>
+            <p>Choose the model that matches your volume and speed requirements. No hidden fees.</p>
+        </div>
+
+        <div class="pricing-grid">
+            <!-- Free Plan -->
+            <div class="pricing-card">
+                <h3>Free Tier</h3>
+                <div class="price">$0<span>/ month</span></div>
+                <p>Perfect for testing and casual writing projects.</p>
+                <ul class="pricing-features">
+                    <li><i data-lucide="check"></i> Up to 1,500 characters / request</li>
+                    <li><i data-lucide="check"></i> Standard & Casual modes</li>
+                    <li><i data-lucide="check"></i> Local secure processing</li>
+                    <li><i data-lucide="check"></i> Basic analytics dashboard</li>
+                </ul>
+                <button class="pricing-btn" onclick="document.getElementById('aiTextInput').focus()">Current Plan</button>
+            </div>
+
+            <!-- Pro Plan -->
+            <div class="pricing-card premium">
+                <span class="pricing-badge">Popular</span>
+                <h3>Premium Pro</h3>
+                <div class="price">$9<span>/ month</span></div>
+                <p>For heavy copywriters, students, and SEO managers.</p>
+                <ul class="pricing-features">
+                    <li><i data-lucide="check"></i> Up to 8,000 characters / request</li>
+                    <li><i data-lucide="check"></i> All 5 specialized modes</li>
+                    <li><i data-lucide="check"></i> Advanced OpenRouter model API</li>
+                    <li><i data-lucide="check"></i> Compare sentence audit highlight</li>
+                    <li><i data-lucide="check"></i> High rate limits</li>
+                </ul>
+                <button class="pricing-btn">Upgrade to Pro</button>
+            </div>
+
+            <!-- API Plan -->
+            <div class="pricing-card">
+                <h3>Enterprise API</h3>
+                <div class="price">$29<span>/ month</span></div>
+                <p>Integrate local bypass engines into your application.</p>
+                <ul class="pricing-features">
+                    <li><i data-lucide="check"></i> Unlimited characters</li>
+                    <li><i data-lucide="check"></i> Developer REST endpoints</li>
+                    <li><i data-lucide="check"></i> Low latency execution</li>
+                    <li><i data-lucide="check"></i> Detailed JSON-LD analytics</li>
+                    <li><i data-lucide="check"></i> 24/7 dedicated support</li>
+                </ul>
+                <button class="pricing-btn">Request API Key</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="faq-header">
+            <h2>Frequently Asked Questions</h2>
+            <p>Learn more about our AI humanization technology and security protocols.</p>
+        </div>
+
+        <div class="faq-container">
+            <div class="faq-card" onclick="toggleFaq(this)">
+                <h4>How does the AI Humanizer tool work? <i data-lucide="plus"></i></h4>
+                <p>The tool parses your input AI-generated text and feeds it to our processing controller. It applies specific writing style instruction sets based on your selected mode (e.g. SEO, Casual) and tone value to introduce sentence variety, natural idioms, contractions, and reduce predictable patterns, making it read exactly like human-written copy.</p>
+            </div>
+
+            <div class="faq-card" onclick="toggleFaq(this)">
+                <h4>Does the humanized content bypass AI detectors? <i data-lucide="plus"></i></h4>
+                <p>Yes. By varying paragraph lengths, mixing simple and complex sentence structures, and removing repetitive AI phrasing, the output successfully registers high human-like scores on standard automated scanning engines.</p>
+            </div>
+
+            <div class="faq-card" onclick="toggleFaq(this)">
+                <h4>Is my text data safe on FlashSuite? <i data-lucide="plus"></i></h4>
+                <p>Absolutely. We value user transparency. FlashSuite uses HTTPS transmission protocols to communicate with OpenRouter. We never store or track the text content you submit on our servers.</p>
+            </div>
+
+            <div class="faq-card" onclick="toggleFaq(this)">
+                <h4>Can I use the tool completely for free? <i data-lucide="plus"></i></h4>
+                <p>Yes. Our free tier allows you to rewrite and check text parameters indefinitely. Upgrading to Pro offers access to advanced models, longer character limits, and sentence highlights.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <nav class="footer-nav">
+            <a href="/">Home</a>
+            <a href="/pdftools">PDF Tools</a>
+            <a href="/humanize">Humanize AI</a>
+            <a href="/privacy">Privacy Policy</a>
+            <a href="/terms">Terms of Service</a>
+        </nav>
+        <p class="footer-copy">&copy; 2026 FlashSuite. All rights reserved.</p>
+    </footer>
+
+    <!-- Toast Notification Container -->
+    <div id="toast" class="toast toast-success">
+        <i data-lucide="info" id="toastIcon"></i>
+        <span id="toastMsg">Action completed!</span>
+    </div>
+
+    <!-- Script Operations -->
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+            document.getElementById('mobileMenuOverlay').classList.toggle('active');
+        }
+
+        function toggleFaq(card) {
+            card.classList.toggle('active');
+            const icon = card.querySelector('i');
+            if (card.classList.contains('active')) {
+                icon.setAttribute('data-lucide', 'minus');
+            } else {
+                icon.setAttribute('data-lucide', 'plus');
+            }
+            lucide.createIcons();
+        }
+
+        // Live text counters
+        const aiTextInput = document.getElementById('aiTextInput');
+        const humanizedOutput = document.getElementById('humanizedOutput');
+        const aiWordCount = document.getElementById('aiWordCount');
+        const outWordCount = document.getElementById('outWordCount');
+
+        function updateCounters(inputEl, displayEl) {
+            const text = inputEl.value.trim();
+            const chars = text.length;
+            const words = text === '' ? 0 : text.split(/\s+/).filter(w => w.length > 0).length;
+            displayEl.innerText = `${words} ${words === 1 ? 'word' : 'words'} / ${chars} ${chars === 1 ? 'char' : 'chars'}`;
+        }
+
+        // Frontend real-time text analysis logic with detailed categories and source detection
+        function analyzeTextDetailed(text) {
+            if (!text || !text.trim()) {
+                return {
+                    aiScore: 0,
+                    refinedScore: 0,
+                    humanScore: 0,
+                    readability: '—',
+                    source: 'None'
+                };
+            }
+
+            const cleanText = text.trim();
+            const words = cleanText.split(/\s+/).filter(w => w.length > 0);
+            const sentences = cleanText.split(/[.!?]+/).filter(s => s.trim().length > 0);
+
+            const wordCount = words.length || 1;
+            const sentenceCount = sentences.length || 1;
+
+            const aiTransitional = ['moreover', 'furthermore', 'additionally', 'consequently', 'therefore', 'subsequently', 'firstly', 'secondly', 'lastly'];
+            const aiBuzzwords = ['delve', 'testament', 'realm', 'tapestry', 'pivotal', 'demystify', 'revolutionize', 'unwavering', 'beacon', 'resonate', 'elevate', 'foster', 'synergy', 'meticulously', 'customarily', 'utilize'];
+
+            let transitionalCount = 0;
+            let buzzwordCount = 0;
+
+            let anthropicWords = 0;
+            let openaiWords = 0;
+            let geminiWords = 0;
+
+            words.forEach(w => {
+                const clean = w.toLowerCase().replace(/[^a-z]/g, '');
+                if (aiTransitional.includes(clean)) transitionalCount++;
+                if (aiBuzzwords.includes(clean)) buzzwordCount++;
+
+                if (['tapestry', 'testament', 'unwavering', 'beacon', 'resonate'].includes(clean)) anthropicWords++;
+                if (['delve', 'pivotal', 'demystify', 'revolutionize', 'foster'].includes(clean)) openaiWords++;
+                if (['synergy', 'elevate', 'customarily', 'moreover'].includes(clean)) geminiWords++;
+            });
+
+            const transitionalDensity = (transitionalCount / wordCount) * 100;
+            const buzzwordDensity = (buzzwordCount / wordCount) * 100;
+
+            const signaturePhrases = [
+                /in today's digital/i, /in the digital age/i, /ever-evolving/i,
+                /it is important to/i, /it's important to/i, /important to note/i,
+                /it is worth noting/i, /first and foremost/i, /delve into/i,
+                /tapestry of/i, /testament to/i, /pivotal role/i, /look no further/i,
+                /let's explore/i, /in other words/i, /when it comes to/i,
+                /not only[\s\S]*?but also/i
+            ];
+
+            let phraseMatches = 0;
+            signaturePhrases.forEach(regex => {
+                if (regex.test(cleanText)) {
+                    phraseMatches++;
+                }
+            });
+
+            const contractionRegex = /\b\w+['’]\w+\b/g;
+            const contractions = cleanText.match(contractionRegex) || [];
+            const contractionsCount = contractions.length;
+            const contractionsRatio = contractionsCount / sentenceCount;
+
+            const sentenceLengths = sentences.map(s => s.trim().split(/\s+/).filter(w => w.length > 0).length);
+            const avgSentenceLength = wordCount / sentenceCount;
+            const squaredDiffs = sentenceLengths.map(len => Math.pow(len - avgSentenceLength, 2));
+            const variance = squaredDiffs.reduce((a, b) => a + b, 0) / sentenceCount;
+            const stdDev = Math.sqrt(variance);
+
+            const shortSentences = sentenceLengths.filter(len => len < 6).length;
+            const shortSentencesRatio = shortSentences / sentenceCount;
+
+            const passiveRegex = /\b(is|are|was|were|been|be)\s+\w+ed\b/gi;
+            const passiveMatches = cleanText.match(passiveRegex) || [];
+            const irregularParticiples = ['done', 'made', 'seen', 'taken', 'written', 'given', 'chosen', 'found', 'built', 'held'];
+            let irregularPassiveMatches = 0;
+            words.forEach((w, idx) => {
+                const clean = w.toLowerCase().replace(/[^a-z]/g, '');
+                if (['is', 'are', 'was', 'were', 'been', 'be'].includes(clean) && idx < words.length - 1) {
+                    const nextWord = words[idx + 1].toLowerCase().replace(/[^a-z]/g, '');
+                    if (irregularParticiples.includes(nextWord)) {
+                        irregularPassiveMatches++;
+                    }
+                }
+            });
+            const totalPassiveMatches = passiveMatches.length + irregularPassiveMatches;
+            const passiveDensity = (totalPassiveMatches / wordCount) * 100;
+
+            let aiScore = 15; // baseline
+
+            if (contractionsCount === 0) {
+                aiScore += 15;
+            } else if (contractionsRatio < 0.15) {
+                aiScore += 10;
+            }
+
+            if (avgSentenceLength >= 15 && avgSentenceLength <= 28) {
+                aiScore += 10;
+            }
+
+            if (stdDev < 3) {
+                aiScore += 20;
+            } else if (stdDev < 4.5) {
+                aiScore += 10;
+            }
+
+            if (shortSentencesRatio === 0) {
+                aiScore += 15;
+            }
+
+            if (transitionalDensity > 2.5) {
+                aiScore += 15;
+            } else if (transitionalDensity > 1) {
+                aiScore += 8;
+            }
+
+            if (buzzwordDensity > 3) {
+                aiScore += 20;
+            } else if (buzzwordDensity > 1) {
+                aiScore += 10;
+            }
+
+            if (phraseMatches >= 3) {
+                aiScore += 30;
+            } else if (phraseMatches > 0) {
+                aiScore += phraseMatches * 10;
+            }
+
+            if (passiveDensity > 3) {
+                aiScore += 12;
+            } else if (passiveDensity > 1) {
+                aiScore += 6;
+            }
+
+            const starters = sentences.map(s => s.trim().split(/\s+/)[0] || '').filter(s => s.length > 0);
+            const starterCounts = {};
+            starters.forEach(s => {
+                const clean = s.toLowerCase().replace(/[^a-z]/g, '');
+                starterCounts[clean] = (starterCounts[clean] || 0) + 1;
+            });
+            let monotonyBonus = false;
+            Object.keys(starterCounts).forEach(k => {
+                if (starterCounts[k] > 1 && starterCounts[k] / starters.length > 0.4) {
+                    monotonyBonus = true;
+                }
+            });
+            if (monotonyBonus) {
+                aiScore += 10;
+            }
+
+            if (stdDev >= 7.5) {
+                aiScore -= 20;
+            } else if (stdDev >= 5.5) {
+                aiScore -= 10;
+            }
+
+            let rawScore = Math.round(aiScore);
+            rawScore = Math.min(Math.max(rawScore, 6), 98);
+
+            if (transitionalCount === 0 && buzzwordCount === 0 && phraseMatches === 0 && stdDev >= 5) {
+                rawScore = Math.min(rawScore, 12);
+            }
+
+            let source = 'None';
+            if (rawScore > 20) {
+                if (anthropicWords > openaiWords && anthropicWords > geminiWords) {
+                    source = 'Anthropic';
+                } else if (geminiWords > openaiWords && geminiWords > anthropicWords) {
+                    source = 'Google Gemini';
+                } else {
+                    source = 'OpenAI';
+                }
+            }
+
+            let refinedScore = 0;
+            if (rawScore > 20) {
+                refinedScore = Math.round(Math.min(25, stdDev * 2));
+            }
+            
+            let calculatedAiScore = Math.max(0, rawScore - refinedScore);
+            let humanScore = 100 - calculatedAiScore - refinedScore;
+
+            let totalSyllables = 0;
+            words.forEach(w => {
+                let clean = w.toLowerCase().replace(/[^a-z]/g, '');
+                if (clean.length <= 3) {
+                    totalSyllables += 1;
+                } else {
+                    const matches = clean.match(/[aeiouy]+/g);
+                    let count = matches ? matches.length : 1;
+                    if (clean.endsWith('e')) count--;
+                    if (count < 1) count = 1;
+                    totalSyllables += count;
+                }
+            });
+
+            const ease = 206.835 - 1.015 * (wordCount / sentenceCount) - 84.6 * (totalSyllables / wordCount);
+            
+            let readability = 'Standard';
+            if (ease > 80) readability = 'Easy';
+            else if (ease > 55) readability = 'Standard';
+            else if (ease > 35) readability = 'Professional';
+            else readability = 'Academic / Complex';
+
+            return { aiScore: calculatedAiScore, refinedScore, humanScore, overallAiScore: rawScore, readability, source };
+        }
+
+        function updateDetectorCard(cardPrefix, analysis) {
+            const bigValEl = document.getElementById(`${cardPrefix}DetectBig`);
+            const aiValEl = document.getElementById(`${cardPrefix}DetectAi`);
+            const refinedValEl = document.getElementById(`${cardPrefix}DetectRefined`);
+            const humanValEl = document.getElementById(`${cardPrefix}DetectHuman`);
+            const sourceEl = document.getElementById(`${cardPrefix}DetectSource`);
+            const readabilityEl = document.getElementById(`${cardPrefix}DetectReadability`);
+
+            const overallAi = analysis.aiScore + analysis.refinedScore;
+
+            bigValEl.innerText = `${overallAi}`;
+            aiValEl.innerText = `${analysis.aiScore}%`;
+            refinedValEl.innerText = `${analysis.refinedScore}%`;
+            humanValEl.innerText = `${analysis.humanScore}%`;
+            sourceEl.innerText = analysis.source;
+            readabilityEl.innerText = analysis.readability;
+
+            if (analysis.source === 'None') {
+                sourceEl.style.backgroundColor = '#ECFDF5';
+                sourceEl.style.color = '#047857';
+                sourceEl.style.borderColor = '#A7F3D0';
+            } else {
+                sourceEl.style.backgroundColor = '#FEF3C7';
+                sourceEl.style.color = '#D97706';
+                sourceEl.style.borderColor = '#FDE68A';
+            }
+        }
+
+        function updateRealtimeScorecard() {
+            const text = aiTextInput.value.trim();
+            const analysis = analyzeTextDetailed(text);
+            updateDetectorCard('orig', analysis);
+            // Show as lightweight estimate
+            const methodEl = document.getElementById('origDetectMethod');
+            if (methodEl && text.length > 0) {
+                methodEl.innerHTML = '<span class="detection-method-badge method-rule">Quick Estimate</span>';
+            } else if (methodEl) {
+                methodEl.innerHTML = '';
+            }
+            const badgeEl = document.getElementById('origConfidenceBadge');
+            if (badgeEl) badgeEl.innerHTML = '';
+        }
+
+        /**
+         * LLM-powered AI detection via /api/detect endpoint
+         */
+        async function performDetect() {
+            const text = aiTextInput.value.trim();
+            if (!text) {
+                showToast('Please paste some text first!', true);
+                return;
+            }
+
+            const btnDetect = document.getElementById('btnDetect');
+            btnDetect.disabled = true;
+            btnDetect.classList.add('loading');
+            const loadingText = btnDetect.querySelector('.loading-text');
+            if (loadingText) loadingText.style.display = 'inline';
+
+            try {
+                const response = await fetch('/api/detect', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Update the input detector card with LLM results
+                    const analysis = {
+                        aiScore: data.aiScore,
+                        refinedScore: data.refinedScore,
+                        humanScore: data.humanScore,
+                        readability: data.readability,
+                        source: data.source || 'None'
+                    };
+                    updateDetectorCard('orig', analysis);
+
+                    // Show detection method badge
+                    const methodEl = document.getElementById('origDetectMethod');
+                    if (methodEl) {
+                        if (data.method === 'llm') {
+                            methodEl.innerHTML = '<span class="detection-method-badge method-llm">✨ AI-Powered</span>';
+                        } else {
+                            methodEl.innerHTML = '<span class="detection-method-badge method-rule">Rule-Based</span>';
+                        }
+                    }
+
+                    // Show confidence badge
+                    const badgeEl = document.getElementById('origConfidenceBadge');
+                    if (badgeEl && data.confidence) {
+                        const confClass = data.confidence === 'High' ? 'confidence-high' : data.confidence === 'Medium' ? 'confidence-medium' : 'confidence-low';
+                        badgeEl.innerHTML = `<span class="confidence-badge ${confClass}"><i data-lucide="shield-check" style="width:14px;height:14px;"></i> ${data.confidence} Confidence</span>`;
+                        lucide.createIcons();
+                    }
+
+                    // Color the big score based on detection
+                    const bigEl = document.getElementById('origDetectBig');
+                    if (bigEl) {
+                        const overallAi = data.aiScore + data.refinedScore;
+                        if (overallAi >= 70) {
+                            bigEl.style.color = '#DC2626'; // Red for high AI
+                        } else if (overallAi >= 40) {
+                            bigEl.style.color = '#D97706'; // Orange for medium
+                        } else {
+                            bigEl.style.color = '#059669'; // Green for human
+                        }
+                    }
+
+                    showToast(`AI detection complete (${data.method === 'llm' ? 'AI-Powered' : 'Rule-Based'})`);
+                } else {
+                    showToast(data.error || 'Failed to analyze text.', true);
+                }
+            } catch (err) {
+                console.error('Detection error:', err);
+                showToast('Network error. Failed to reach the detection endpoint.', true);
+            } finally {
+                btnDetect.disabled = false;
+                btnDetect.classList.remove('loading');
+                const loadingTextEl = btnDetect.querySelector('.loading-text');
+                if (loadingTextEl) loadingTextEl.style.display = 'none';
+            }
+        }
+
+        let debounceTimer;
+        aiTextInput.addEventListener('input', () => {
+            updateCounters(aiTextInput, aiWordCount);
+            
+            // Clear output and reset output card to stay in sync
+            humanizedOutput.value = '';
+            updateCounters(humanizedOutput, outWordCount);
+            
+            const emptyStats = {
+                aiScore: 0,
+                refinedScore: 0,
+                humanScore: 0,
+                readability: '—',
+                source: 'None'
+            };
+            updateDetectorCard('orig', emptyStats);
+            updateDetectorCard('dest', emptyStats);
+            document.getElementById('compareSection').style.display = 'none';
+
+            // Reset method badge and confidence
+            const methodEl = document.getElementById('origDetectMethod');
+            if (methodEl) methodEl.innerHTML = '';
+            const badgeEl = document.getElementById('origConfidenceBadge');
+            if (badgeEl) badgeEl.innerHTML = '';
+            const bigEl = document.getElementById('origDetectBig');
+            if (bigEl) bigEl.style.color = '';
+        });
+
+        humanizedOutput.addEventListener('input', () => updateCounters(humanizedOutput, outWordCount));
+
+        // Toast messaging helper
+        function showToast(msg, isError = false) {
+            const toast = document.getElementById('toast');
+            const toastIcon = document.getElementById('toastIcon');
+            const toastMsg = document.getElementById('toastMsg');
+
+            toastMsg.innerText = msg;
+            
+            if (isError) {
+                toast.className = 'toast toast-error show';
+                toastIcon.setAttribute('data-lucide', 'alert-circle');
+            } else {
+                toast.className = 'toast toast-success show';
+                toastIcon.setAttribute('data-lucide', 'check-circle');
+            }
+            lucide.createIcons();
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function clearInput() {
+            aiTextInput.value = '';
+            updateCounters(aiTextInput, aiWordCount);
+            
+            humanizedOutput.value = '';
+            updateCounters(humanizedOutput, outWordCount);
+            
+            const emptyStats = {
+                aiScore: 0,
+                refinedScore: 0,
+                humanScore: 0,
+                readability: '—',
+                source: 'None'
+            };
+            updateDetectorCard('orig', emptyStats);
+            updateDetectorCard('dest', emptyStats);
+            document.getElementById('compareSection').style.display = 'none';
+
+            aiTextInput.focus();
+            showToast('Input cleared');
+        }
+
+        function copyOutput() {
+            const text = humanizedOutput.value.trim();
+            if (!text) {
+                showToast('Nothing to copy!', true);
+                return;
+            }
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Output text copied to clipboard!');
+            }).catch(() => {
+                showToast('Failed to copy text', true);
+            });
+        }
+
+        function downloadTxt() {
+            const text = humanizedOutput.value.trim();
+            if (!text) {
+                showToast('No output to download!', true);
+                return;
+            }
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'humanized_text.txt';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast('Text file downloaded successfully!');
+        }
+
+        /**
+         * Word-level diff helper to highlight additions and deletions
+         */
+        function computeDiff(original, humanized) {
+            const s1 = original.split(/\s+/);
+            const s2 = humanized.split(/\s+/);
+            const out = [];
+
+            let i = 0, j = 0;
+            while (i < s1.length || j < s2.length) {
+                if (i < s1.length && j < s2.length && s1[i].toLowerCase() === s2[j].toLowerCase()) {
+                    out.push(s2[j]);
+                    i++;
+                    j++;
+                } else {
+                    let matchOffset1 = -1;
+                    let matchOffset2 = -1;
+                    
+                    // Lookahead matching window
+                    for (let x = 0; x < 10; x++) {
+                        for (let y = 0; y < 10; y++) {
+                            if (i + x < s1.length && j + y < s2.length && s1[i+x].toLowerCase() === s2[j+y].toLowerCase()) {
+                                matchOffset1 = x;
+                                matchOffset2 = y;
+                                break;
+                            }
+                        }
+                        if (matchOffset1 !== -1) break;
+                    }
+
+                    if (matchOffset1 !== -1) {
+                        for (let k = 0; k < matchOffset1; k++) {
+                            out.push(`<del class="diff-del">${s1[i + k]}</del>`);
+                        }
+                        for (let k = 0; k < matchOffset2; k++) {
+                            out.push(`<ins class="diff-ins">${s2[j + k]}</ins>`);
+                        }
+                        i += matchOffset1;
+                        j += matchOffset2;
+                    } else {
+                        if (i < s1.length) {
+                            out.push(`<del class="diff-del">${s1[i]}</del>`);
+                            i++;
+                        }
+                        if (j < s2.length) {
+                            out.push(`<ins class="diff-ins">${s2[j]}</ins>`);
+                            j++;
+                        }
+                    }
+                }
+            }
+            return out.join(' ');
+        }
+
+        async function performHumanize() {
+            const text = aiTextInput.value.trim();
+            if (!text) {
+                showToast('Please paste some text first!', true);
+                return;
+            }
+
+            const mode = document.getElementById('modeSelect').value;
+            const tone = document.getElementById('toneSlider').value;
+            const btnHumanize = document.getElementById('btnHumanize');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+
+            // Disable buttons and show loading overlay
+            btnHumanize.disabled = true;
+            loadingOverlay.style.display = 'flex';
+
+            try {
+                const response = await fetch('/api/humanize', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text, mode, tone })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Populate output and counters
+                    humanizedOutput.value = data.output;
+                    updateCounters(humanizedOutput, outWordCount);
+
+                    // Compute original and humanized stats
+                    const origAnalysis = analyzeTextDetailed(text);
+                    let destAnalysis = analyzeTextDetailed(data.output);
+                    
+                    // Sync destAnalysis with the backend scores returned
+                    destAnalysis.aiScore = data.aiScore;
+                    destAnalysis.refinedScore = 0; // force refined to 0 for maximum humanized rating
+                    destAnalysis.humanScore = data.humanScore;
+                    destAnalysis.source = 'None';
+                    destAnalysis.readability = data.readability;
+
+                    // Update UI cards
+                    updateDetectorCard('orig', origAnalysis);
+                    updateDetectorCard('dest', destAnalysis);
+
+                    // Show comparison section
+                    document.getElementById('compareSection').style.display = 'block';
+
+                    // Compute and show visual sentence modifications
+                    const diffHtml = computeDiff(text, data.output);
+                    document.getElementById('diffOutput').innerHTML = diffHtml;
+
+                    showToast('Text humanized successfully!');
+                } else {
+                    showToast(data.error || 'Server responded with an error.', true);
+                }
+            } catch (err) {
+                console.error("Fetch request error:", err);
+                showToast('Network error. Failed to reach the humanize endpoint.', true);
+            } finally {
+                // Re-enable interface controls
+                btnHumanize.disabled = false;
+                loadingOverlay.style.display = 'none';
+            }
+        }
+
+        // Initialize scorecards on page load
+        const emptyStats = {
+            aiScore: 0,
+            refinedScore: 0,
+            humanScore: 0,
+            readability: '—',
+            source: 'None'
+        };
+        updateDetectorCard('orig', emptyStats);
+        updateDetectorCard('dest', emptyStats);
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
