@@ -105,7 +105,7 @@ Rules:
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${this.apiKey}`,
-                    'HTTP-Referer': 'https://flashsuite.com',
+                    'HTTP-Referer': 'https://flashsuite.pro',
                     'X-Title': 'FlashSuite HumanizeAI',
                     'Content-Length': Buffer.byteLength(requestBody)
                 },
@@ -366,7 +366,7 @@ Rules:
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${this.apiKey}`,
-                    'HTTP-Referer': 'https://flashsuite.com',
+                    'HTTP-Referer': 'https://flashsuite.pro',
                     'X-Title': 'FlashSuite AI Detector',
                     'Content-Length': Buffer.byteLength(requestBody)
                 },

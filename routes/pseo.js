@@ -17,7 +17,7 @@ router.get('/use-cases/:category/:slug', (req, res) => {
             "@graph": [
                 {
                     "@type": "SoftwareApplication",
-                    "@id": `https://flashsuite.com/use-cases/${category}/${slug}#software`,
+                    "@id": `https://flashsuite.pro/use-cases/${category}/${slug}#software`,
                     "name": `FlashSuite ${page.h1_title}`,
                     "operatingSystem": "All",
                     "applicationCategory": "BusinessApplication",
@@ -68,7 +68,7 @@ router.get('/use-cases/:category/:slug', (req, res) => {
 
             schema["@graph"].push({
                 "@type": "FAQPage",
-                "@id": `https://flashsuite.com/use-cases/${category}/${slug}#faq`,
+                "@id": `https://flashsuite.pro/use-cases/${category}/${slug}#faq`,
                 "mainEntity": faqList
             });
         }

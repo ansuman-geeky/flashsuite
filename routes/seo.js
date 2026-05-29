@@ -35,7 +35,7 @@ Allow: /
 Disallow: /api/
 Disallow: /admin/
 
-Sitemap: https://flashsuite.com/sitemap.xml
+Sitemap: https://flashsuite.pro/sitemap.xml
 `);
 });
 
@@ -59,7 +59,7 @@ router.get('/sitemap.xml', (req, res) => {
             let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
             xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
 
-            const domain = 'https://flashsuite.com';
+            const domain = 'https://flashsuite.pro';
             const currentDate = new Date().toISOString().split('T')[0];
 
             // 1. Append core static utility tool interfaces

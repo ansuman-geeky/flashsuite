@@ -11,7 +11,7 @@ module.exports = function seoPrerender(req, res, next) {
                 return res.sendFile(filePath);
             }
 
-            const canonicalUrl = `https://flashsuite.com${req.path}`;
+            const canonicalUrl = `https://flashsuite.pro${req.path}`;
             
             // Build Dynamic Schema Block
             const schemaScript = seoData.schema ? `
@@ -42,7 +42,7 @@ module.exports = function seoPrerender(req, res, next) {
     <meta property="og:description" content="${seoData.description}" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="${canonicalUrl}" />
-    <meta property="og:image" content="https://flashsuite.com/og_banner.png" />
+    <meta property="og:image" content="https://flashsuite.pro/og_banner.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${seoData.title} | FlashSuite" />
     <meta name="twitter:description" content="${seoData.description}" />
