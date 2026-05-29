@@ -4,6 +4,7 @@ const path = require('path');
 const db = require('./models/database');
 const apiRoutes = require('./routes/api');
 const humanizeRoutes = require('./routes/humanize');
+const compression = require('compression');
 
 // SEO Programmatic Middlewares & Routers
 const seoPrerender = require('./middleware/seo');
@@ -11,6 +12,7 @@ const seoRouter = require('./routes/seo');
 const pseoRouter = require('./routes/pseo');
 
 const app = express();
+app.use(compression());
 
 // Apply global SEO Prerender Hook
 app.use(seoPrerender);
@@ -76,8 +78,8 @@ app.get('/login', (req, res, next) => {
     next();
 });
 
-app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'] }));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'], maxAge: '1d' }));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'), { maxAge: '1d' }));
 
 // Health Check
 app.get('/health', (req, res) => res.status(200).send('OK'));
