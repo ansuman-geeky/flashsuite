@@ -19,7 +19,7 @@
         content="Powerful, fast, and secure PDF tools. Merge, split, compress, and convert PDFs online for free with FlashSuite.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script defer src="https://unpkg.com/lucide@latest"></script>
@@ -388,7 +388,7 @@
             observer.observe(el);
         });
 
-        lucide.createIcons();
+        window.addEventListener('DOMContentLoaded', () => { if (window.lucide) lucide.createIcons(); else window.addEventListener('load', () => window.lucide && lucide.createIcons()); });
     </script>
 </body>
 

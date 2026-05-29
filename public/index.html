@@ -20,7 +20,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script defer src="https://unpkg.com/lucide@latest"></script>
@@ -325,34 +325,30 @@
             <div class="features-grid">
                 <!-- Feature 1 -->
                 <div class="feature-card fade-in-scroll">
-                    <div class="feature-icon icon-pink"><i data-lucide="zap"></i></div>
-                    <h3>Lightning Speed</h3>
-                    <p>Built on a cloud-native edge network, ensuring 99.9% uptime and instantaneous redirection
-                        anywhere in the world.</p>
+                    <div class="feature-icon icon-pink"><i data-lucide="server"></i></div>
+                    <h3>Enterprise-Grade Infrastructure</h3>
+                    <p>Built on a highly resilient edge network ensuring 99.99% uptime and instantaneous, globally distributed redirects.</p>
                 </div>
 
                 <!-- Feature 2 -->
                 <div class="feature-card fade-in-scroll delay-1">
-                    <div class="feature-icon icon-blue"><i data-lucide="bar-chart-3"></i></div>
-                    <h3>Deep Analytics</h3>
-                    <p>Gain unparalleled insights into your audience. Track clicks, geographic locations, and top
-                        referring platforms in real-time.</p>
+                    <div class="feature-icon icon-blue"><i data-lucide="bar-chart-4"></i></div>
+                    <h3>Actionable Analytics</h3>
+                    <p>Transform clicks into customers. Gain granular insights into user behavior, geographic distribution, and referring platforms in real-time.</p>
                 </div>
 
                 <!-- Feature 3 -->
                 <div class="feature-card fade-in-scroll delay-2">
-                    <div class="feature-icon icon-orange"><i data-lucide="target"></i></div>
-                    <h3>Advanced UTM Tracking</h3>
-                    <p>Maintain your professional identity. Manage, edit, and safely route your custom branded links
-                        with UTM parameters from a secure admin dashboard.</p>
+                    <div class="feature-icon icon-orange"><i data-lucide="git-branch"></i></div>
+                    <h3>Smart Link Routing & UTM</h3>
+                    <p>Maintain absolute brand control. Automatically append UTM tags and route campaigns securely from a centralized admin dashboard.</p>
                 </div>
 
                 <!-- Feature 4 -->
                 <div class="feature-card fade-in-scroll delay-2">
-                    <div class="feature-icon icon-sky"><i data-lucide="qr-code"></i></div>
-                    <h3>Dynamic QR Codes</h3>
-                    <p>Instantly generate fully customizable QR codes for any link. Adjust colors and error correction
-                        for perfect marketing materials.</p>
+                    <div class="feature-icon icon-sky"><i data-lucide="file-check-2"></i></div>
+                    <h3>Secure Client-Side PDF Suite</h3>
+                    <p>Edit, compress, and manipulate sensitive PDF documents directly in your browser. 100% offline, zero data uploads, and total privacy guaranteed.</p>
                 </div>
             </div>
         </div>
@@ -613,7 +609,7 @@
                 if (icon) icon.innerText = '−';
             }
         }
-        lucide.createIcons();
+        window.addEventListener('DOMContentLoaded', () => { if (window.lucide) lucide.createIcons(); else window.addEventListener('load', () => window.lucide && lucide.createIcons()); });
     </script>
 </body>
 

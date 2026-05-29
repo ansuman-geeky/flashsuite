@@ -21,7 +21,7 @@
     <!-- Google Fonts & Lucide Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script defer src="https://unpkg.com/lucide@latest"></script>
 
@@ -88,7 +88,7 @@
         }
 
         h1, h2, h3, h4 {
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-weight: 800;
             color: var(--text-dark);
             letter-spacing: -0.5px;
@@ -151,7 +151,7 @@
             cursor: pointer;
             box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
             transition: var(--transition-saas);
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Inter', sans-serif;
             display: inline-flex;
             align-items: center;
             gap: 8px;
@@ -393,7 +393,7 @@
         }
 
         .shimmer-text {
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-size: 1.15rem;
             font-weight: 700;
             color: var(--primary-saas);
@@ -451,7 +451,7 @@
         }
 
         .detector-big-percentage {
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-size: 3.4rem;
             font-weight: 800;
             line-height: 1;
@@ -731,7 +731,7 @@
             font-size: 2.5rem;
             font-weight: 800;
             color: var(--text-dark);
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Inter', sans-serif;
             display: flex;
             align-items: baseline;
             gap: 4px;
@@ -1343,7 +1343,7 @@
             } else {
                 icon.setAttribute('data-lucide', 'plus');
             }
-            lucide.createIcons();
+            window.addEventListener('DOMContentLoaded', () => { if (window.lucide) lucide.createIcons(); else window.addEventListener('load', () => window.lucide && lucide.createIcons()); });
         }
 
         // Live text counters
@@ -1660,7 +1660,7 @@
                     if (badgeEl && data.confidence) {
                         const confClass = data.confidence === 'High' ? 'confidence-high' : data.confidence === 'Medium' ? 'confidence-medium' : 'confidence-low';
                         badgeEl.innerHTML = `<span class="confidence-badge ${confClass}"><i data-lucide="shield-check" style="width:14px;height:14px;"></i> ${data.confidence} Confidence</span>`;
-                        lucide.createIcons();
+                        window.addEventListener('DOMContentLoaded', () => { if (window.lucide) lucide.createIcons(); else window.addEventListener('load', () => window.lucide && lucide.createIcons()); });
                     }
 
                     // Color the big score based on detection
@@ -1736,7 +1736,7 @@
                 toast.className = 'toast toast-success show';
                 toastIcon.setAttribute('data-lucide', 'check-circle');
             }
-            lucide.createIcons();
+            window.addEventListener('DOMContentLoaded', () => { if (window.lucide) lucide.createIcons(); else window.addEventListener('load', () => window.lucide && lucide.createIcons()); });
 
             setTimeout(() => {
                 toast.classList.remove('show');
@@ -1924,7 +1924,7 @@
         };
         updateDetectorCard('orig', emptyStats);
         updateDetectorCard('dest', emptyStats);
-        lucide.createIcons();
+        window.addEventListener('DOMContentLoaded', () => { if (window.lucide) lucide.createIcons(); else window.addEventListener('load', () => window.lucide && lucide.createIcons()); });
     </script>
 </body>
 

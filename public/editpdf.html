@@ -65,7 +65,7 @@
     <!-- Google Fonts & Style Libraries -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Caveat&family=Great+Vibes&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     
     <!-- PDF & Canvas Libraries CDN -->
@@ -907,7 +907,7 @@
                     </ul>
                 </div>
 
-                <h1 style="text-align: center; margin-bottom: 24px; font-weight: 700; color: #1E293B; font-size: 2.2rem; font-family: 'Outfit', sans-serif;">Free Online PDF Editor</h1>
+                <h1 style="text-align: center; margin-bottom: 24px; font-weight: 700; color: #1E293B; font-size: 2.2rem; font-family: 'Inter', sans-serif;">Free Online PDF Editor</h1>
                 <div class="drop-zone" id="dropZone">
                     <i data-lucide="upload-cloud" class="upload-icon"></i>
                     <h3>Drag & Drop your PDF here</h3>
@@ -1330,7 +1330,7 @@
         const zoomPercentLabel = document.getElementById('zoomPercentLabel');
 
         // Initialize Lucide Icons
-        lucide.createIcons();
+        window.addEventListener('DOMContentLoaded', () => { if (window.lucide) lucide.createIcons(); else window.addEventListener('load', () => window.lucide && lucide.createIcons()); });
 
         // ------------------ PDF UPLOAD & CACHING ------------------
         dropZone.addEventListener('click', () => fileInput.click());
@@ -1668,7 +1668,7 @@
                 canvas.height = viewport.height;
                 await pdfPage.render({ canvasContext: ctx, viewport: viewport }).promise;
             }
-            lucide.createIcons();
+            window.addEventListener('DOMContentLoaded', () => { if (window.lucide) lucide.createIcons(); else window.addEventListener('load', () => window.lucide && lucide.createIcons()); });
         }
 
         function viewportWidth(page) {
@@ -2469,7 +2469,7 @@
                 `;
                 container.appendChild(div);
             });
-            lucide.createIcons();
+            window.addEventListener('DOMContentLoaded', () => { if (window.lucide) lucide.createIcons(); else window.addEventListener('load', () => window.lucide && lucide.createIcons()); });
         }
 
         // ------------------ GLOBAL SETTINGS APPLIERS ------------------
