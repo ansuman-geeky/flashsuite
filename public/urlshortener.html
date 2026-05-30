@@ -137,7 +137,9 @@
             background-color: #9e00b1;
         }
     </style>
-<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-3B61CKGJL7"></script><script defer="" src="https://unpkg.com/lucide@latest"></script><script defer="" src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script><link rel="stylesheet" href="styles.css"></head>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-3B61CKGJL7"></script><script defer="" src="https://unpkg.com/lucide@latest"></script><script defer="" src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script><link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="/favicon.png">
+</head>
 <body class="bg-mesh font-body-md text-on-surface antialiased"><nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/10 shadow-sm">
         <div class="flex justify-between items-center w-full px-margin-desktop max-w-max-width mx-auto h-20">
             <div class="flex items-center gap-2">
@@ -153,9 +155,8 @@
                 <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/humanize">Humanize AI Texts</a>
             </div>
             <div class="flex items-center gap-4">
-                <button class="hidden lg:block px-6 py-2.5 rounded-full font-label-lg text-secondary hover:bg-surface-container-high/50 transition-all duration-200">Login</button>
-                <button class="hidden md:block px-6 py-2.5 rounded-full bg-primary-container text-on-primary-container font-label-lg shadow-md hover:scale-95 transition-all">Get
-                    Started</button>
+                <button onclick="window.location.href='/login.html'" class="hidden lg:block px-6 py-2.5 rounded-full font-label-lg text-secondary hover:bg-surface-container-high/50 transition-all duration-200">Login</button>
+                <button onclick="window.location.href='/login.html#signup'" class="hidden md:block px-6 py-2.5 rounded-full bg-primary-container text-on-primary-container font-label-lg shadow-md hover:scale-95 transition-all">Get Started</button>
                 <button class="md:hidden p-2 text-on-surface hover:bg-surface-container-high rounded-full transition-colors" onclick="toggleMobileMenu()">
                     <span class="material-symbols-outlined">menu</span>
                 </button>

@@ -196,37 +196,56 @@ function filterLinks() {
 
 function renderCharts(chartData, referrerData) {
     if (myClickChart) myClickChart.destroy();
-    if (myRefChart) myRefChart.destroy();
+    if (myRefChart) myRefChart.destroy(); // Keep this in case someone else calls it
 
-    const ctx = document.getElementById('clickChart').getContext('2d');
-    myClickChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: chartData.labels,
-            datasets: [{
-                label: 'Clicks Over Time',
-                data: chartData.values,
-                borderColor: '#9D1C44',
-                backgroundColor: 'rgba(157, 28, 68, 0.1)',
-                fill: true,
-                tension: 0.4
-            }]
-        },
-        options: { responsive: true, maintainAspectRatio: false }
-    });
+    const clickCanvas = document.getElementById('clickChart');
+    if (clickCanvas) {
+        const ctx = clickCanvas.getContext('2d');
+        myClickChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: chartData.labels,
+                datasets: [{
+                    label: 'Clicks Over Time',
+                    data: chartData.values,
+                    backgroundColor: '#C026D3', // vibrant fuchsia
+                    borderRadius: 4,
+                    barPercentage: 0.6
+                }]
+            },
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, border: { display: false }, grid: { color: '#f3f4f6' } },
+                    x: { grid: { display: false }, border: { display: false } }
+                }
+            }
+        });
+    }
 
-    const ctxRef = document.getElementById('referrerChart').getContext('2d');
-    myRefChart = new Chart(ctxRef, {
-        type: 'doughnut',
-        data: {
-            labels: referrerData.labels,
-            datasets: [{
-                data: referrerData.values,
-                backgroundColor: ['#9D1C44', '#1A2B3C', '#F39C12', '#2ECC71', '#3498DB']
-            }]
-        },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
-    });
+    const refContainer = document.getElementById('referrerList');
+    if (refContainer) {
+        // Render as HTML list instead of Doughnut chart
+        refContainer.innerHTML = referrerData.labels.map((label, i) => {
+            let icon = 'public';
+            if(label.toLowerCase().includes('twitter') || label.toLowerCase() === 'x') icon = 'alternate_email';
+            if(label.toLowerCase().includes('facebook')) icon = 'facebook';
+            if(label.toLowerCase().includes('linkedin')) icon = 'work';
+            
+            return `
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+                        <span class="material-symbols-outlined text-[16px]">${icon}</span>
+                    </div>
+                    <span class="text-on-surface font-medium">${label}</span>
+                </div>
+                <span class="font-bold text-on-surface">${referrerData.values[i]}</span>
+            </div>
+        `}).join('');
+    }
 }
 
 async function editLink(id, oldUrl) {
@@ -256,6 +275,7 @@ function switchView(viewId) {
     document.getElementById('dashboardView').style.display = 'none';
     document.getElementById('blogView').style.display = 'none';
     if (document.getElementById('settingsView')) document.getElementById('settingsView').style.display = 'none';
+    if (document.getElementById('saasView')) document.getElementById('saasView').style.display = 'none';
 
     // Remove active class from all nav items
     document.querySelectorAll('.sidebar-nav-item').forEach(el => el.classList.remove('active'));
@@ -273,6 +293,10 @@ function switchView(viewId) {
     } else if (viewId === 'settings') {
         document.getElementById('settingsView').style.display = 'block';
         if (titleEl) titleEl.innerText = 'System Settings';
+    } else if (viewId === 'saas') {
+        if (document.getElementById('saasView')) document.getElementById('saasView').style.display = 'block';
+        if (titleEl) titleEl.innerText = 'SaaS Configuration';
+        if (typeof loadSaasConfig === 'function') loadSaasConfig();
     }
 }
 

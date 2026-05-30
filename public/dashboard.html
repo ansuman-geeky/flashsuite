@@ -11,8 +11,8 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy | FlashSuite Custom URL Shortener &amp; PDF Tools</title>
-    <meta name="description" content="Read the Privacy Policy for FlashSuite, detailing how we protect your data, our client-side PDF processing, and Google AdSense cookie disclosures.">
+    <title>Dashboard | FlashSuite</title>
+    <meta name="description" content="Learn about FlashSuite, the premier custom URL shortener, dynamic QR code generator, and secure client-side PDF utility toolkit designed for creators, developers, and enterprises.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
@@ -33,7 +33,19 @@
                 radial-gradient(at 0% 0%, rgba(192, 38, 211, 0.05) 0px, transparent 50%),
                 radial-gradient(at 100% 100%, rgba(158, 0, 177, 0.05) 0px, transparent 50%);
         }
-                </style>
+        .nav-pill-active {
+            position: relative;
+        }
+        .nav-pill-active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #9e00b1;
+        }
+            </style>
 
     <!-- New Design System -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -255,113 +267,136 @@
     
 
     
-<main class="pt-32 pb-24 px-margin-desktop bg-surface-light min-h-screen pt-20">
-    <div class="max-w-3xl mx-auto glass-card p-8 md:p-16 rounded-[40px] shadow-sm border border-outline-variant/20">
-        <div class="mb-12 text-center">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary font-label-md mb-6">
-                <span class="material-symbols-outlined text-[18px]">shield_lock</span>
-                Legal Document
-            </div>
-            <h1 class="font-display-lg text-display-lg text-on-surface mb-4">Privacy Policy</h1>
-            <p class="text-on-surface-variant font-label-lg">Last updated: May 30, 2026</p>
-        </div>
 
-        <div class="legal-content">
-            <main class="page-content">
+<main class="pt-32 pb-16 min-h-screen bg-surface-light">
+    <div class="px-margin-desktop max-w-max-width mx-auto">
         
-
-        <p class="text-body-lg text-on-surface-variant leading-relaxed mb-6">At FlashSuite, we value the trust you place in our tools. This Privacy Policy outlines how we collect, use,
-            and safeguard your information when you use our custom URL shortening services, dynamic QR code generator,
-            PDF signing and editing tools, and administrative dashboard. Our guiding principle is data minimization: we only collect what is strictly
-            necessary to provide a high-performance, secure experience.</p>
-
-        <div class="alert-box">
-            <p class="text-body-lg text-on-surface-variant leading-relaxed mb-6"><strong class="font-bold text-on-surface">Note on PDF Files:</strong> All PDF document editing, signing, and manipulation tools operate 100% in your browser. Your files are processed locally in RAM and are never transmitted to our servers.</p>
+        <div class="flex items-center justify-between mb-12">
+            <h1 class="font-display-md text-display-md font-bold text-on-surface">My Dashboard</h1>
+            <button onclick="logout()" class="px-4 py-2 rounded-full border border-error/50 text-error hover:bg-error/10 font-label-md transition-colors flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">logout</span> Sign Out
+            </button>
         </div>
 
-        <h2 class="font-headline-lg text-primary mt-12 mb-6 border-b border-outline-variant/30 pb-2">1. Information We Collect</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Profile Card -->
+            <div class="glass-card p-8 rounded-[32px] border border-outline-variant/30">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-vibrant-fuchsia flex items-center justify-center text-white text-2xl font-bold shadow-lg" id="avatarInitial">U</div>
+                    <div>
+                        <h2 class="font-title-lg font-bold text-on-surface" id="userName">Loading...</h2>
+                        <p class="text-on-surface-variant text-body-md" id="userEmail"></p>
+                    </div>
+                </div>
+                
+                <div id="adminBadge" class="hidden mb-6 bg-primary/10 border border-primary/20 text-primary px-4 py-3 rounded-2xl flex items-center justify-between">
+                    <span class="font-bold flex items-center gap-2"><span class="material-symbols-outlined">admin_panel_settings</span> Administrator</span>
+                    <a href="/admin.html" class="text-sm underline hover:text-vibrant-fuchsia">Go to Admin Portal →</a>
+                </div>
+            </div>
 
-        <h3 class="font-title-lg text-on-surface mt-8 mb-4">A. For Public Users (Link Visitors)</h3>
-        <p class="text-body-lg text-on-surface-variant leading-relaxed mb-6">When a user clicks a FlashSuite link, we collect limited technical data to provide analytics to link
-            creators. This includes:</p>
-        <ul class="list-disc list-inside text-body-lg text-on-surface-variant mb-6 space-y-3 pl-4">
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">IP Address:</strong> Used to identify approximate geographic location and prevent fraudulent
-                clicks.</li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">User Agent:</strong> Information about the browser and operating system to optimize redirection
-                performance.</li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Referrer Data:</strong> The website or platform from which the visitor arrived (e.g., Twitter,
-                LinkedIn, or Direct).</li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Timestamp:</strong> The exact date and time the link was accessed.</li>
-        </ul>
-
-        <h3 class="font-title-lg text-on-surface mt-8 mb-4">B. For Administrative Users</h3>
-        <p class="text-body-lg text-on-surface-variant leading-relaxed mb-6">To manage the FlashSuite platform, we collect:</p>
-        <ul class="list-disc list-inside text-body-lg text-on-surface-variant mb-6 space-y-3 pl-4">
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Account Credentials:</strong> Usernames and hashed passwords (via Bcrypt) to secure your
-                dashboard.</li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Session Data:</strong> We use secure cookies to maintain your login session.</li>
-        </ul>
-
-        <h2 class="font-headline-lg text-primary mt-12 mb-6 border-b border-outline-variant/30 pb-2">2. 100% Client-Side PDF Processing</h2>
-        <p class="text-body-lg text-on-surface-variant leading-relaxed mb-6">Unlike traditional online PDF editors, FlashSuite prioritizes absolute user privacy and data security. All operations on PDF files—including merging, splitting, drawing, signing, and form editing—are executed **entirely in your web browser** using local JavaScript libraries (PDF.js and PDF-lib).</p>
-        <ul class="list-disc list-inside text-body-lg text-on-surface-variant mb-6 space-y-3 pl-4">
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">No Backend Uploads:</strong> Selected PDF documents are read locally as an <code>ArrayBuffer</code>. Your file data is never sent to our backend servers.</li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Zero Storage:</strong> Because your files are not uploaded, they are never saved or indexed on our systems. Closing the tab immediately purges the document from your local memory.</li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">E2E Privacy:</strong> Your sensitive documents remain completely private to you. We cannot view, modify, or leak your PDF content.</li>
-        </ul>
-
-        <h2 class="font-headline-lg text-primary mt-12 mb-6 border-b border-outline-variant/30 pb-2">3. Google AdSense &amp; Third-Party Cookies</h2>
-        <p class="text-body-lg text-on-surface-variant leading-relaxed mb-6">We display Google AdSense advertisements on FlashSuite to fund our free services. To comply with Google's policies, please note the following:</p>
-        <ul class="list-disc list-inside text-body-lg text-on-surface-variant mb-6 space-y-3 pl-4">
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Third-party vendors</strong>, including Google, use cookies to serve ads based on your prior visits to our website or other websites on the Internet.</li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Google's use of advertising cookies</strong> enables it and its partners to serve ads to our users based on their visits to our site and/or other sites on the Internet.</li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Opt-Out Options:</strong> You can easily opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener" class="text-vibrant-fuchsia hover:underline transition-all">Google Ads Settings</a>. Alternatively, you can opt out of a third-party vendor's use of cookies for personalized advertising by visiting <a href="https://www.aboutads.info" target="_blank" rel="noopener" class="text-vibrant-fuchsia hover:underline transition-all">www.aboutads.info</a>.</li>
-        </ul>
-
-        <h2 class="font-headline-lg text-primary mt-12 mb-6 border-b border-outline-variant/30 pb-2">4. How We Use Your Data</h2>
-        <p class="text-body-lg text-on-surface-variant leading-relaxed mb-6">FlashSuite uses the collected data strictly for the following purposes:</p>
-        <ul class="list-disc list-inside text-body-lg text-on-surface-variant mb-6 space-y-3 pl-4">
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Redirection:</strong> To accurately send visitors from a short code to the destination URL.</li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Analytics:</strong> To generate visual reports (via Chart.js) for link owners regarding link
-                performance.</li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Security:</strong> To detect and prevent malicious activity, such as SQL injection attempts or
-                bot-driven click inflation.</li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">System Optimization:</strong> To monitor server load and ensure "Flash-speed" performance.</li>
-        </ul>
-
-        <h2 class="font-headline-lg text-primary mt-12 mb-6 border-b border-outline-variant/30 pb-2">5. Data Retention &amp; Security</h2>
-        <ul class="list-disc list-inside text-body-lg text-on-surface-variant mb-6 space-y-3 pl-4">
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Storage:</strong> All link shortener and analytics data is stored in a secure SQLite database environment.</li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Encryption:</strong> Administrative passwords are protected using industry-standard salted hashing.</li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Retention:</strong> We retain analytics data only as long as necessary to provide historical
-                reporting. Users may delete specific links and their associated analytics at any time via the Admin
-                Dashboard.</li>
-        </ul>
-
-        <h2 class="font-headline-lg text-primary mt-12 mb-6 border-b border-outline-variant/30 pb-2">6. Third-Party Sharing</h2>
-        <p class="text-body-lg text-on-surface-variant leading-relaxed mb-6">We do not sell, trade, or rent your personal information to third parties. Data is only shared when legally
-            mandated by law enforcement or to protect the safety and integrity of our platform.</p>
-
-        <h2 class="font-headline-lg text-primary mt-12 mb-6 border-b border-outline-variant/30 pb-2">7. Your Rights</h2>
-        <p class="text-body-lg text-on-surface-variant leading-relaxed mb-6">Depending on your jurisdiction (such as under GDPR or CCPA), you may have the right to:</p>
-        <ul class="list-disc list-inside text-body-lg text-on-surface-variant mb-6 space-y-3 pl-4">
-            <li class="leading-relaxed">Request a copy of the data we hold about you.</li>
-            <li class="leading-relaxed">Request the deletion of your administrative account.</li>
-            <li class="leading-relaxed">Opt-out of certain data collection practices.</li>
-        </ul>
-
-        <h2 class="font-headline-lg text-primary mt-12 mb-6 border-b border-outline-variant/30 pb-2">8. Contact Us</h2>
-        <p class="text-body-lg text-on-surface-variant leading-relaxed mb-6">If you have questions regarding this Privacy Policy or the security of your links, please contact our
-            technical team at:</p>
-        <ul class="list-disc list-inside text-body-lg text-on-surface-variant mb-6 space-y-3 pl-4">
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Email:</strong> <a href="mailto:privacy@flashsuite.io" class="text-vibrant-fuchsia hover:underline transition-all">privacy@flashsuite.io</a></li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Web:</strong> <a href="https://flashsuite.io/support" class="text-vibrant-fuchsia hover:underline transition-all">flashsuite.io/support</a></li>
-        </ul>
-    </main>
+            <!-- Subscription Card -->
+            <div class="lg:col-span-2 glass-card p-8 rounded-[32px] border border-outline-variant/30 relative overflow-hidden">
+                <div class="absolute -right-16 -top-16 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <h2 class="font-title-lg font-bold text-on-surface mb-6 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">workspace_premium</span> Active Subscription
+                </h2>
+                
+                <div id="subContainer" class="bg-white/50 border border-outline-variant/30 rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <p class="text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Current Plan</p>
+                            <h3 class="font-display-sm font-bold text-on-surface" id="subName">Free Tier</h3>
+                        </div>
+                        <div id="subBadge" class="hidden bg-gradient-to-r from-primary to-vibrant-fuchsia text-white px-3 py-1 rounded-full text-label-sm font-bold">PRO</div>
+                    </div>
+                    <p class="text-body-md text-on-surface-variant mb-6" id="subStatus">You are currently on the free tier.</p>
+                    
+                    <div class="flex gap-4">
+                        <a href="/pricing.html" class="px-6 py-2.5 rounded-full bg-primary text-white font-label-md hover:bg-vibrant-fuchsia transition-colors flex items-center gap-2 shadow-md">
+                            <span class="material-symbols-outlined text-[18px]">upgrade</span> Upgrade Plan
+                        </a>
+                        <button onclick="manageBilling()" id="billingBtn" class="hidden px-6 py-2.5 rounded-full bg-surface-variant text-on-surface font-label-md hover:bg-outline-variant/30 transition-colors flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[18px]">credit_card</span> Manage Billing
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
+        
     </div>
 </main>
-        
+<script>
+    async function loadDashboard() {
+        try {
+            const res = await fetch('/api/user/profile');
+            if(res.status === 401) {
+                window.location.href = '/login.html';
+                return;
+            }
+            const user = await res.json();
+            document.getElementById('userName').textContent = user.username;
+            document.getElementById('userEmail').textContent = user.email || 'No email provided';
+            document.getElementById('avatarInitial').textContent = user.username.charAt(0).toUpperCase();
+            
+            if(user.role === 'admin') {
+                document.getElementById('adminBadge').classList.remove('hidden');
+            }
+
+            // Load Subscriptions
+            const subRes = await fetch('/api/user/subscriptions');
+            const subs = await subRes.json();
+            
+            if(subs && subs.length > 0) {
+                const active = subs[0]; // Get the first active sub
+                document.getElementById('subName').textContent = active.plan_name;
+                
+                if(active.badge_label || active.plan_name.toLowerCase().includes('pro')) {
+                    document.getElementById('subBadge').classList.remove('hidden');
+                    document.getElementById('subBadge').textContent = active.badge_label || 'PRO';
+                }
+
+                if(active.stripe_subscription_id) {
+                    const d = new Date(active.current_period_end);
+                    document.getElementById('subStatus').textContent = `Renews on ${d.toLocaleDateString()}`;
+                    document.getElementById('billingBtn').classList.remove('hidden');
+                }
+            }
+
+        } catch(e) {
+            console.error('Error loading profile', e);
+        }
+    }
+
+    async function manageBilling() {
+        try {
+            const btn = document.getElementById('billingBtn');
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[18px]">progress_activity</span> Loading...';
+            const res = await fetch('/api/stripe/portal', { method: 'POST' });
+            const data = await res.json();
+            if(data.url) {
+                window.location.href = data.url;
+            } else {
+                alert(data.error || 'Failed to open portal');
+                btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">credit_card</span> Manage Billing';
+            }
+        } catch(e) {
+            alert('A network error occurred.');
+        }
+    }
+
+    async function logout() {
+        try {
+            await fetch('/api/logout', { method: 'POST' });
+            window.location.href = '/login.html';
+        } catch(e) {}
+    }
+
+    document.addEventListener('DOMContentLoaded', loadDashboard);
+</script>
+
+    
 
     <footer class="bg-deep-navy w-full py-16 px-margin-desktop border-t border-white/5">
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter-desktop max-w-max-width mx-auto">

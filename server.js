@@ -1,9 +1,12 @@
+require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const db = require('./models/database');
 const apiRoutes = require('./routes/api');
 const humanizeRoutes = require('./routes/humanize');
+const adminSubsRoutes = require('./routes/admin_subs');
+const stripeRoutes = require('./routes/stripe');
 const compression = require('compression');
 
 // SEO Programmatic Middlewares & Routers
@@ -20,6 +23,10 @@ app.use(seoPrerender);
 // Apply Sitemap, Robots, and Programmatic use-case routers before wildcards
 app.use(seoRouter);
 app.use(pseoRouter);
+
+// Stripe Webhook MUST be mounted before express.json to preserve raw body
+app.use('/api/stripe/webhook', express.raw({ type: 'application/json' }), stripeRoutes);
+
 app.use(express.json());
 app.use(session({
     secret: 'flashsuite-secure-key',
@@ -32,20 +39,28 @@ app.use(session({
     }
 }));
 
-// Auth Middleware
+// Auth Middleware (For Users)
 function isAuthenticated(req, res, next) {
     if (req.session && req.session.userId) {
         return next();
     }
-    res.redirect('/login');
+    res.redirect('/login.html');
 }
 
-// Clean URLs Middleware: Redirect .html requests to clean URLs (keeping admin.html authentication flow)
+// Admin Authentication Middleware
+function isAdminAuthenticated(req, res, next) {
+    if (req.session && req.session.userId && req.session.role === 'admin') {
+        return next();
+    }
+    res.redirect('/admin-login.html');
+}
+
+// Clean URLs Middleware: Redirect .html requests to clean URLs (keeping admin.html and admin-login.html authentication flow)
 app.use((req, res, next) => {
     if (req.path === '/admin') {
         return res.redirect('/admin.html');
     }
-    if (req.path.endsWith('.html') && req.path !== '/admin.html') {
+    if (req.path.endsWith('.html') && req.path !== '/admin.html' && req.path !== '/admin-login.html') {
         const cleanPath = req.path === '/index.html' ? '/' : req.path.slice(0, -5);
         const queryIndex = req.url.indexOf('?');
         const queryString = queryIndex !== -1 ? req.url.slice(queryIndex) : '';
@@ -66,14 +81,22 @@ app.get('/', (req, res) => {
 });
 
 // Protect static admin files
-app.get('/admin.html', isAuthenticated, (req, res, next) => {
+app.get('/admin.html', isAdminAuthenticated, (req, res, next) => {
     res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+
+// Serve admin login file
+app.get('/admin-login.html', (req, res, next) => {
+    if (req.session && req.session.userId && req.session.role === 'admin') {
+        return res.redirect('/admin.html');
+    }
+    res.sendFile(path.join(__dirname, 'public', 'admin-login.html'));
 });
 
 // Redirect authenticated users away from the login page
 app.get('/login', (req, res, next) => {
     if (req.session && req.session.userId) {
-        return res.redirect('/admin.html');
+        return res.redirect('/dashboard.html');
     }
     next();
 });
@@ -81,12 +104,62 @@ app.get('/login', (req, res, next) => {
 app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'], maxAge: '1d' }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'), { maxAge: '1d' }));
 
+// Tool Gatekeeper Middleware
+// Intercepts requests to check if they are mapped to a tool that requires a premium plan
+app.use(async (req, res, next) => {
+    // We only care about GET requests to potential tools (e.g. /humanize)
+    if (req.method !== 'GET') return next();
+    
+    // Extract slug (e.g. from '/humanize' or '/humanize?q=1')
+    const slug = req.path.split('/')[1];
+    if (!slug) return next();
+
+    // Check if slug is a tool
+    db.get("SELECT * FROM tools WHERE slug = ? AND is_active = 1", [slug], (err, tool) => {
+        if (err || !tool) return next(); // Not a tool, or not active, continue normally
+
+        // Check which plans give access to this tool
+        db.all("SELECT plan_id FROM plan_tools WHERE tool_id = ?", [tool.id], (err, mappings) => {
+            if (err || !mappings || mappings.length === 0) {
+                // If it's not mapped to any plan, assume it's free/public.
+                return next();
+            }
+
+            // It requires a specific plan. Does the user have it?
+            if (!req.session || !req.session.userId) {
+                return res.redirect('/login.html'); // Not logged in
+            }
+
+            const requiredPlanIds = mappings.map(m => m.plan_id);
+
+            db.get(`
+                SELECT * FROM user_subscriptions 
+                WHERE user_id = ? AND status = 'active'
+                ORDER BY id DESC LIMIT 1
+            `, [req.session.userId], (err, sub) => {
+                if (err) return res.redirect('/pricing.html');
+
+                if (sub && requiredPlanIds.includes(sub.plan_id)) {
+                    // Access granted
+                    return next();
+                } else {
+                    // Access denied, redirect to upgrade
+                    return res.redirect('/pricing.html');
+                }
+            });
+        });
+    });
+});
+
 // Health Check
 app.get('/health', (req, res) => res.status(200).send('OK'));
 
 // API Routes
 app.use('/api', apiRoutes);
+app.use('/api/auth', require('./routes/auth_google'));
 app.use('/api', humanizeRoutes);
+app.use('/api/admin/subs', adminSubsRoutes);
+app.use('/api/stripe', stripeRoutes);
 
 // Redirection Logic
 app.get('/:code', (req, res) => {

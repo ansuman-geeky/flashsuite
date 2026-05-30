@@ -11,8 +11,8 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy | FlashSuite Custom URL Shortener &amp; PDF Tools</title>
-    <meta name="description" content="Read the Privacy Policy for FlashSuite, detailing how we protect your data, our client-side PDF processing, and Google AdSense cookie disclosures.">
+    <title>Pricing | FlashSuite</title>
+    <meta name="description" content="Learn about FlashSuite, the premier custom URL shortener, dynamic QR code generator, and secure client-side PDF utility toolkit designed for creators, developers, and enterprises.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
@@ -33,7 +33,19 @@
                 radial-gradient(at 0% 0%, rgba(192, 38, 211, 0.05) 0px, transparent 50%),
                 radial-gradient(at 100% 100%, rgba(158, 0, 177, 0.05) 0px, transparent 50%);
         }
-                </style>
+        .nav-pill-active {
+            position: relative;
+        }
+        .nav-pill-active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #9e00b1;
+        }
+            </style>
 
     <!-- New Design System -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -255,113 +267,147 @@
     
 
     
-<main class="pt-32 pb-24 px-margin-desktop bg-surface-light min-h-screen pt-20">
-    <div class="max-w-3xl mx-auto glass-card p-8 md:p-16 rounded-[40px] shadow-sm border border-outline-variant/20">
-        <div class="mb-12 text-center">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary font-label-md mb-6">
-                <span class="material-symbols-outlined text-[18px]">shield_lock</span>
-                Legal Document
+
+<main class="pt-32 pb-16 min-h-screen">
+    <div class="px-margin-desktop max-w-max-width mx-auto">
+        <div class="text-center mb-16">
+            <h1 class="font-display-lg text-display-lg font-bold text-on-surface mb-6">Simple, Transparent Pricing</h1>
+            <p class="font-body-xl text-on-surface-variant max-w-2xl mx-auto">Choose the perfect plan for your needs. Upgrade or downgrade at any time.</p>
+        </div>
+
+        <!-- Pricing Toggle -->
+        <div class="flex justify-center mb-12">
+            <div class="bg-surface-variant/50 p-1 rounded-full flex relative">
+                <div id="pricingIndicator" class="absolute left-1 top-1 bottom-1 w-[calc(50%-4px)] bg-white rounded-full shadow-sm transition-all duration-300"></div>
+                <button onclick="togglePricing('monthly')" id="btnMonthly" class="relative z-10 px-6 py-2 rounded-full font-label-lg font-bold text-on-surface transition-colors">Monthly</button>
+                <button onclick="togglePricing('yearly')" id="btnYearly" class="relative z-10 px-6 py-2 rounded-full font-label-lg font-medium text-on-surface-variant transition-colors">Yearly <span class="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full ml-1">-20%</span></button>
             </div>
-            <h1 class="font-display-lg text-display-lg text-on-surface mb-4">Privacy Policy</h1>
-            <p class="text-on-surface-variant font-label-lg">Last updated: May 30, 2026</p>
         </div>
 
-        <div class="legal-content">
-            <main class="page-content">
-        
-
-        <p class="text-body-lg text-on-surface-variant leading-relaxed mb-6">At FlashSuite, we value the trust you place in our tools. This Privacy Policy outlines how we collect, use,
-            and safeguard your information when you use our custom URL shortening services, dynamic QR code generator,
-            PDF signing and editing tools, and administrative dashboard. Our guiding principle is data minimization: we only collect what is strictly
-            necessary to provide a high-performance, secure experience.</p>
-
-        <div class="alert-box">
-            <p class="text-body-lg text-on-surface-variant leading-relaxed mb-6"><strong class="font-bold text-on-surface">Note on PDF Files:</strong> All PDF document editing, signing, and manipulation tools operate 100% in your browser. Your files are processed locally in RAM and are never transmitted to our servers.</p>
-        </div>
-
-        <h2 class="font-headline-lg text-primary mt-12 mb-6 border-b border-outline-variant/30 pb-2">1. Information We Collect</h2>
-
-        <h3 class="font-title-lg text-on-surface mt-8 mb-4">A. For Public Users (Link Visitors)</h3>
-        <p class="text-body-lg text-on-surface-variant leading-relaxed mb-6">When a user clicks a FlashSuite link, we collect limited technical data to provide analytics to link
-            creators. This includes:</p>
-        <ul class="list-disc list-inside text-body-lg text-on-surface-variant mb-6 space-y-3 pl-4">
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">IP Address:</strong> Used to identify approximate geographic location and prevent fraudulent
-                clicks.</li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">User Agent:</strong> Information about the browser and operating system to optimize redirection
-                performance.</li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Referrer Data:</strong> The website or platform from which the visitor arrived (e.g., Twitter,
-                LinkedIn, or Direct).</li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Timestamp:</strong> The exact date and time the link was accessed.</li>
-        </ul>
-
-        <h3 class="font-title-lg text-on-surface mt-8 mb-4">B. For Administrative Users</h3>
-        <p class="text-body-lg text-on-surface-variant leading-relaxed mb-6">To manage the FlashSuite platform, we collect:</p>
-        <ul class="list-disc list-inside text-body-lg text-on-surface-variant mb-6 space-y-3 pl-4">
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Account Credentials:</strong> Usernames and hashed passwords (via Bcrypt) to secure your
-                dashboard.</li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Session Data:</strong> We use secure cookies to maintain your login session.</li>
-        </ul>
-
-        <h2 class="font-headline-lg text-primary mt-12 mb-6 border-b border-outline-variant/30 pb-2">2. 100% Client-Side PDF Processing</h2>
-        <p class="text-body-lg text-on-surface-variant leading-relaxed mb-6">Unlike traditional online PDF editors, FlashSuite prioritizes absolute user privacy and data security. All operations on PDF files—including merging, splitting, drawing, signing, and form editing—are executed **entirely in your web browser** using local JavaScript libraries (PDF.js and PDF-lib).</p>
-        <ul class="list-disc list-inside text-body-lg text-on-surface-variant mb-6 space-y-3 pl-4">
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">No Backend Uploads:</strong> Selected PDF documents are read locally as an <code>ArrayBuffer</code>. Your file data is never sent to our backend servers.</li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Zero Storage:</strong> Because your files are not uploaded, they are never saved or indexed on our systems. Closing the tab immediately purges the document from your local memory.</li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">E2E Privacy:</strong> Your sensitive documents remain completely private to you. We cannot view, modify, or leak your PDF content.</li>
-        </ul>
-
-        <h2 class="font-headline-lg text-primary mt-12 mb-6 border-b border-outline-variant/30 pb-2">3. Google AdSense &amp; Third-Party Cookies</h2>
-        <p class="text-body-lg text-on-surface-variant leading-relaxed mb-6">We display Google AdSense advertisements on FlashSuite to fund our free services. To comply with Google's policies, please note the following:</p>
-        <ul class="list-disc list-inside text-body-lg text-on-surface-variant mb-6 space-y-3 pl-4">
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Third-party vendors</strong>, including Google, use cookies to serve ads based on your prior visits to our website or other websites on the Internet.</li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Google's use of advertising cookies</strong> enables it and its partners to serve ads to our users based on their visits to our site and/or other sites on the Internet.</li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Opt-Out Options:</strong> You can easily opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener" class="text-vibrant-fuchsia hover:underline transition-all">Google Ads Settings</a>. Alternatively, you can opt out of a third-party vendor's use of cookies for personalized advertising by visiting <a href="https://www.aboutads.info" target="_blank" rel="noopener" class="text-vibrant-fuchsia hover:underline transition-all">www.aboutads.info</a>.</li>
-        </ul>
-
-        <h2 class="font-headline-lg text-primary mt-12 mb-6 border-b border-outline-variant/30 pb-2">4. How We Use Your Data</h2>
-        <p class="text-body-lg text-on-surface-variant leading-relaxed mb-6">FlashSuite uses the collected data strictly for the following purposes:</p>
-        <ul class="list-disc list-inside text-body-lg text-on-surface-variant mb-6 space-y-3 pl-4">
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Redirection:</strong> To accurately send visitors from a short code to the destination URL.</li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Analytics:</strong> To generate visual reports (via Chart.js) for link owners regarding link
-                performance.</li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Security:</strong> To detect and prevent malicious activity, such as SQL injection attempts or
-                bot-driven click inflation.</li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">System Optimization:</strong> To monitor server load and ensure "Flash-speed" performance.</li>
-        </ul>
-
-        <h2 class="font-headline-lg text-primary mt-12 mb-6 border-b border-outline-variant/30 pb-2">5. Data Retention &amp; Security</h2>
-        <ul class="list-disc list-inside text-body-lg text-on-surface-variant mb-6 space-y-3 pl-4">
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Storage:</strong> All link shortener and analytics data is stored in a secure SQLite database environment.</li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Encryption:</strong> Administrative passwords are protected using industry-standard salted hashing.</li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Retention:</strong> We retain analytics data only as long as necessary to provide historical
-                reporting. Users may delete specific links and their associated analytics at any time via the Admin
-                Dashboard.</li>
-        </ul>
-
-        <h2 class="font-headline-lg text-primary mt-12 mb-6 border-b border-outline-variant/30 pb-2">6. Third-Party Sharing</h2>
-        <p class="text-body-lg text-on-surface-variant leading-relaxed mb-6">We do not sell, trade, or rent your personal information to third parties. Data is only shared when legally
-            mandated by law enforcement or to protect the safety and integrity of our platform.</p>
-
-        <h2 class="font-headline-lg text-primary mt-12 mb-6 border-b border-outline-variant/30 pb-2">7. Your Rights</h2>
-        <p class="text-body-lg text-on-surface-variant leading-relaxed mb-6">Depending on your jurisdiction (such as under GDPR or CCPA), you may have the right to:</p>
-        <ul class="list-disc list-inside text-body-lg text-on-surface-variant mb-6 space-y-3 pl-4">
-            <li class="leading-relaxed">Request a copy of the data we hold about you.</li>
-            <li class="leading-relaxed">Request the deletion of your administrative account.</li>
-            <li class="leading-relaxed">Opt-out of certain data collection practices.</li>
-        </ul>
-
-        <h2 class="font-headline-lg text-primary mt-12 mb-6 border-b border-outline-variant/30 pb-2">8. Contact Us</h2>
-        <p class="text-body-lg text-on-surface-variant leading-relaxed mb-6">If you have questions regarding this Privacy Policy or the security of your links, please contact our
-            technical team at:</p>
-        <ul class="list-disc list-inside text-body-lg text-on-surface-variant mb-6 space-y-3 pl-4">
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Email:</strong> <a href="mailto:privacy@flashsuite.io" class="text-vibrant-fuchsia hover:underline transition-all">privacy@flashsuite.io</a></li>
-            <li class="leading-relaxed"><strong class="font-bold text-on-surface">Web:</strong> <a href="https://flashsuite.io/support" class="text-vibrant-fuchsia hover:underline transition-all">flashsuite.io/support</a></li>
-        </ul>
-    </main>
+        <!-- Dynamic Plans Container -->
+        <div id="plansContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <!-- Loading State -->
+            <div class="col-span-full text-center py-12">
+                <span class="material-symbols-outlined animate-spin text-primary text-4xl">progress_activity</span>
+            </div>
         </div>
     </div>
 </main>
+<script>
+    let currentPricingMode = 'monthly';
+    let plansData = [];
+
+    function togglePricing(mode) {
+        currentPricingMode = mode;
+        const indicator = document.getElementById('pricingIndicator');
+        const btnM = document.getElementById('btnMonthly');
+        const btnY = document.getElementById('btnYearly');
         
+        if(mode === 'monthly') {
+            indicator.style.transform = 'translateX(0)';
+            btnM.classList.add('font-bold', 'text-on-surface');
+            btnM.classList.remove('font-medium', 'text-on-surface-variant');
+            btnY.classList.add('font-medium', 'text-on-surface-variant');
+            btnY.classList.remove('font-bold', 'text-on-surface');
+        } else {
+            indicator.style.transform = 'translateX(100%)';
+            btnY.classList.add('font-bold', 'text-on-surface');
+            btnY.classList.remove('font-medium', 'text-on-surface-variant');
+            btnM.classList.add('font-medium', 'text-on-surface-variant');
+            btnM.classList.remove('font-bold', 'text-on-surface');
+        }
+        renderPlans();
+    }
+
+    async function loadPlans() {
+        try {
+            const res = await fetch('/api/admin/subs/plans');
+            if(res.ok) {
+                plansData = await res.json();
+                renderPlans();
+            }
+        } catch(e) {
+            console.error('Error loading plans');
+        }
+    }
+
+    function renderPlans() {
+        const container = document.getElementById('plansContainer');
+        container.innerHTML = '';
+
+        plansData.forEach(plan => {
+            if(plan.status !== 'active') return;
+
+            const isPopular = plan.is_popular;
+            const priceCents = currentPricingMode === 'monthly' ? plan.monthly_price : plan.yearly_price;
+            const price = (priceCents / 100).toFixed(2);
+            
+            // Just basic features for now, a real app would fetch mapped features
+            const featuresHTML = `
+                <ul class="space-y-4 mb-8">
+                    <li class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+                        <span class="text-on-surface-variant">Core FlashSuite Tools</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-primary text-xl">${plan.monthly_price > 0 ? 'check_circle' : 'remove'}</span>
+                        <span class="${plan.monthly_price > 0 ? 'text-on-surface-variant' : 'text-on-surface-variant/40'}">Premium AI Features</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-primary text-xl">${plan.monthly_price > 0 ? 'check_circle' : 'remove'}</span>
+                        <span class="${plan.monthly_price > 0 ? 'text-on-surface-variant' : 'text-on-surface-variant/40'}">Priority Support</span>
+                    </li>
+                </ul>
+            `;
+
+            const card = document.createElement('div');
+            card.className = `glass-card p-8 rounded-[32px] relative flex flex-col ${isPopular ? 'border-primary/50 shadow-xl scale-105 z-10' : 'border-outline-variant/30'}`;
+            
+            card.innerHTML = `
+                ${isPopular ? `<div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-primary to-vibrant-fuchsia text-white px-4 py-1 rounded-full text-label-sm font-bold shadow-lg">${plan.badge_label || 'Popular'}</div>` : ''}
+                <h3 class="font-title-lg text-title-lg font-bold text-on-surface mb-2">${plan.name}</h3>
+                <p class="text-on-surface-variant mb-6 h-12">${plan.description || ''}</p>
+                <div class="mb-8">
+                    <span class="text-display-md font-bold text-on-surface">$${price}</span>
+                    <span class="text-on-surface-variant">/ ${currentPricingMode === 'monthly' ? 'mo' : 'yr'}</span>
+                </div>
+                ${featuresHTML}
+                <div class="mt-auto">
+                    <button onclick="subscribe(${plan.id})" class="w-full py-3.5 rounded-full font-title-md ${isPopular ? 'bg-primary text-white hover:bg-vibrant-fuchsia shadow-md hover:-translate-y-1' : 'bg-surface-variant text-on-surface hover:bg-outline-variant/30'} transition-all duration-300">
+                        ${plan.monthly_price === 0 ? 'Get Started' : 'Subscribe Now'}
+                    </button>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    async function subscribe(planId) {
+        try {
+            const res = await fetch('/api/stripe/checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ plan_id: planId, is_yearly: currentPricingMode === 'yearly' })
+            });
+            
+            if(res.status === 401) {
+                window.location.href = '/login.html#signup';
+                return;
+            }
+            
+            const data = await res.json();
+            if(data.url) {
+                window.location.href = data.url;
+            }
+        } catch(e) {
+            console.error('Checkout error');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadPlans);
+</script>
+
+    
 
     <footer class="bg-deep-navy w-full py-16 px-margin-desktop border-t border-white/5">
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter-desktop max-w-max-width mx-auto">
