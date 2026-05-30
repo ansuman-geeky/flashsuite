@@ -1,0 +1,465 @@
+<!DOCTYPE html><html lang="en"><head>
+    <!-- Google tag (gtag.js) -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-3B61CKGJL7"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-3B61CKGJL7');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | FlashSuite</title>
+    <meta name="description" content="Learn about FlashSuite, the premier custom URL shortener, dynamic QR code generator, and secure client-side PDF utility toolkit designed for creators, developers, and enterprises.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .bg-mesh {
+            background-color: #f8f9fa;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(192, 38, 211, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(158, 0, 177, 0.05) 0px, transparent 50%);
+        }
+        .nav-pill-active {
+            position: relative;
+        }
+        .nav-pill-active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #9e00b1;
+        }
+            </style>
+
+    <!-- New Design System -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "background": "#f8f9fa",
+                      "surface-container": "#edeeef",
+                      "on-secondary-container": "#5a6574",
+                      "deep-navy": "#0B1622",
+                      "tertiary-fixed": "#ffd9e2",
+                      "secondary-fixed-dim": "#bcc7d8",
+                      "on-primary-fixed-variant": "#7d008c",
+                      "inverse-on-surface": "#f0f1f2",
+                      "surface-container-highest": "#e1e3e4",
+                      "surface-dim": "#d9dadb",
+                      "on-surface": "#191c1d",
+                      "on-secondary-fixed": "#121c29",
+                      "on-error": "#ffffff",
+                      "surface-container-high": "#e7e8e9",
+                      "surface-tint": "#a400b7",
+                      "secondary-fixed": "#d8e3f5",
+                      "inverse-surface": "#2e3132",
+                      "on-tertiary-fixed": "#3f001c",
+                      "surface": "#f8f9fa",
+                      "power-pink": "#DB2777",
+                      "tertiary-container": "#d92575",
+                      "error-container": "#ffdad6",
+                      "primary-container": "#c026d3",
+                      "on-primary-container": "#fffafa",
+                      "on-primary": "#ffffff",
+                      "on-surface-variant": "#524151",
+                      "vibrant-fuchsia": "#C026D3",
+                      "surface-container-low": "#f3f4f5",
+                      "secondary": "#545f6e",
+                      "outline-variant": "#d7c0d3",
+                      "surface-container-lowest": "#ffffff",
+                      "on-tertiary-container": "#fffafa",
+                      "surface-variant": "#e1e3e4",
+                      "on-tertiary-fixed-variant": "#8e0048",
+                      "surface-light": "#F8F9FA",
+                      "outline": "#857182",
+                      "error": "#ba1a1a",
+                      "surface-bright": "#f8f9fa",
+                      "tertiary": "#b4005d",
+                      "on-secondary": "#ffffff",
+                      "primary-fixed-dim": "#fda9ff",
+                      "on-primary-fixed": "#36003d",
+                      "on-tertiary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "on-secondary-fixed-variant": "#3d4855",
+                      "primary": "#9e00b1",
+                      "primary-fixed": "#ffd6fb",
+                      "tertiary-fixed-dim": "#ffb1c7",
+                      "inverse-primary": "#fda9ff",
+                      "on-background": "#191c1d",
+                      "secondary-container": "#d8e3f5"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-desktop": "64px",
+                      "gutter-desktop": "24px",
+                      "max-width": "1280px",
+                      "gutter-mobile": "16px",
+                      "margin-mobile": "16px",
+                      "baseline": "4px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Inter"],
+                      "label-lg": ["Inter"],
+                      "title-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "label-md": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "body-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500"}],
+                      "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .bg-mesh {
+            background-color: #f8f9fa;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(192, 38, 211, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(158, 0, 177, 0.05) 0px, transparent 50%);
+        }
+        .nav-pill-active {
+            position: relative;
+        }
+        .nav-pill-active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #9e00b1;
+        }
+    </style>
+
+    <link rel="icon" type="image/png" href="/favicon.png">
+</head>
+
+<body class="bg-mesh font-body-md text-on-surface antialiased"><nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/10 shadow-sm">
+        <div class="flex justify-between items-center w-full px-margin-desktop max-w-max-width mx-auto h-20">
+            <div class="flex items-center gap-2">
+                <a href="/" class="flex items-center">
+                    <img alt="FlashSuite Logo" class="h-16 md:h-20 w-auto max-w-[200px] object-contain" src="/flashsuite_logo.png">
+                </a>
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/">Home</a>
+                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/urlshortener">URL Shortener</a>
+                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/qrcode">QR Codes</a>
+                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/pdftools">PDF Tools</a>
+                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/humanize">Humanize AI Texts</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <button onclick="window.location.href='/login.html'" class="hidden lg:block px-6 py-2.5 rounded-full font-label-lg text-secondary hover:bg-surface-container-high/50 transition-all duration-200">Login</button>
+                <button onclick="window.location.href='/login.html#signup'" class="hidden md:block px-6 py-2.5 rounded-full bg-primary-container text-on-primary-container font-label-lg shadow-md hover:scale-95 transition-all">Get Started</button>
+                <button class="md:hidden p-2 text-on-surface hover:bg-surface-container-high rounded-full transition-colors" onclick="toggleMobileMenu()">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobileMenuOverlay" class="fixed inset-0 bg-black/50 z-[60] hidden transition-opacity duration-300" onclick="toggleMobileMenu()"></div>
+        <div id="mobileMenu" class="fixed top-0 right-0 w-64 h-full bg-surface z-[70] transform translate-x-full transition-transform duration-300 p-6 flex flex-col gap-6 shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <img alt="FlashSuite Logo" class="h-12 w-auto max-w-[160px] object-contain" src="/flashsuite_logo.png">
+                <button onclick="toggleMobileMenu()" class="p-2 text-on-surface hover:bg-surface-container-high rounded-full transition-colors"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/">Home</a>
+            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/urlshortener">URL Shortener</a>
+            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/qrcode">QR Codes</a>
+            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/pdftools">PDF Tools</a>
+            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/humanize">Humanize AI Texts</a>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const currentPath = window.location.pathname;
+                document.querySelectorAll('nav a.nav-link').forEach(link => {
+                    const href = link.getAttribute('href');
+                    let isActive = false;
+
+                    if (currentPath === href) {
+                        isActive = true;
+                    } else if (href !== '/' && currentPath.startsWith(href)) {
+                        isActive = true;
+                    } else if (href === '/pdftools' && currentPath.includes('pdf')) {
+                        isActive = true;
+                    }
+
+                    if (isActive) {
+                        link.className = "nav-link font-body-md text-body-md text-primary font-bold border-b-2 border-primary pb-1";
+                        // Also handle mobile menu links
+                        if (link.classList.contains('py-2')) {
+                            link.className = "nav-link font-body-lg text-primary font-bold py-2";
+                        }
+                    } else {
+                        link.className = "nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors";
+                        if (link.classList.contains('py-2')) {
+                            link.className = "nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2";
+                        }
+                    }
+                });
+            });
+
+            function toggleMobileMenu() {
+                const menu = document.getElementById('mobileMenu');
+                const overlay = document.getElementById('mobileMenuOverlay');
+                if (menu.classList.contains('translate-x-full')) {
+                    menu.classList.remove('translate-x-full');
+                    overlay.classList.remove('hidden');
+                } else {
+                    menu.classList.add('translate-x-full');
+                    overlay.classList.add('hidden');
+                }
+            }
+        </script>
+    </nav>
+    <!-- Navigation -->
+    
+
+    <!-- Mobile Menu Overlay -->
+    
+    
+
+    
+
+<main class="pt-32 pb-16 min-h-screen bg-surface-light">
+    <div class="px-margin-desktop max-w-max-width mx-auto">
+        
+        <div class="flex items-center justify-between mb-12">
+            <h1 class="font-display-md text-display-md font-bold text-on-surface">My Dashboard</h1>
+            <button onclick="logout()" class="px-4 py-2 rounded-full border border-error/50 text-error hover:bg-error/10 font-label-md transition-colors flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">logout</span> Sign Out
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Profile Card -->
+            <div class="glass-card p-8 rounded-[32px] border border-outline-variant/30">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-vibrant-fuchsia flex items-center justify-center text-white text-2xl font-bold shadow-lg" id="avatarInitial">U</div>
+                    <div>
+                        <h2 class="font-title-lg font-bold text-on-surface" id="userName">Loading...</h2>
+                        <p class="text-on-surface-variant text-body-md" id="userEmail"></p>
+                    </div>
+                </div>
+                
+                <div id="adminBadge" class="hidden mb-6 bg-primary/10 border border-primary/20 text-primary px-4 py-3 rounded-2xl flex items-center justify-between">
+                    <span class="font-bold flex items-center gap-2"><span class="material-symbols-outlined">admin_panel_settings</span> Administrator</span>
+                    <a href="/admin.html" class="text-sm underline hover:text-vibrant-fuchsia">Go to Admin Portal →</a>
+                </div>
+            </div>
+
+            <!-- Subscription Card -->
+            <div class="lg:col-span-2 glass-card p-8 rounded-[32px] border border-outline-variant/30 relative overflow-hidden">
+                <div class="absolute -right-16 -top-16 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <h2 class="font-title-lg font-bold text-on-surface mb-6 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">workspace_premium</span> Active Subscription
+                </h2>
+                
+                <div id="subContainer" class="bg-white/50 border border-outline-variant/30 rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <p class="text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Current Plan</p>
+                            <h3 class="font-display-sm font-bold text-on-surface" id="subName">Free Tier</h3>
+                        </div>
+                        <div id="subBadge" class="hidden bg-gradient-to-r from-primary to-vibrant-fuchsia text-white px-3 py-1 rounded-full text-label-sm font-bold">PRO</div>
+                    </div>
+                    <p class="text-body-md text-on-surface-variant mb-6" id="subStatus">You are currently on the free tier.</p>
+                    
+                    <div class="flex gap-4">
+                        <a href="/pricing.html" class="px-6 py-2.5 rounded-full bg-primary text-white font-label-md hover:bg-vibrant-fuchsia transition-colors flex items-center gap-2 shadow-md">
+                            <span class="material-symbols-outlined text-[18px]">upgrade</span> Upgrade Plan
+                        </a>
+                        <button onclick="manageBilling()" id="billingBtn" class="hidden px-6 py-2.5 rounded-full bg-surface-variant text-on-surface font-label-md hover:bg-outline-variant/30 transition-colors flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[18px]">credit_card</span> Manage Billing
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</main>
+<script>
+    async function loadDashboard() {
+        try {
+            const res = await fetch('/api/user/profile');
+            if(res.status === 401) {
+                window.location.href = '/login.html';
+                return;
+            }
+            const user = await res.json();
+            document.getElementById('userName').textContent = user.username;
+            document.getElementById('userEmail').textContent = user.email || 'No email provided';
+            document.getElementById('avatarInitial').textContent = user.username.charAt(0).toUpperCase();
+            
+            if(user.role === 'admin') {
+                document.getElementById('adminBadge').classList.remove('hidden');
+            }
+
+            // Load Subscriptions
+            const subRes = await fetch('/api/user/subscriptions');
+            const subs = await subRes.json();
+            
+            if(subs && subs.length > 0) {
+                const active = subs[0]; // Get the first active sub
+                document.getElementById('subName').textContent = active.plan_name;
+                
+                if(active.badge_label || active.plan_name.toLowerCase().includes('pro')) {
+                    document.getElementById('subBadge').classList.remove('hidden');
+                    document.getElementById('subBadge').textContent = active.badge_label || 'PRO';
+                }
+
+                if(active.stripe_subscription_id) {
+                    const d = new Date(active.current_period_end);
+                    document.getElementById('subStatus').textContent = `Renews on ${d.toLocaleDateString()}`;
+                    document.getElementById('billingBtn').classList.remove('hidden');
+                }
+            }
+
+        } catch(e) {
+            console.error('Error loading profile', e);
+        }
+    }
+
+    async function manageBilling() {
+        try {
+            const btn = document.getElementById('billingBtn');
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[18px]">progress_activity</span> Loading...';
+            const res = await fetch('/api/stripe/portal', { method: 'POST' });
+            const data = await res.json();
+            if(data.url) {
+                window.location.href = data.url;
+            } else {
+                alert(data.error || 'Failed to open portal');
+                btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">credit_card</span> Manage Billing';
+            }
+        } catch(e) {
+            alert('A network error occurred.');
+        }
+    }
+
+    async function logout() {
+        try {
+            await fetch('/api/logout', { method: 'POST' });
+            window.location.href = '/login.html';
+        } catch(e) {}
+    }
+
+    document.addEventListener('DOMContentLoaded', loadDashboard);
+</script>
+
+    
+
+    <footer class="bg-deep-navy w-full py-16 px-margin-desktop border-t border-white/5">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter-desktop max-w-max-width mx-auto">
+<div class="lg:col-span-1">
+<div class="flex items-center gap-2 mb-6">
+<span class="text-headline-lg font-headline-lg font-black text-white">FlashSuite</span>
+</div>
+<p class="text-secondary-fixed-dim/70 font-body-md mb-8">
+                    Secure, client-side, and lightning fast. Professional-grade URL management and PDF utility platform.
+                </p>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors" href="#">
+<img alt="Twitter" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_oyTLfFal6ibPHeyrRmdSLvsssQ73bQLD2JFEaxxZCkQkPoxRAvxHpf8Tip0xwW4uCDxgv08U2qOT-3n91oEL7lyG1y9gNqSi7GhGvpqaXP_xd7sb58nF-6BsaBxa9VKzDimDflcBOVThavlh_8erOhSk186tv3xLlI-ON7c05vPEnbNzt61X7ZffHZRdFRBmHB6hPl4tnPtQKzefFcfbUdjwa4MrNWmqPGi7Gce85IR9wwhTYN99VN5RXazvFIJULvJgU1eiQteY">
+</a>
+<a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors" href="#">
+<img alt="LinkedIn" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWkcnDTp_CtFOGkRby_ofx20CBW7ngkaAqHNjQs6vk5DUDbqI4q0pJnOMtbsNt5Y-qOQAuntuaA8XX3QoWTuSHiqil0dY195sE7j6eUqZjEq1TIdkGqyWxvLTRIDsSq2QBJWgvsq0o_dmm9CLg4GP01PWhl7NB8KDImJLAN4wGgyBLU8EBL4hKYjRDe3Il7sFxlaSMTPquTWoinMrrc-IFyKMtzW6cGGMKWXCTz7N_KBU2-biUxZ8hWsRldtmRkkJFGMEAPdTmt16w">
+</a>
+</div>
+</div>
+<div>
+<h4 class="text-white font-title-lg mb-6">Platform</h4>
+<ul class="space-y-4">
+<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/urlshortener">URL Shortener</a></li>
+<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/qrcode">QR Generator</a></li>
+<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/pdftools">PDF Tools</a></li>
+<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/api">API Docs</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-white font-title-lg mb-6">Company</h4>
+<ul class="space-y-4">
+<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/about">About Us</a></li>
+<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/about">Help Center</a></li>
+<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/privacy">Security</a></li>
+<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="#">Bulk URL Shortener</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-white font-title-lg mb-6">Legal</h4>
+<ul class="space-y-4">
+<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/privacy">Privacy Policy</a></li>
+<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/terms">Terms of Service</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-max-width mx-auto pt-12 mt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-secondary-fixed-dim/50 text-label-md">
+                © 2024 FlashSuite. Secure, client-side, and lightning fast.
+            </p>
+<div class="flex gap-8">
+<span class="flex items-center gap-2 text-secondary-fixed-dim/50 text-label-md">
+<span class="w-2 h-2 rounded-full bg-green-500"></span> Globally Distributed
+                </span>
+</div>
+</div>
+</footer>
+
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+            document.getElementById('mobileMenuOverlay').classList.toggle('active');
+        }
+    </script>
+
+
+</body></html>

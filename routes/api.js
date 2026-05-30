@@ -3,6 +3,13 @@ const router = express.Router();
 const db = require('../models/database');
 const { nanoid } = require('nanoid');
 const bcrypt = require('bcryptjs');
+const rateLimit = require('express-rate-limit');
+
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 10, // Limit each IP to 10 requests per `window` (here, per 15 minutes)
+    message: { error: 'Too many authentication attempts from this IP, please try again after 15 minutes' }
+});
 
 // Middleware to protect admin routes
 function isAuthenticated(req, res, next) {
@@ -26,19 +33,118 @@ router.post('/shorten', (req, res) => {
     );
 });
 
-// Admin: Login
-router.post('/login', (req, res) => {
+// Admin: Login (DEDICATED)
+router.post('/admin/login', authLimiter, (req, res) => {
     const { username, password } = req.body;
-    db.get("SELECT * FROM users WHERE username = ?", [username], async (err, user) => {
-        if (err || !user) return res.status(401).json({ error: 'Invalid credentials' });
+    db.get("SELECT * FROM users WHERE username = ? AND role = 'admin'", [username], async (err, user) => {
+        if (err || !user) return res.status(401).json({ error: 'Invalid admin credentials' });
 
         const valid = await bcrypt.compare(password, user.password);
         if (valid) {
             req.session.userId = user.id;
-            res.json({ success: true });
+            req.session.role = user.role;
+            res.json({ success: true, role: user.role });
+        } else {
+            res.status(401).json({ error: 'Invalid admin credentials' });
+        }
+    });
+});
+
+// User: Login
+router.post('/login', authLimiter, (req, res) => {
+    const { username, password } = req.body;
+    db.get("SELECT * FROM users WHERE username = ?", [username], async (err, user) => {
+        if (err || !user) return res.status(401).json({ error: 'Invalid credentials' });
+
+        // Reject admins trying to login via the user portal
+        if (user.role === 'admin') {
+            return res.status(403).json({ error: 'Admin access restricted. Please use the admin login portal.' });
+        }
+
+        const valid = await bcrypt.compare(password, user.password);
+        if (valid) {
+            req.session.userId = user.id;
+            req.session.role = user.role;
+            res.json({ success: true, role: user.role });
         } else {
             res.status(401).json({ error: 'Invalid credentials' });
         }
+    });
+});
+
+// Logout
+router.post('/logout', (req, res) => {
+    req.session.destroy();
+    res.json({ success: true });
+});
+
+// Public: Sign Up
+router.post('/signup', authLimiter, async (req, res) => {
+    const { username, password, email } = req.body;
+    if (!username || !password || !email) {
+        return res.status(400).json({ error: 'Username, password, and email are required' });
+    }
+    
+    try {
+        const hash = await bcrypt.hash(password, 10);
+        db.run("INSERT INTO users (username, password, email) VALUES (?, ?, ?)", [username, hash, email], function(err) {
+            if (err) {
+                if (err.message.includes('UNIQUE constraint failed')) {
+                    return res.status(400).json({ error: 'Username or email already exists' });
+                }
+                return res.status(500).json({ error: err.message });
+            }
+            const newUserId = this.lastID;
+            
+            // Assign default Free Plan (assuming plan_id = 1 is Free Tier)
+            db.run("INSERT INTO user_subscriptions (user_id, plan_id, status) VALUES (?, 1, 'active')", [newUserId], (subErr) => {
+                if (subErr) console.error("Failed to assign free plan:", subErr);
+                
+                // Automatically log them in
+                req.session.userId = newUserId;
+                req.session.role = 'user'; // Ensure role is in session
+                
+                res.json({ success: true, role: 'user' });
+            });
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Mock: Forgot Password
+router.post('/forgot-password', (req, res) => {
+    const { email } = req.body;
+    db.get("SELECT id FROM users WHERE email = ?", [email], (err, user) => {
+        if (!err && user) {
+            const mockToken = require('crypto').randomBytes(20).toString('hex');
+            db.run("INSERT INTO password_resets (token, user_id, expires_at) VALUES (?, ?, datetime('now', '+1 hour'))", [mockToken, user.id]);
+            console.log(`[MOCK EMAIL] Password reset requested for ${email}. Link: http://localhost:3000/reset-password?token=${mockToken}`);
+        }
+        // Always return success to prevent email enumeration
+        res.json({ success: true });
+    });
+});
+
+// --- USER DASHBOARD APIS ---
+
+router.get('/user/profile', isAuthenticated, (req, res) => {
+    db.get("SELECT id, username, email, role, status FROM users WHERE id = ?", [req.session.userId], (err, user) => {
+        if (err || !user) return res.status(404).json({ error: 'User not found' });
+        res.json(user);
+    });
+});
+
+router.get('/user/subscriptions', isAuthenticated, (req, res) => {
+    const query = `
+        SELECT us.*, p.name as plan_name, p.badge_label 
+        FROM user_subscriptions us 
+        JOIN plans p ON us.plan_id = p.id 
+        WHERE us.user_id = ? AND us.status = 'active'
+    `;
+    db.all(query, [req.session.userId], (err, subs) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(subs || []);
     });
 });
 
