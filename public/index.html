@@ -1,443 +1,571 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3B61CKGJL7"></script>
+<!DOCTYPE html><html class="light" lang="en"><head>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
 
-      gtag('config', 'G-3B61CKGJL7');
+        gtag('config', 'G-3B61CKGJL7');
     </script>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FlashSuite | Custom URL Shortener & QR Code Generator</title>
-    <meta name="description"
-        content="Create branded, trackable short links and dynamic QR codes that drive conversions. Manage campaigns and analyze click data in real-time with FlashSuite.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <script defer src="https://unpkg.com/lucide@latest"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "SoftwareApplication",
-          "name": "FlashSuite URL Shortener & QR Code Generator",
-          "operatingSystem": "Web",
-          "applicationCategory": "BusinessApplication",
-          "offers": {
-            "@type": "Offer",
-            "price": "0.00",
-            "priceCurrency": "USD"
-          },
-          "description": "Enterprise-grade custom URL shortener with real-time analytics, UTM tracking, and dynamic QR code generation."
-        },
-        {
-          "@type": "FAQPage",
-          "mainEntity": [{
-            "@type": "Question",
-            "name": "Do shortened links expire?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "With FlashSuite, your shortened links never expire unless you manually set an expiration date or delete them from your dashboard."
-            }
-          }]
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>FlashSuite | Transform Your Links and PDF Workflows</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#f8f9fa",
+                        "surface-container": "#edeeef",
+                        "on-secondary-container": "#5a6574",
+                        "deep-navy": "#0B1622",
+                        "tertiary-fixed": "#ffd9e2",
+                        "secondary-fixed-dim": "#bcc7d8",
+                        "on-primary-fixed-variant": "#7d008c",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-container-highest": "#e1e3e4",
+                        "surface-dim": "#d9dadb",
+                        "on-surface": "#191c1d",
+                        "on-secondary-fixed": "#121c29",
+                        "on-error": "#ffffff",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-tint": "#a400b7",
+                        "secondary-fixed": "#d8e3f5",
+                        "inverse-surface": "#2e3132",
+                        "on-tertiary-fixed": "#3f001c",
+                        "surface": "#f8f9fa",
+                        "power-pink": "#DB2777",
+                        "tertiary-container": "#d92575",
+                        "error-container": "#ffdad6",
+                        "primary-container": "#c026d3",
+                        "on-primary-container": "#fffafa",
+                        "on-primary": "#ffffff",
+                        "on-surface-variant": "#524151",
+                        "vibrant-fuchsia": "#C026D3",
+                        "surface-container-low": "#f3f4f5",
+                        "secondary": "#545f6e",
+                        "outline-variant": "#d7c0d3",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#fffafa",
+                        "surface-variant": "#e1e3e4",
+                        "on-tertiary-fixed-variant": "#8e0048",
+                        "surface-light": "#F8F9FA",
+                        "outline": "#857182",
+                        "error": "#ba1a1a",
+                        "surface-bright": "#f8f9fa",
+                        "tertiary": "#b4005d",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed-dim": "#fda9ff",
+                        "on-primary-fixed": "#36003d",
+                        "on-tertiary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#3d4855",
+                        "primary": "#9e00b1",
+                        "primary-fixed": "#ffd6fb",
+                        "tertiary-fixed-dim": "#ffb1c7",
+                        "inverse-primary": "#fda9ff",
+                        "on-background": "#191c1d",
+                        "secondary-container": "#d8e3f5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "gutter-desktop": "24px",
+                        "max-width": "1280px",
+                        "gutter-mobile": "16px",
+                        "margin-mobile": "16px",
+                        "baseline": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500" }],
+                        "title-lg": ["22px", { "lineHeight": "28px", "fontWeight": "500" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "display-lg": ["57px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                },
+            },
         }
-      ]
-    }
     </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .bg-mesh {
+            background-color: #f8f9fa;
+            background-image:
+                radial-gradient(at 0% 0%, rgba(192, 38, 211, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(158, 0, 177, 0.05) 0px, transparent 50%);
+        }
+
+        .nav-pill-active {
+            position: relative;
+        }
+
+        .nav-pill-active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #9e00b1;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(-2deg); }
+            50% { transform: translateY(-15px) rotate(2deg); }
+            100% { transform: translateY(0px) rotate(-2deg); }
+        }
+    </style>
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-3B61CKGJL7"></script>
+    <script defer="" src="https://unpkg.com/lucide@latest"></script>
+    <script defer="" src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
-<body>
-    <!-- Navigation -->
-    <nav class="glass-nav">
-        <a href="/"><img src="flashsuite_logo.png" alt="FlashSuite Logo" class="nav-logo"></a>
-        <div class="nav-links">
-            <a href="/">Home</a>
-            <a href="/#hero">URL Shortener</a>
-            <a href="/#hero">QR Generator</a>
-            <a href="/pdftools">PDF Tools</a>
-            <a href="/humanize">Humanize AI Texts</a>
+<body class="bg-mesh font-body-md text-on-surface antialiased"><nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/10 shadow-sm">
+        <div class="flex justify-between items-center w-full px-margin-desktop max-w-max-width mx-auto h-20">
+            <div class="flex items-center gap-2">
+                <a href="/" class="flex items-center">
+                    <img alt="FlashSuite Logo" class="h-16 md:h-20 w-auto max-w-[200px] object-contain" src="/flashsuite_logo.png">
+                </a>
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/">Home</a>
+                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/urlshortener">URL Shortener</a>
+                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/qrcode">QR Codes</a>
+                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/pdftools">PDF Tools</a>
+                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/humanize">Humanize AI Texts</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="hidden lg:block px-6 py-2.5 rounded-full font-label-lg text-secondary hover:bg-surface-container-high/50 transition-all duration-200">Login</button>
+                <button class="hidden md:block px-6 py-2.5 rounded-full bg-primary-container text-on-primary-container font-label-lg shadow-md hover:scale-95 transition-all">Get
+                    Started</button>
+                <button class="md:hidden p-2 text-on-surface hover:bg-surface-container-high rounded-full transition-colors" onclick="toggleMobileMenu()">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
         </div>
-        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+        <!-- Mobile Menu -->
+        <div id="mobileMenuOverlay" class="fixed inset-0 bg-black/50 z-[60] hidden transition-opacity duration-300" onclick="toggleMobileMenu()"></div>
+        <div id="mobileMenu" class="fixed top-0 right-0 w-64 h-full bg-surface z-[70] transform translate-x-full transition-transform duration-300 p-6 flex flex-col gap-6 shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <img alt="FlashSuite Logo" class="h-12 w-auto max-w-[160px] object-contain" src="/flashsuite_logo.png">
+                <button onclick="toggleMobileMenu()" class="p-2 text-on-surface hover:bg-surface-container-high rounded-full transition-colors"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/">Home</a>
+            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/urlshortener">URL Shortener</a>
+            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/qrcode">QR Codes</a>
+            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/pdftools">PDF Tools</a>
+            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/humanize">Humanize AI Texts</a>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const currentPath = window.location.pathname;
+                document.querySelectorAll('nav a.nav-link').forEach(link => {
+                    const href = link.getAttribute('href');
+                    let isActive = false;
+
+                    if (currentPath === href) {
+                        isActive = true;
+                    } else if (href !== '/' && currentPath.startsWith(href)) {
+                        isActive = true;
+                    } else if (href === '/pdftools' && currentPath.includes('pdf')) {
+                        isActive = true;
+                    }
+
+                    if (isActive) {
+                        link.className = "nav-link font-body-md text-body-md text-primary font-bold border-b-2 border-primary pb-1";
+                        // Also handle mobile menu links
+                        if (link.classList.contains('py-2')) {
+                            link.className = "nav-link font-body-lg text-primary font-bold py-2";
+                        }
+                    } else {
+                        link.className = "nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors";
+                        if (link.classList.contains('py-2')) {
+                            link.className = "nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2";
+                        }
+                    }
+                });
+            });
+
+            function toggleMobileMenu() {
+                const menu = document.getElementById('mobileMenu');
+                const overlay = document.getElementById('mobileMenuOverlay');
+                if (menu.classList.contains('translate-x-full')) {
+                    menu.classList.remove('translate-x-full');
+                    overlay.classList.remove('hidden');
+                } else {
+                    menu.classList.add('translate-x-full');
+                    overlay.classList.add('hidden');
+                }
+            }
+        </script>
     </nav>
+    
+    <!-- TopNavBar -->
 
-    <!-- Mobile Menu Overlay -->
-    <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()"></div>
-    <div class="mobile-menu" id="mobileMenu">
-        <a href="/" onclick="toggleMobileMenu()">Home</a>
-        <a href="/#hero" onclick="toggleMobileMenu()">URL Shortener</a>
-        <a href="/#hero" onclick="toggleMobileMenu()">QR Generator</a>
-        <a href="/pdftools" onclick="toggleMobileMenu()">PDF Tools</a>
-        <a href="/humanize" onclick="toggleMobileMenu()">Humanize AI</a>
-    </div>
-
-    <!-- Hero Section -->
-    <section id="hero">
-        <div class="hero-wrapper">
-            <div class="m3-shape shape-1"></div>
-            <div class="m3-shape shape-2"></div>
-            <div class="container hero fade-in-up">
-
-                <div class="hero-badge">
-                    <i data-lucide="sparkles" class="m3-badge-icon"></i>
-                    <span>Branded Links • Custom QRs • <a href="/pdftools" class="badge-link">NEW: PDF Tools</a></span>
-                </div>
-
-                <h1>
-                    Transform Your Links with Our <br>
-                    <span class="text-gradient">Custom URL Shortener & QR Code Generator.</span>
-                </h1>
-
-                <div class="glass-input-card fade-in-up delay-1">
-                    <div class="tab-container">
-                        <button id="tabShorten" class="tab-btn active" onclick="switchActionTab('shorten')">Shorten
-                            Link</button>
-                        <button id="tabQR" class="tab-btn" onclick="switchActionTab('qr')">Create QR Code</button>
-                        <button id="tabPDF" class="tab-btn" onclick="switchActionTab('pdf')">PDF Tools</button>
-                    </div>
-
-                    <div class="input-group" id="inputGroupContainer">
-                        <input type="url" id="longUrl" placeholder="Paste your link here..." required>
-                        <button id="actionBtn" onclick="performAction()">+ Shorten</button>
-                    </div>
-
-                    <!-- PDF Quick Actions (Hidden by default) -->
-                    <div class="pdf-quick-actions" id="pdfQuickActions" style="display: none;">
-                        <a href="/mergepdf" class="quick-tool-btn">
-                            <i data-lucide="combine"></i> Merge PDF
-                        </a>
-                        <a href="/splitpdf" class="quick-tool-btn">
-                            <i data-lucide="scissors"></i> Split PDF
-                        </a>
-                        <a href="/compresspdf" class="quick-tool-btn">
-                            <i data-lucide="file-down"></i> Compress
-                        </a>
-                        <a href="/croppdf" class="quick-tool-btn">
-                            <i data-lucide="crop"></i> Crop PDF
-                        </a>
-                        <a href="/editpdf" class="quick-tool-btn">
-                            <i data-lucide="edit-3"></i> Edit PDF
-                        </a>
-                        <a href="/signpdf" class="quick-tool-btn">
-                            <i data-lucide="signature"></i> Sign PDF
-                        </a>
-                        <a href="/exceltopdf" class="quick-tool-btn">
-                            <i data-lucide="file-spreadsheet"></i> Excel to PDF
-                        </a>
-                        <a href="/pdftools" class="quick-tool-btn btn-primary-quick">
-                            All Tools <i data-lucide="arrow-right"
-                                style="width: 14px; height: 14px; margin-left: 4px; margin-bottom: 0;"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Result Card -->
-                <div id="resultCard" class="result-card">
-                    <div class="result-info">
-                        <span class="result-label">Your Shortened Link</span>
-                        <strong id="shortenedLink"></strong>
-                    </div>
-                    <div class="result-actions">
-                        <button id="qrBtn" class="btn-dark"
-                            onclick="openQrModal(document.getElementById('shortenedLink').innerText)">Generate
-                            QR</button>
-                        <button id="copyBtn" onclick="copyLink()">Copy Link</button>
-                    </div>
-                </div>
+    <main class="pt-20">
+        <!-- Hero Section -->
+        <section class="relative overflow-hidden pt-20 pb-32 px-margin-desktop bg-surface-light">
+            <!-- Refined Business Graph Background -->
+            <div class="absolute inset-0 z-0 opacity-60 pointer-events-none flex items-end">
+                <svg viewBox="0 0 1440 600" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full object-cover origin-bottom scale-105">
+                    <!-- Grid -->
+                    <g opacity="0.1" stroke="#C026D3" stroke-width="1" stroke-dasharray="4 8">
+                        <path d="M0 100h1440M0 200h1440M0 300h1440M0 400h1440M0 500h1440"></path>
+                        <path d="M200 0v600M400 0v600M600 0v600M800 0v600M1000 0v600M1200 0v600M1400 0v600"></path>
+                    </g>
+                    <!-- Secondary faint line -->
+                    <path d="M0 550 L200 480 L400 490 L600 420 L800 390 L1000 280 L1200 300 L1440 150" stroke="#9e00b1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.3" class="animate-pulse" style="animation-delay: 1s;"></path>
+                    <!-- Primary line -->
+                    <path d="M0 500 L200 420 L400 450 L600 300 L800 350 L1000 180 L1200 220 L1440 80" stroke="url(#paint0_linear)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" class="animate-pulse"></path>
+                    <!-- Primary fill area -->
+                    <path d="M0 500 L200 420 L400 450 L600 300 L800 350 L1000 180 L1200 220 L1440 80 V600 H0 V500Z" fill="url(#paint1_linear)"></path>
+                    <!-- Data points -->
+                    <g fill="#fff" stroke="url(#paint0_linear)" stroke-width="4">
+                        <circle cx="200" cy="420" r="6"></circle>
+                        <circle cx="400" cy="450" r="6"></circle>
+                        <circle cx="600" cy="300" r="6"></circle>
+                        <circle cx="800" cy="350" r="6"></circle>
+                        <circle cx="1000" cy="180" r="6"></circle>
+                        <circle cx="1200" cy="220" r="6"></circle>
+                        <circle cx="1440" cy="80" r="6"></circle>
+                    </g>
+                    <defs>
+                        <linearGradient id="paint0_linear" x1="0" y1="500" x2="1440" y2="80" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#C026D3"></stop>
+                            <stop offset="1" stop-color="#9e00b1"></stop>
+                        </linearGradient>
+                        <linearGradient id="paint1_linear" x1="720" y1="80" x2="720" y2="600" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#C026D3" stop-opacity="0.2"></stop>
+                            <stop offset="1" stop-color="#C026D3" stop-opacity="0"></stop>
+                        </linearGradient>
+                    </defs>
+                </svg>
             </div>
-        </div>
-    </section>
-    <!-- PDF Tools Showcase Section -->
-    <section id="pdf-showcase" class="pdf-showcase-section">
-        <div class="container">
-            <div class="pdf-showcase-header">
-                <!-- <span class="section-badge badge-glow">NEW: PDF Suite</span> -->
-                <h2>Complete PDF Toolkit</h2>
-                <p>
-                    Supercharge your productivity with our secure, fast, and 100% free PDF management tools.
-                    No installation required — handle all your document needs right in your browser.
-                </p>
-                <div class="trust-info-banner" style="margin: 20px auto 0 auto; max-width: 650px;">
-                    <div class="trust-info-icon"><i data-lucide="shield-check"></i></div>
-                    <div class="trust-info-text">
-                        <strong>100% Client-Side Privacy:</strong> Your documents are processed entirely in your web
-                        browser. No files are ever uploaded or saved to our servers.
+            <div class="max-w-max-width mx-auto grid lg:grid-cols-2 gap-16 items-center relative z-10">
+                <div class="z-10">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary font-label-md mb-6">
+                        <span class="material-symbols-outlined text-[18px]">bolt</span>
+                        Branded Links • Custom QRs • NEW: PDF Tools
                     </div>
-                </div>
-            </div>
-
-            <div class="pdf-showcase-grid">
-                <!-- Crop PDF -->
-                <a href="/croppdf" class="pdf-showcase-card fade-in-scroll">
-                    <div class="tool-icon icon-crop"><i data-lucide="crop"></i></div>
-                    <h3>PDF Cropper</h3>
-                    <p>Crop selected areas from your PDF files with precision control.</p>
-                </a>
-
-                <!-- Merge PDF -->
-                <a href="/mergepdf" class="pdf-showcase-card fade-in-scroll">
-                    <div class="tool-icon icon-merge"><i data-lucide="combine"></i></div>
-                    <h3>Merge PDF</h3>
-                    <p>Combine multiple PDF files into a single document in seconds.</p>
-                </a>
-
-                <!-- Split PDF -->
-                <a href="/splitpdf" class="pdf-showcase-card fade-in-scroll">
-                    <div class="tool-icon icon-split"><i data-lucide="scissors"></i></div>
-                    <h3>Split PDF</h3>
-                    <p>Extract specific pages or save each page as a separate PDF.</p>
-                </a>
-
-                <!-- Compress PDF -->
-                <a href="/compresspdf" class="pdf-showcase-card fade-in-scroll">
-                    <div class="tool-icon icon-compress"><i data-lucide="file-down"></i></div>
-                    <h3>Compress PDF</h3>
-                    <p>Reduce file size dramatically while maintaining maximum quality.</p>
-                </a>
-
-                <!-- PDF to Word -->
-                <a href="/pdftodoc" class="pdf-showcase-card fade-in-scroll">
-                    <div class="tool-icon icon-word"><i data-lucide="file-text"></i></div>
-                    <h3>PDF to Word</h3>
-                    <p>Convert PDF documents to editable Word files effortlessly.</p>
-                </a>
-
-                <!-- PDF to Image -->
-                <a href="/pdftoimage" class="pdf-showcase-card fade-in-scroll">
-                    <div class="tool-icon icon-img"><i data-lucide="image"></i></div>
-                    <h3>PDF to Image</h3>
-                    <p>Extract images or convert your PDF pages into PNG/JPG format.</p>
-                </a>
-
-                <!-- Image to PDF -->
-                <a href="/imagetopdf" class="pdf-showcase-card fade-in-scroll">
-                    <div class="tool-icon icon-img"><i data-lucide="file-image"></i></div>
-                    <h3>Image to PDF</h3>
-                    <p>Convert JPG, PNG, and other image formats into a PDF document.</p>
-                </a>
-
-                <!-- Protect PDF -->
-                <a href="/protectpdf" class="pdf-showcase-card fade-in-scroll">
-                    <div class="tool-icon icon-lock"><i data-lucide="lock"></i></div>
-                    <h3>Protect PDF</h3>
-                    <p>Add secure, password encryption to your PDFs.</p>
-                </a>
-
-                <!-- Unlock PDF -->
-                <a href="/unlockpdf" class="pdf-showcase-card fade-in-scroll">
-                    <div class="tool-icon icon-unlock"><i data-lucide="unlock"></i></div>
-                    <h3>Unlock PDF</h3>
-                    <p>Remove passwords and security restrictions from your PDF files.</p>
-                </a>
-
-                <!-- Edit PDF -->
-                <a href="/editpdf" class="pdf-showcase-card fade-in-scroll">
-                    <div class="tool-icon icon-edit"><i data-lucide="edit-3"></i></div>
-                    <h3>Edit PDF</h3>
-                    <p>Modify, annotate, and write on your PDF pages online.</p>
-                </a>
-
-                <!-- Sign PDF -->
-                <a href="/signpdf" class="pdf-showcase-card fade-in-scroll">
-                    <div class="tool-icon icon-sig"><i data-lucide="signature"></i></div>
-                    <h3>Sign PDF</h3>
-                    <p>Add custom digital signatures, draw, or type your signature.</p>
-                </a>
-
-                <!-- Excel to PDF -->
-                <a href="/exceltopdf" class="pdf-showcase-card fade-in-scroll">
-                    <div class="tool-icon icon-excel"><i data-lucide="file-spreadsheet"></i></div>
-                    <h3>Excel to PDF</h3>
-                    <p>Convert spreadsheets (.xlsx, .xls, .csv) into clean PDF tables locally.</p>
-                </a>
-            </div>
-
-            <div class="pdf-showcase-cta">
-                <a href="/pdftools">
-                    <button>Explore All PDF Tools <i data-lucide="arrow-right"
-                            style="margin-left: 8px; width: 18px; height: 18px;"></i></button>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Explanation Section -->
-    <section class="info-section fade-in-scroll">
-        <div class="container">
-            <div class="info-grid">
-                <!-- What is FlashSuite -->
-                <div class="info-card-dark">
-                    <h3>What is FlashSuite?</h3>
-                    <p>
+                    <h1 class="font-display-lg text-display-lg text-on-surface leading-tight mb-8">
+                        Transform Your <span class="text-vibrant-fuchsia">Links</span> and PDF Workflows
+                    </h1>
+                    <p class="font-body-lg text-body-lg text-on-surface-variant mb-10 max-w-xl">
                         FlashSuite is a professional-grade URL management and PDF utility platform designed to help you
-                        organize links, track analytics, and manage documents seamlessly. Whether you're a marketer
-                        needing detailed redirection insights or a professional looking for secure, client-side PDF
-                        tools, we provide the minimalist, lightning-fast infrastructure you need.
+                        organize links, track analytics, and manage documents seamlessly.
                     </p>
-                </div>
+                    <div class="flex flex-wrap gap-4">
+                        <button class="flex items-center gap-2 px-8 py-4 rounded-xl bg-vibrant-fuchsia text-white font-title-lg shadow-xl shadow-vibrant-fuchsia/20 hover:scale-105 transition-transform">
+                            Shorten Link <span class="material-symbols-outlined">arrow_forward</span>
+                        </button>
+                        <button class="flex items-center gap-2 px-8 py-4 rounded-xl bg-white border border-outline-variant text-on-surface font-title-lg hover:bg-surface-container-low transition-colors" onclick="window.location.href='/pdftools'">
+                            PDF Tools
+                        </button>
 
-                <!-- How it Works -->
-                <div class="how-it-works">
-                    <h3>How It Works</h3>
-                    <div class="steps-container">
-                        <div class="step-item">
-                            <div class="step-number">1</div>
-                            <div class="step-text"><strong>Paste</strong> your long, unwieldy URL into the input box.
+                        <button class="flex items-center gap-2 px-8 py-4 rounded-xl bg-white border border-outline-variant text-on-surface font-title-lg hover:bg-surface-container-low transition-colors" onclick="window.location.href='/humanize'">
+                            Humanize AI
+                        </button>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="absolute -top-20 -right-20 w-80 h-80 bg-vibrant-fuchsia/10 rounded-full blur-3xl"></div>
+                    
+                    <div class="glass-card p-8 rounded-3xl shadow-2xl relative z-10 border border-white/40 backdrop-blur-xl bg-white/70">
+                        <div class="flex items-center gap-3 mb-8">
+                            <div class="w-3 h-3 rounded-full bg-error"></div>
+                            <div class="w-3 h-3 rounded-full bg-tertiary"></div>
+                            <div class="w-3 h-3 rounded-full bg-primary"></div>
+                        </div>
+
+                        <div class="flex justify-center mb-6 gap-2 bg-white/50 p-1.5 rounded-xl border border-outline-variant/20 inline-flex w-full">
+                            <button id="tabShorten" class="flex-1 py-2 px-4 rounded-lg font-label-md text-secondary transition-all" style="background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.05);" onclick="switchActionTab('shorten')">Shorten Link</button>
+                            <button id="tabQR" class="flex-1 py-2 px-4 rounded-lg font-label-md text-on-surface-variant hover:text-secondary transition-all" onclick="switchActionTab('qr')">Create QR Code</button>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="space-y-2">
+                                <label class="font-label-md text-on-surface-variant ml-1">Paste your long URL</label>
+                                <div class="flex gap-2">
+                                    <input class="flex-grow px-4 py-4 rounded-xl border border-outline-variant focus:ring-2 focus:ring-vibrant-fuchsia focus:border-vibrant-fuchsia bg-white/50 transition-all outline-none" placeholder="https://very-long-and-messy-url-example.com/analytics/..." type="text" id="longUrl">
+                                    <button class="px-6 py-4 bg-deep-navy text-white rounded-xl font-label-lg hover:bg-deep-navy/90 transition-all" id="actionBtn" onclick="performAction()">
+                                        Shorten
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div id="resultCard" class="p-6 rounded-2xl bg-surface-container-low border border-outline-variant/30 hidden mt-6 transition-all">
+                                <div class="flex justify-between items-center mb-4">
+                                    <span class="font-label-md text-on-surface-variant uppercase tracking-wider">Your
+                                        Shortened Link</span>
+                                    <span class="text-vibrant-fuchsia font-label-md font-bold">Success</span>
+                                </div>
+                                <div class="flex items-center justify-between gap-4 p-4 rounded-xl bg-white border border-outline-variant/50 flex-wrap">
+                                    <span id="shortenedLink" class="text-body-md font-medium text-deep-navy break-all"></span>
+                                    <div class="flex gap-2">
+                                        <button id="copyBtn" onclick="copyLink()" class="flex items-center gap-2 px-4 py-2 hover:bg-surface-container-high rounded-lg transition-colors font-label-md"><span class="material-symbols-outlined text-[20px] text-on-surface-variant">content_copy</span>
+                                            Copy</button>
+                                        <button id="qrBtn" onclick="openQrModal(document.getElementById('shortenedLink').innerText)" class="flex items-center gap-2 px-4 py-2 bg-deep-navy text-white hover:bg-deep-navy/90 rounded-lg transition-colors font-label-md"><span class="material-symbols-outlined text-[20px]">qr_code_2</span>
+                                            QR</button>
+                                    </div>
+
+                                    <button class="flex items-center gap-2 px-8 py-4 rounded-xl bg-white border border-outline-variant text-on-surface font-title-lg hover:bg-surface-container-low transition-colors" onclick="window.location.href='/humanize'">
+                                        Humanize AI
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Features Bento Grid -->
+        <section class="py-24 px-margin-desktop bg-white">
+            <div class="max-w-max-width mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Everything you need to scale</h2>
+                    <p class="text-body-lg text-on-surface-variant max-w-2xl mx-auto">Powerful capabilities built for
+                        enterprise efficiency and individual productivity.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter-desktop">
+                    <!-- Actionable Analytics -->
+                    <div class="md:col-span-2 group relative overflow-hidden p-8 rounded-[32px] bg-surface-container-low border border-outline-variant/20 hover:shadow-xl transition-all duration-500">
+                        <div class="flex flex-col md:flex-row justify-between h-full gap-8">
+                            <div class="max-w-xs flex flex-col justify-between">
+                                <div>
+                                    <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-6 group-hover:scale-110 transition-transform">
+                                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">monitoring</span>
+                                    </div>
+                                    <h3 class="font-title-lg text-title-lg mb-4">Actionable Analytics</h3>
+                                    <p class="text-on-surface-variant">Transform clicks into customers. Gain granular
+                                        insights into user behavior, geographic distribution, and referring platforms in
+                                        real-time.</p>
+                                </div>
+                                <a class="mt-8 font-label-lg text-primary flex items-center gap-2 group-hover:translate-x-2 transition-transform" href="#">
+                                    Explore Dashboard <span class="material-symbols-outlined">chevron_right</span>
+                                </a>
+                            </div>
+                            <div class="flex-grow bg-white rounded-2xl border border-outline-variant/30 p-4 shadow-sm">
+                                <img class="w-full h-full object-cover rounded-xl" data-alt="A sophisticated data analytics dashboard displaying colorful line charts, geographic heat maps, and real-time user metrics. The interface is clean and modern, following a light-mode aesthetic with vibrant fuchsia and deep navy accents. Soft shadows provide depth, creating a professional SaaS software appearance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiowej2-MG9VfR803jD6ic_giI9bJM747iy66XMstvSCHa-G7hB0v1u9lY0UvtjPeZNqoMUvdOybuo1IVvG7TIlPWHCh8b-r1It8MH3cy0J1oHb6YFJyySI6WkU20f_RUwHF6_IqFF_ZChRvopp8ZvjDONQ95nYOVYXrZ9iuAlr4bzk4d4DJzcn8Ot4VvdwiPCAZb7jgQTcxntvayyNMsOU28UzTTmuDw1dWPiQRgfZVKI6SUcnFfJneK10cWSXaQNkBvOmVemuDg-">
                             </div>
                         </div>
-                        <div class="step-item">
-                            <div class="step-number">2</div>
-                            <div class="step-text">Click <strong>Shorten</strong> to instantly generate a compact link.
+                    </div>
+                    <!-- Enterprise Infra -->
+                    <div class="group p-8 rounded-[32px] bg-deep-navy text-white flex flex-col justify-between hover:shadow-2xl hover:shadow-deep-navy/20 transition-all">
+                        <div>
+                            <div class="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-vibrant-fuchsia mb-6 group-hover:rotate-12 transition-transform">
+                                <span class="material-symbols-outlined">hub</span>
+                            </div>
+                            <h3 class="font-title-lg text-title-lg mb-4 text-white">Enterprise Infrastructure</h3>
+                            <p class="text-secondary-fixed-dim/80">Built on a highly resilient edge network ensuring
+                                99.99% uptime and globally distributed redirects.</p>
+                        </div>
+                        <div class="mt-8 p-4 rounded-xl bg-white/5 border border-white/10">
+                            <div class="flex items-center gap-3">
+                                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                                <span class="text-label-md font-mono">ALL SYSTEMS OPERATIONAL</span>
                             </div>
                         </div>
-                        <div class="step-item">
-                            <div class="step-number">3</div>
-                            <div class="step-text"><strong>Copy</strong> and share it across your social or email
-                                campaigns.</div>
+                    </div>
+                    <!-- PDF Suite -->
+                    <div class="md:col-span-3 group p-8 rounded-[32px] border border-outline-variant/30 flex flex-col lg:flex-row gap-12 items-center hover:bg-surface-container-lowest transition-colors">
+                        <div class="flex-shrink-0 w-full lg:w-1/3">
+                            <div class="w-12 h-12 rounded-2xl bg-tertiary/10 flex items-center justify-center text-tertiary mb-6">
+                                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">description</span>
+                            </div>
+                            <h3 class="font-title-lg text-title-lg mb-4">Secure PDF Suite</h3>
+                            <p class="text-on-surface-variant mb-6">Edit, compress, and manipulate sensitive PDF
+                                documents directly in your browser. 100% offline, zero data uploads, and total privacy
+                                guaranteed.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 rounded-full bg-surface-container text-label-md">Merge</span>
+                                <span class="px-3 py-1 rounded-full bg-surface-container text-label-md">Split</span>
+                                <span class="px-3 py-1 rounded-full bg-surface-container text-label-md">Sign</span>
+                                <span class="px-3 py-1 rounded-full bg-surface-container text-label-md">Compress</span>
+                            </div>
+                        </div>
+                        <div class="flex-grow grid grid-cols-2 gap-4 w-full md:grid-cols-4 sm:grid-cols-3">
+                            <div class="aspect-square rounded-2xl bg-surface-container-low flex flex-col items-center justify-center gap-3 border border-outline-variant/20 hover:border-vibrant-fuchsia/50 hover:bg-white transition-all cursor-pointer" onclick="window.location.href='/mergepdf'">
+                                <span class="material-symbols-outlined text-vibrant-fuchsia">call_merge</span>
+                                <span class="font-label-md text-on-surface-variant text-center">Merge PDF</span>
+                            </div>
+
+                            <div class="aspect-square rounded-2xl bg-surface-container-low flex flex-col items-center justify-center gap-3 border border-outline-variant/20 hover:border-vibrant-fuchsia/50 hover:bg-white transition-all cursor-pointer" onclick="window.location.href='/splitpdf'">
+                                <span class="material-symbols-outlined text-vibrant-fuchsia">content_cut</span>
+                                <span class="font-label-md text-on-surface-variant text-center">Split PDF</span>
+                            </div>
+
+                            <div class="aspect-square rounded-2xl bg-surface-container-low flex flex-col items-center justify-center gap-3 border border-outline-variant/20 hover:border-vibrant-fuchsia/50 hover:bg-white transition-all cursor-pointer" onclick="window.location.href='/compresspdf'">
+                                <span class="material-symbols-outlined text-vibrant-fuchsia">compress</span>
+                                <span class="font-label-md text-on-surface-variant text-center">Compress</span>
+                            </div>
+
+                            <div class="aspect-square rounded-2xl bg-surface-container-low flex flex-col items-center justify-center gap-3 border border-outline-variant/20 hover:border-vibrant-fuchsia/50 hover:bg-white transition-all cursor-pointer" onclick="window.location.href='/signpdf'">
+                                <span class="material-symbols-outlined text-vibrant-fuchsia">draw</span>
+                                <span class="font-label-md text-on-surface-variant text-center">Sign PDF</span>
+                            </div>
+
+                            <div class="aspect-square rounded-2xl bg-surface-container-low flex flex-col items-center justify-center gap-3 border border-outline-variant/20 hover:border-vibrant-fuchsia/50 hover:bg-white transition-all cursor-pointer" onclick="window.location.href='/editpdf'">
+                                <span class="material-symbols-outlined text-vibrant-fuchsia">edit</span>
+                                <span class="font-label-md text-on-surface-variant text-center">Edit PDF</span>
+                            </div>
+
+                            <div class="aspect-square rounded-2xl bg-surface-container-low flex flex-col items-center justify-center gap-3 border border-outline-variant/20 hover:border-vibrant-fuchsia/50 hover:bg-white transition-all cursor-pointer" onclick="window.location.href='/protectpdf'">
+                                <span class="material-symbols-outlined text-vibrant-fuchsia">lock</span>
+                                <span class="font-label-md text-on-surface-variant text-center">Protect PDF</span>
+                            </div>
+
+                            <div class="aspect-square rounded-2xl bg-surface-container-low flex flex-col items-center justify-center gap-3 border border-outline-variant/20 hover:border-vibrant-fuchsia/50 hover:bg-white transition-all cursor-pointer" onclick="window.location.href='/unlockpdf'">
+                                <span class="material-symbols-outlined text-vibrant-fuchsia">lock_open</span>
+                                <span class="font-label-md text-on-surface-variant text-center">Unlock PDF</span>
+                            </div>
+
+                            <div class="aspect-square rounded-2xl bg-surface-container-low flex flex-col items-center justify-center gap-3 border border-outline-variant/20 hover:border-vibrant-fuchsia/50 hover:bg-white transition-all cursor-pointer" onclick="window.location.href='/croppdf'">
+                                <span class="material-symbols-outlined text-vibrant-fuchsia">crop</span>
+                                <span class="font-label-md text-on-surface-variant text-center">Crop PDF</span>
+                            </div>
+
+                            <div class="aspect-square rounded-2xl bg-surface-container-low flex flex-col items-center justify-center gap-3 border border-outline-variant/20 hover:border-vibrant-fuchsia/50 hover:bg-white transition-all cursor-pointer" onclick="window.location.href='/exceltopdf'">
+                                <span class="material-symbols-outlined text-vibrant-fuchsia">table_view</span>
+                                <span class="font-label-md text-on-surface-variant text-center">Excel to PDF</span>
+                            </div>
+
+                            <div class="aspect-square rounded-2xl bg-surface-container-low flex flex-col items-center justify-center gap-3 border border-outline-variant/20 hover:border-vibrant-fuchsia/50 hover:bg-white transition-all cursor-pointer" onclick="window.location.href='/imagetopdf'">
+                                <span class="material-symbols-outlined text-vibrant-fuchsia">image</span>
+                                <span class="font-label-md text-on-surface-variant text-center">Image to PDF</span>
+                            </div>
+
+                            <div class="aspect-square rounded-2xl bg-surface-container-low flex flex-col items-center justify-center gap-3 border border-outline-variant/20 hover:border-vibrant-fuchsia/50 hover:bg-white transition-all cursor-pointer" onclick="window.location.href='/pdftoimage'">
+                                <span class="material-symbols-outlined text-vibrant-fuchsia">photo_library</span>
+                                <span class="font-label-md text-on-surface-variant text-center">PDF to Image</span>
+                            </div>
+
+                            <div class="aspect-square rounded-2xl bg-surface-container-low flex flex-col items-center justify-center gap-3 border border-outline-variant/20 hover:border-vibrant-fuchsia/50 hover:bg-white transition-all cursor-pointer" onclick="window.location.href='/pdftodoc'">
+                                <span class="material-symbols-outlined text-vibrant-fuchsia">description</span>
+                                <span class="font-label-md text-on-surface-variant text-center">PDF to Doc</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features" class="info-section bg-light">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-badge">Powerful Capabilities</span>
-                <h2>Why Choose FlashSuite?</h2>
-                <p>
-                    Everything you need to manage your links, track your audience, and scale your digital brand with
-                    absolute confidence.
-                </p>
-            </div>
-            <div class="features-grid">
-                <!-- Feature 1 -->
-                <div class="feature-card fade-in-scroll">
-                    <div class="feature-icon icon-pink"><i data-lucide="server"></i></div>
-                    <h3>Enterprise-Grade Infrastructure</h3>
-                    <p>Built on a highly resilient edge network ensuring 99.99% uptime and instantaneous, globally distributed redirects.</p>
+        </section>
+        <!-- CTA Section -->
+        <section class="py-24 px-margin-desktop">
+            <div class="max-w-max-width mx-auto rounded-[48px] bg-vibrant-fuchsia p-16 relative overflow-hidden text-center text-white">
+                <div class="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl">
                 </div>
-
-                <!-- Feature 2 -->
-                <div class="feature-card fade-in-scroll delay-1">
-                    <div class="feature-icon icon-blue"><i data-lucide="bar-chart-4"></i></div>
-                    <h3>Actionable Analytics</h3>
-                    <p>Transform clicks into customers. Gain granular insights into user behavior, geographic distribution, and referring platforms in real-time.</p>
+                <div class="absolute bottom-0 left-0 w-64 h-64 bg-deep-navy/20 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl">
                 </div>
-
-                <!-- Feature 3 -->
-                <div class="feature-card fade-in-scroll delay-2">
-                    <div class="feature-icon icon-orange"><i data-lucide="git-branch"></i></div>
-                    <h3>Smart Link Routing & UTM</h3>
-                    <p>Maintain absolute brand control. Automatically append UTM tags and route campaigns securely from a centralized admin dashboard.</p>
-                </div>
-
-                <!-- Feature 4 -->
-                <div class="feature-card fade-in-scroll delay-2">
-                    <div class="feature-icon icon-sky"><i data-lucide="file-check-2"></i></div>
-                    <h3>Secure Client-Side PDF Suite</h3>
-                    <p>Edit, compress, and manipulate sensitive PDF documents directly in your browser. 100% offline, zero data uploads, and total privacy guaranteed.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section class="faq-section fade-in-scroll">
-        <div class="container faq-container">
-            <!-- Left Side -->
-            <div class="faq-info">
-                <span class="section-badge">Support</span>
-                <h2>Frequently Asked Questions</h2>
-                <p>Everything you need to know about our product and billing.</p>
-                <a href="mailto:support@flashsuite.pro" class="btn-outline">Contact Support</a>
-            </div>
-
-            <!-- Right Side -->
-            <div class="faq-accordion">
-                <div class="faq-item">
-                    <button class="faq-question" onclick="toggleFaq(this)">
-                        What Is a URL Shortener? <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>A URL shortener is a simple tool that takes a long URL and turns it into whatever URL you
-                            would like it to be.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <button class="faq-question" onclick="toggleFaq(this)">
-                        How Does a URL Shortener Work? <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>It creates a redirect in our database. When someone clicks your short link, we immediately
-                            route them to your intended long destination.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <button class="faq-question" onclick="toggleFaq(this)">
-                        What Are the Benefits of Using a Short URL? <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>Short URLs are cleaner, easier to share, look more professional, and allow you to track vital
-                            click analytics.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <button class="faq-question" onclick="toggleFaq(this)">
-                        How Do I Shorten a URL for Free? <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>Just paste your long link in the box at the top of this page and hit "Shorten". It's
-                            instantly ready to use!</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <button class="faq-question" onclick="toggleFaq(this)">
-                        How Do I Know Your Service Is Reliable and Scalable? <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>FlashSuite is built on modern, cloud-native infrastructure designed to handle high volumes of
-                            traffic instantly with 99.9% uptime.</p>
+                <div class="relative z-10 max-w-3xl mx-auto">
+                    <h2 class="font-display-lg text-display-lg mb-8 leading-tight">Ready to streamline your link
+                        management?</h2>
+                    <p class="text-xl mb-12 opacity-90">Join thousands of professionals who trust FlashSuite for their
+                        secure, lightning-fast digital infrastructure.</p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button class="px-10 py-5 bg-white text-vibrant-fuchsia rounded-2xl font-title-lg font-bold shadow-2xl hover:scale-105 transition-transform">Get
+                            Started Free</button>
+                        <button class="px-10 py-5 bg-deep-navy text-white rounded-2xl font-title-lg font-bold hover:bg-deep-navy/90 transition-all">View
+                            API Documentation</button>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-
+        </section>
+    </main>
     <!-- Footer -->
-    <footer class="site-footer">
-        <nav class="footer-nav">
-            <a href="/">Home</a>
-            <a href="/blog">Blog</a>
-            <a href="/about">About Us</a>
-            <a href="/privacy">Privacy Policy</a>
-            <a href="/terms">Terms of Service</a>
-        </nav>
-        <p class="footer-copy">&copy; 2026 FlashSuite. All rights reserved.</p>
+    <footer class="bg-deep-navy w-full py-16 px-margin-desktop border-t border-white/5">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter-desktop max-w-max-width mx-auto">
+            <div class="lg:col-span-1">
+                <div class="flex items-center gap-2 mb-6">
+                    <span class="text-headline-lg font-headline-lg font-black text-white">FlashSuite</span>
+                </div>
+                <p class="text-secondary-fixed-dim/70 font-body-md mb-8">
+                    Secure, client-side, and lightning fast. Professional-grade URL management and PDF utility platform.
+                </p>
+                <div class="flex gap-4">
+                    <a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors" href="#">
+                        <img alt="Twitter" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_oyTLfFal6ibPHeyrRmdSLvsssQ73bQLD2JFEaxxZCkQkPoxRAvxHpf8Tip0xwW4uCDxgv08U2qOT-3n91oEL7lyG1y9gNqSi7GhGvpqaXP_xd7sb58nF-6BsaBxa9VKzDimDflcBOVThavlh_8erOhSk186tv3xLlI-ON7c05vPEnbNzt61X7ZffHZRdFRBmHB6hPl4tnPtQKzefFcfbUdjwa4MrNWmqPGi7Gce85IR9wwhTYN99VN5RXazvFIJULvJgU1eiQteY">
+                    </a>
+                    <a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors" href="#">
+                        <img alt="LinkedIn" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWkcnDTp_CtFOGkRby_ofx20CBW7ngkaAqHNjQs6vk5DUDbqI4q0pJnOMtbsNt5Y-qOQAuntuaA8XX3QoWTuSHiqil0dY195sE7j6eUqZjEq1TIdkGqyWxvLTRIDsSq2QBJWgvsq0o_dmm9CLg4GP01PWhl7NB8KDImJLAN4wGgyBLU8EBL4hKYjRDe3Il7sFxlaSMTPquTWoinMrrc-IFyKMtzW6cGGMKWXCTz7N_KBU2-biUxZ8hWsRldtmRkkJFGMEAPdTmt16w">
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-white font-title-lg mb-6">Platform</h4>
+                <ul class="space-y-4">
+                    <li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/urlshortener">URL Shortener</a></li>
+                    <li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/qrcode">QR Generator</a></li>
+                    <li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/pdftools">PDF Tools</a></li>
+                    <li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/api">API Docs</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-title-lg mb-6">Company</h4>
+                <ul class="space-y-4">
+                    <li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/about">About Us</a></li>
+                    <li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/about">Help Center</a></li>
+                    <li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/privacy">Security</a></li>
+                    <li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="#">Bulk URL Shortener</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-title-lg mb-6">Legal</h4>
+                <ul class="space-y-4">
+                    <li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/privacy">Privacy Policy</a></li>
+                    <li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/terms">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-max-width mx-auto pt-12 mt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-secondary-fixed-dim/50 text-label-md">
+                © 2024 FlashSuite. Secure, client-side, and lightning fast.
+            </p>
+            <div class="flex gap-8">
+                <span class="flex items-center gap-2 text-secondary-fixed-dim/50 text-label-md">
+                    <span class="w-2 h-2 rounded-full bg-green-500"></span> Globally Distributed
+                </span>
+            </div>
+        </div>
     </footer>
 
-    <!-- QR Code Modal -->
     <div class="qr-modal-overlay" id="qrModal">
         <div class="qr-modal-content">
             <div class="qr-modal-header">
                 <h3>Generate QR Code</h3>
-                <button class="qr-close-btn" onclick="closeQrModal()">&times;</button>
+                <button class="qr-close-btn" onclick="closeQrModal()">×</button>
             </div>
             <div class="qr-modal-body">
                 <div class="qr-preview-container" id="qrCodeContainer"></div>
@@ -456,7 +584,7 @@
                             <option value="L">Low (L)</option>
                             <option value="M">Medium (M)</option>
                             <option value="Q">Quarter (Q)</option>
-                            <option value="H" selected>High (H)</option>
+                            <option value="H" selected="">High (H)</option>
                         </select>
                     </div>
                 </div>
@@ -467,9 +595,7 @@
             </div>
         </div>
     </div>
-
     <script src="qr-generator.js"></script>
-
     <script>
         function toggleMobileMenu() {
             document.getElementById('mobileMenu').classList.toggle('active');
@@ -498,33 +624,45 @@
             currentAction = action;
             const tabShorten = document.getElementById('tabShorten');
             const tabQR = document.getElementById('tabQR');
-            const tabPDF = document.getElementById('tabPDF');
+
             const actionBtn = document.getElementById('actionBtn');
             const longUrlInput = document.getElementById('longUrl');
-            const inputGroupContainer = document.getElementById('inputGroupContainer');
-            const pdfQuickActions = document.getElementById('pdfQuickActions');
+
+
 
             // Reset all active tab buttons
             tabShorten.classList.remove('active');
             tabQR.classList.remove('active');
-            tabPDF.classList.remove('active');
+
 
             if (action === 'shorten') {
-                tabShorten.classList.add('active');
-                inputGroupContainer.style.display = 'flex';
-                pdfQuickActions.style.display = 'none';
+
+                tabShorten.style.background = 'white';
+                tabShorten.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)';
+                tabShorten.classList.replace('text-on-surface-variant', 'text-secondary');
+
+                tabQR.style.background = 'transparent';
+                tabQR.style.boxShadow = 'none';
+                tabQR.classList.replace('text-secondary', 'text-on-surface-variant');
+
+
+
                 actionBtn.innerText = 'Shorten';
                 longUrlInput.placeholder = 'Paste your link here...';
             } else if (action === 'qr') {
-                tabQR.classList.add('active');
-                inputGroupContainer.style.display = 'flex';
-                pdfQuickActions.style.display = 'none';
+
+                tabQR.style.background = 'white';
+                tabQR.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)';
+                tabQR.classList.replace('text-on-surface-variant', 'text-secondary');
+
+                tabShorten.style.background = 'transparent';
+                tabShorten.style.boxShadow = 'none';
+                tabShorten.classList.replace('text-secondary', 'text-on-surface-variant');
+
+
+
                 actionBtn.innerText = 'Generate QR';
                 longUrlInput.placeholder = 'Enter URL to generate QR...';
-            } else if (action === 'pdf') {
-                tabPDF.classList.add('active');
-                inputGroupContainer.style.display = 'none';
-                pdfQuickActions.style.display = 'grid';
             }
         }
 
@@ -565,7 +703,9 @@
 
                 // Show Result Card with Slide-in animation
                 const resultCard = document.getElementById('resultCard');
-                resultCard.classList.add('show');
+
+                resultCard.classList.remove('hidden');
+
             } else {
                 alert("Failed to shorten URL");
             }
@@ -611,6 +751,25 @@
         }
         window.addEventListener('DOMContentLoaded', () => { if (window.lucide) lucide.createIcons(); else window.addEventListener('load', () => window.lucide && lucide.createIcons()); });
     </script>
-</body>
+    <script id="floating-card-script">
+        // Floating effect for the glass card
+        document.addEventListener('mousemove', (e) => {
+            const card = document.querySelector('.glass-card');
+            if (card) {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
 
-</html>
+                if (x > 0 && x < rect.width && y > 0 && y < rect.height) {
+                    const rotateX = (y - rect.height / 2) / 20;
+                    const rotateY = (rect.width / 2 - x) / 20;
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                } else {
+                    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+                }
+            }
+        });
+    </script>
+
+
+</body></html>

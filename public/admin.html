@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
+<!DOCTYPE html><html lang="en"><head>
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3B61CKGJL7"></script>
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-3B61CKGJL7"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
@@ -14,16 +11,14 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard | FlashSuite Custom URL Shortener & QR Code Generator</title>
+    <title>Admin Dashboard | FlashSuite Custom URL Shortener &amp; QR Code Generator</title>
     <meta name="robots" content="noindex, nofollow">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script defer="" src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <!-- Quill Rich Text Editor CSS & JS -->
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
@@ -57,40 +52,222 @@
             background: var(--primary);
         }
     </style>
+
+    <!-- New Design System -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "background": "#f8f9fa",
+                      "surface-container": "#edeeef",
+                      "on-secondary-container": "#5a6574",
+                      "deep-navy": "#0B1622",
+                      "tertiary-fixed": "#ffd9e2",
+                      "secondary-fixed-dim": "#bcc7d8",
+                      "on-primary-fixed-variant": "#7d008c",
+                      "inverse-on-surface": "#f0f1f2",
+                      "surface-container-highest": "#e1e3e4",
+                      "surface-dim": "#d9dadb",
+                      "on-surface": "#191c1d",
+                      "on-secondary-fixed": "#121c29",
+                      "on-error": "#ffffff",
+                      "surface-container-high": "#e7e8e9",
+                      "surface-tint": "#a400b7",
+                      "secondary-fixed": "#d8e3f5",
+                      "inverse-surface": "#2e3132",
+                      "on-tertiary-fixed": "#3f001c",
+                      "surface": "#f8f9fa",
+                      "power-pink": "#DB2777",
+                      "tertiary-container": "#d92575",
+                      "error-container": "#ffdad6",
+                      "primary-container": "#c026d3",
+                      "on-primary-container": "#fffafa",
+                      "on-primary": "#ffffff",
+                      "on-surface-variant": "#524151",
+                      "vibrant-fuchsia": "#C026D3",
+                      "surface-container-low": "#f3f4f5",
+                      "secondary": "#545f6e",
+                      "outline-variant": "#d7c0d3",
+                      "surface-container-lowest": "#ffffff",
+                      "on-tertiary-container": "#fffafa",
+                      "surface-variant": "#e1e3e4",
+                      "on-tertiary-fixed-variant": "#8e0048",
+                      "surface-light": "#F8F9FA",
+                      "outline": "#857182",
+                      "error": "#ba1a1a",
+                      "surface-bright": "#f8f9fa",
+                      "tertiary": "#b4005d",
+                      "on-secondary": "#ffffff",
+                      "primary-fixed-dim": "#fda9ff",
+                      "on-primary-fixed": "#36003d",
+                      "on-tertiary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "on-secondary-fixed-variant": "#3d4855",
+                      "primary": "#9e00b1",
+                      "primary-fixed": "#ffd6fb",
+                      "tertiary-fixed-dim": "#ffb1c7",
+                      "inverse-primary": "#fda9ff",
+                      "on-background": "#191c1d",
+                      "secondary-container": "#d8e3f5"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-desktop": "64px",
+                      "gutter-desktop": "24px",
+                      "max-width": "1280px",
+                      "gutter-mobile": "16px",
+                      "margin-mobile": "16px",
+                      "baseline": "4px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Inter"],
+                      "label-lg": ["Inter"],
+                      "title-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "label-md": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "body-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500"}],
+                      "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .bg-mesh {
+            background-color: #f8f9fa;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(192, 38, 211, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(158, 0, 177, 0.05) 0px, transparent 50%);
+        }
+        .nav-pill-active {
+            position: relative;
+        }
+        .nav-pill-active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #9e00b1;
+        }
+    </style>
 </head>
 
-<body>
-    <!-- Mobile Header -->
-    <header class="mobile-header">
-        <img src="flashsuite_logo.png" alt="FlashSuite" class="mobile-logo">
-        <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
-    </header>
-
-    <div class="dashboard-grid">
-        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-logo-container">
-                <img src="flashsuite_logo.png" alt="FlashSuite" class="sidebar-logo">
+<body class="bg-mesh font-body-md text-on-surface antialiased"><nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/10 shadow-sm">
+        <div class="flex justify-between items-center w-full px-margin-desktop max-w-max-width mx-auto h-20">
+            <div class="flex items-center gap-2">
+                <a href="/" class="flex items-center">
+                    <img alt="FlashSuite Logo" class="h-16 md:h-20 w-auto max-w-[200px] object-contain" src="/flashsuite_logo.png">
+                </a>
             </div>
-            <nav class="sidebar-nav">
-                <div class="sidebar-nav-item active" onclick="switchView('dashboard')" id="nav-dashboard">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                    Dashboard & Links
-                </div>
-                <div class="sidebar-nav-item" onclick="switchView('blogs')" id="nav-blogs">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2.5 2.5 0 00-2.5-2.5H15"></path></svg>
-                    Blog Management
-                </div>
-                <div class="sidebar-nav-item" onclick="switchView('settings')" id="nav-settings">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                    Settings
-                </div>
-                <div class="sidebar-nav-item logout-item" onclick="logout()">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                    Logout
-                </div>
-            </nav>
-        </aside>
+            <div class="hidden md:flex items-center gap-8">
+                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/">Home</a>
+                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/urlshortener">URL Shortener</a>
+                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/qrcode">QR Codes</a>
+                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/pdftools">PDF Tools</a>
+                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/humanize">Humanize AI Texts</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="hidden lg:block px-6 py-2.5 rounded-full font-label-lg text-secondary hover:bg-surface-container-high/50 transition-all duration-200">Login</button>
+                <button class="hidden md:block px-6 py-2.5 rounded-full bg-primary-container text-on-primary-container font-label-lg shadow-md hover:scale-95 transition-all">Get
+                    Started</button>
+                <button class="md:hidden p-2 text-on-surface hover:bg-surface-container-high rounded-full transition-colors" onclick="toggleMobileMenu()">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobileMenuOverlay" class="fixed inset-0 bg-black/50 z-[60] hidden transition-opacity duration-300" onclick="toggleMobileMenu()"></div>
+        <div id="mobileMenu" class="fixed top-0 right-0 w-64 h-full bg-surface z-[70] transform translate-x-full transition-transform duration-300 p-6 flex flex-col gap-6 shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <img alt="FlashSuite Logo" class="h-12 w-auto max-w-[160px] object-contain" src="/flashsuite_logo.png">
+                <button onclick="toggleMobileMenu()" class="p-2 text-on-surface hover:bg-surface-container-high rounded-full transition-colors"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/">Home</a>
+            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/urlshortener">URL Shortener</a>
+            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/qrcode">QR Codes</a>
+            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/pdftools">PDF Tools</a>
+            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/humanize">Humanize AI Texts</a>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const currentPath = window.location.pathname;
+                document.querySelectorAll('nav a.nav-link').forEach(link => {
+                    const href = link.getAttribute('href');
+                    let isActive = false;
+
+                    if (currentPath === href) {
+                        isActive = true;
+                    } else if (href !== '/' && currentPath.startsWith(href)) {
+                        isActive = true;
+                    } else if (href === '/pdftools' && currentPath.includes('pdf')) {
+                        isActive = true;
+                    }
+
+                    if (isActive) {
+                        link.className = "nav-link font-body-md text-body-md text-primary font-bold border-b-2 border-primary pb-1";
+                        // Also handle mobile menu links
+                        if (link.classList.contains('py-2')) {
+                            link.className = "nav-link font-body-lg text-primary font-bold py-2";
+                        }
+                    } else {
+                        link.className = "nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors";
+                        if (link.classList.contains('py-2')) {
+                            link.className = "nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2";
+                        }
+                    }
+                });
+            });
+
+            function toggleMobileMenu() {
+                const menu = document.getElementById('mobileMenu');
+                const overlay = document.getElementById('mobileMenuOverlay');
+                if (menu.classList.contains('translate-x-full')) {
+                    menu.classList.remove('translate-x-full');
+                    overlay.classList.remove('hidden');
+                } else {
+                    menu.classList.add('translate-x-full');
+                    overlay.classList.add('hidden');
+                }
+            }
+        </script>
+    </nav>
+    <!-- Mobile Header -->
+    <main class="pt-20 pb-16 min-h-screen"><div class="dashboard-grid">
+        
+        
 
         <main class="admin-main">
             <div class="admin-header">
@@ -117,9 +294,7 @@
                 <section class="metric-card">
                     <div class="links-header">
                         <h3 class="m-0">Managed Links</h3>
-                        <input type="text" id="searchLinks" placeholder="Search links..."
-                            class="search-input"
-                            onkeyup="filterLinks()">
+                        <input type="text" id="searchLinks" placeholder="Search links..." class="search-input" onkeyup="filterLinks()">
                     </div>
                     <div class="table-wrapper">
                         <table class="admin-table">
@@ -149,9 +324,9 @@
                             <div style="flex-grow: 1;">
                                 <label style="display: block; font-weight: bold; margin-bottom: 5px; color: var(--secondary); font-size: 0.85rem;">Upload Image to Blog</label>
                                 <input type="file" id="blogImageFile" accept="image/*" class="admin-input" style="padding: 8px; background: white;">
-                                <span style="font-size: 0.75rem; color: #888; display: block; margin-top: 3px;">Tip: Click inside the editor below, then click Upload & Insert to place the image at your cursor.</span>
+                                <span style="font-size: 0.75rem; color: #888; display: block; margin-top: 3px;">Tip: Click inside the editor below, then click Upload &amp; Insert to place the image at your cursor.</span>
                             </div>
-                            <button type="button" onclick="uploadBlogImage()" style="height: 42px; padding: 0 20px; margin-top: 10px;">Upload & Insert</button>
+                            <button type="button" onclick="uploadBlogImage()" style="height: 42px; padding: 0 20px; margin-top: 10px;">Upload &amp; Insert</button>
                         </div>
 
                         <!-- Quill Editor Container -->
@@ -206,14 +381,11 @@
                 </div>
             </div>
         </main>
-    </div>
-
-    <!-- QR Code Modal -->
-    <div class="qr-modal-overlay" id="qrModal">
+    </div><div class="qr-modal-overlay" id="qrModal">
         <div class="qr-modal-content">
             <div class="qr-modal-header">
                 <h3>Generate QR Code</h3>
-                <button class="qr-close-btn" onclick="closeQrModal()">&times;</button>
+                <button class="qr-close-btn" onclick="closeQrModal()">×</button>
             </div>
             <div class="qr-modal-body">
                 <div class="qr-preview-container" id="qrCodeContainer"></div>
@@ -232,7 +404,7 @@
                             <option value="L">Low (L)</option>
                             <option value="M">Medium (M)</option>
                             <option value="Q">Quarter (Q)</option>
-                            <option value="H" selected>High (H)</option>
+                            <option value="H" selected="">High (H)</option>
                         </select>
                     </div>
                 </div>
@@ -242,7 +414,12 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div></main>
+
+    
+
+    <!-- QR Code Modal -->
+    
 
     <script src="main.js"></script>
     <script src="qr-generator.js"></script>
@@ -252,6 +429,7 @@
             document.getElementById('sidebarOverlay').classList.toggle('active');
         }
     </script>
-</body>
 
-</html>
+
+
+</body></html>

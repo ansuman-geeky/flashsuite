@@ -14,6 +14,7 @@
         "@pdfsmaller/pdf-decrypt": "^1.0.1",
         "@pdfsmaller/pdf-encrypt-lite": "^1.0.2",
         "bcryptjs": "^2.4.3",
+        "cheerio": "^1.2.0",
         "compression": "^1.8.1",
         "cors": "^2.8.6",
         "express": "^4.18.2",
