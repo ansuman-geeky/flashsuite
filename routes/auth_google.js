@@ -8,7 +8,7 @@ passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID || 'dummy_client_id_please_configure_in_env',
     clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'dummy_client_secret',
     callbackURL: process.env.GOOGLE_CALLBACK_URL || "/api/auth/google/callback",
-    proxy: true
+    proxy: true // Trusts X-Forwarded-Proto from Hostinger
   },
   function(accessToken, refreshToken, profile, cb) {
       const googleId = profile.id;
