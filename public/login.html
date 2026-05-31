@@ -152,84 +152,8 @@
     <link rel="icon" type="image/png" href="/favicon.png">
 </head>
 
-<body class="bg-mesh font-body-md text-on-surface antialiased"><nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/10 shadow-sm">
-        <div class="flex justify-between items-center w-full px-margin-desktop max-w-max-width mx-auto h-20">
-            <div class="flex items-center gap-2">
-                <a href="/" class="flex items-center">
-                    <img alt="FlashSuite Logo" class="h-16 md:h-20 w-auto max-w-[200px] object-contain" src="/flashsuite_logo.png">
-                </a>
-            </div>
-            <div class="hidden md:flex items-center gap-8">
-                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/">Home</a>
-                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/urlshortener">URL Shortener</a>
-                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/qrcode">QR Codes</a>
-                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/pdftools">PDF Tools</a>
-                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/humanize">Humanize AI Texts</a>
-            </div>
-            <div class="flex items-center gap-4">
-                <button onclick="window.location.href='/login.html'" class="hidden lg:block px-6 py-2.5 rounded-full font-label-lg text-secondary hover:bg-surface-container-high/50 transition-all duration-200">Login</button>
-                <button onclick="window.location.href='/login.html#signup'" class="hidden md:block px-6 py-2.5 rounded-full bg-primary-container text-on-primary-container font-label-lg shadow-md hover:scale-95 transition-all">Get Started</button>
-                <button class="md:hidden p-2 text-on-surface hover:bg-surface-container-high rounded-full transition-colors" onclick="toggleMobileMenu()">
-                    <span class="material-symbols-outlined">menu</span>
-                </button>
-            </div>
-        </div>
-        <!-- Mobile Menu -->
-        <div id="mobileMenuOverlay" class="fixed inset-0 bg-black/50 z-[60] hidden transition-opacity duration-300" onclick="toggleMobileMenu()"></div>
-        <div id="mobileMenu" class="fixed top-0 right-0 w-64 h-full bg-surface z-[70] transform translate-x-full transition-transform duration-300 p-6 flex flex-col gap-6 shadow-2xl">
-            <div class="flex justify-between items-center mb-4">
-                <img alt="FlashSuite Logo" class="h-12 w-auto max-w-[160px] object-contain" src="/flashsuite_logo.png">
-                <button onclick="toggleMobileMenu()" class="p-2 text-on-surface hover:bg-surface-container-high rounded-full transition-colors"><span class="material-symbols-outlined">close</span></button>
-            </div>
-            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/">Home</a>
-            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/urlshortener">URL Shortener</a>
-            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/qrcode">QR Codes</a>
-            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/pdftools">PDF Tools</a>
-            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/humanize">Humanize AI Texts</a>
-        </div>
-        <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                const currentPath = window.location.pathname;
-                document.querySelectorAll('nav a.nav-link').forEach(link => {
-                    const href = link.getAttribute('href');
-                    let isActive = false;
-
-                    if (currentPath === href) {
-                        isActive = true;
-                    } else if (href !== '/' && currentPath.startsWith(href)) {
-                        isActive = true;
-                    } else if (href === '/pdftools' && currentPath.includes('pdf')) {
-                        isActive = true;
-                    }
-
-                    if (isActive) {
-                        link.className = "nav-link font-body-md text-body-md text-primary font-bold border-b-2 border-primary pb-1";
-                        // Also handle mobile menu links
-                        if (link.classList.contains('py-2')) {
-                            link.className = "nav-link font-body-lg text-primary font-bold py-2";
-                        }
-                    } else {
-                        link.className = "nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors";
-                        if (link.classList.contains('py-2')) {
-                            link.className = "nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2";
-                        }
-                    }
-                });
-            });
-
-            function toggleMobileMenu() {
-                const menu = document.getElementById('mobileMenu');
-                const overlay = document.getElementById('mobileMenuOverlay');
-                if (menu.classList.contains('translate-x-full')) {
-                    menu.classList.remove('translate-x-full');
-                    overlay.classList.remove('hidden');
-                } else {
-                    menu.classList.add('translate-x-full');
-                    overlay.classList.add('hidden');
-                }
-            }
-        </script>
-    </nav>
+<body class="bg-mesh font-body-md text-on-surface antialiased"><div id="navbar-placeholder"></div>
+    <script src="/components/navbar.js?v=2"></script>
 
     <!-- Navigation -->
     
@@ -344,10 +268,7 @@
     
 
     <script>
-        function toggleMobileMenu() {
-            document.getElementById('mobileMenu').classList.toggle('active');
-            document.getElementById('mobileMenuOverlay').classList.toggle('active');
-        }
+        
     </script>
     
 

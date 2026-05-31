@@ -68,11 +68,11 @@
     <style>
         /* Custom Modern SaaS Styles matching the spec */
         :root {
-            --primary-saas: #2563EB;
-            --accent-saas: #10B981;
-            --bg-saas: #F9FAFB;
-            --text-dark: #111827;
-            --border-saas: rgba(0, 0, 0, 0.06);
+            --primary-saas: #9e00b1;
+            --accent-saas: #C026D3;
+            --bg-saas: #f8f9fa;
+            --text-dark: #191c1d;
+            --border-saas: #d7c0d3;
             --transition-saas: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -825,6 +825,12 @@
             padding: 20px 24px;
             cursor: pointer;
             transition: var(--transition-saas);
+            text-align: left;
+        }
+
+        .faq-card h4 i, .faq-card h4 svg {
+            flex-shrink: 0;
+            margin-top: 2px;
         }
 
         .faq-card h4 {
@@ -832,8 +838,9 @@
             margin: 0;
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             font-weight: 700;
+            gap: 16px;
         }
 
         .faq-card p {
@@ -866,22 +873,24 @@
         .btn-detect {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             padding: 14px 32px;
-            border: none;
+            border: 2px solid var(--primary-saas);
             border-radius: 12px;
             font-size: 1rem;
             font-weight: 700;
             cursor: pointer;
             transition: var(--transition-saas);
-            background: linear-gradient(135deg, #EF4444 0%, #F97316 100%);
-            color: white;
-            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+            background: transparent;
+            color: var(--primary-saas);
+            box-shadow: 0 4px 6px rgba(158, 0, 177, 0.05);
         }
 
         .btn-detect:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+            background: rgba(158, 0, 177, 0.05);
+            box-shadow: 0 8px 15px rgba(158, 0, 177, 0.1);
         }
 
         .btn-detect:disabled {
@@ -891,11 +900,17 @@
             box-shadow: none;
         }
 
+        .btn-detect-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         .btn-detect .spinner {
             width: 18px;
             height: 18px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-top-color: white;
+            border: 2px solid var(--primary-saas);
+            border-top-color: transparent;
             border-radius: 50%;
             animation: spin 0.6s linear infinite;
             display: none;
@@ -953,7 +968,7 @@
         }
 
         .method-llm {
-            background: linear-gradient(135deg, #EDE9FE, #FDE68A);
+            background: linear-gradient(135deg, rgba(158, 0, 177, 0.05) 0%, rgba(192, 38, 211, 0.05) 100%);
             color: #7C3AED;
         }
 
@@ -997,6 +1012,47 @@
             }
         }
     </style>
+
+    <!-- Toast Notification Container -->
+    <style>
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            pointer-events: none;
+        }
+        .toast {
+            background: #191c1d;
+            color: #ffffff;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .toast.error {
+            background: #ba1a1a;
+            color: #ffffff;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+    <div id="toastContainer" class="toast-container"></div>
+
 
     <!-- New Design System -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -1132,84 +1188,8 @@
     <link rel="icon" type="image/png" href="/favicon.png">
 </head>
 
-<body class="bg-mesh font-body-md text-on-surface antialiased"><nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/10 shadow-sm">
-        <div class="flex justify-between items-center w-full px-margin-desktop max-w-max-width mx-auto h-20">
-            <div class="flex items-center gap-2">
-                <a href="/" class="flex items-center">
-                    <img alt="FlashSuite Logo" class="h-16 md:h-20 w-auto max-w-[200px] object-contain" src="/flashsuite_logo.png">
-                </a>
-            </div>
-            <div class="hidden md:flex items-center gap-8">
-                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/">Home</a>
-                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/urlshortener">URL Shortener</a>
-                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/qrcode">QR Codes</a>
-                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/pdftools">PDF Tools</a>
-                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/humanize">Humanize AI Texts</a>
-            </div>
-            <div class="flex items-center gap-4">
-                <button onclick="window.location.href='/login.html'" class="hidden lg:block px-6 py-2.5 rounded-full font-label-lg text-secondary hover:bg-surface-container-high/50 transition-all duration-200">Login</button>
-                <button onclick="window.location.href='/login.html#signup'" class="hidden md:block px-6 py-2.5 rounded-full bg-primary-container text-on-primary-container font-label-lg shadow-md hover:scale-95 transition-all">Get Started</button>
-                <button class="md:hidden p-2 text-on-surface hover:bg-surface-container-high rounded-full transition-colors" onclick="toggleMobileMenu()">
-                    <span class="material-symbols-outlined">menu</span>
-                </button>
-            </div>
-        </div>
-        <!-- Mobile Menu -->
-        <div id="mobileMenuOverlay" class="fixed inset-0 bg-black/50 z-[60] hidden transition-opacity duration-300" onclick="toggleMobileMenu()"></div>
-        <div id="mobileMenu" class="fixed top-0 right-0 w-64 h-full bg-surface z-[70] transform translate-x-full transition-transform duration-300 p-6 flex flex-col gap-6 shadow-2xl">
-            <div class="flex justify-between items-center mb-4">
-                <img alt="FlashSuite Logo" class="h-12 w-auto max-w-[160px] object-contain" src="/flashsuite_logo.png">
-                <button onclick="toggleMobileMenu()" class="p-2 text-on-surface hover:bg-surface-container-high rounded-full transition-colors"><span class="material-symbols-outlined">close</span></button>
-            </div>
-            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/">Home</a>
-            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/urlshortener">URL Shortener</a>
-            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/qrcode">QR Codes</a>
-            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/pdftools">PDF Tools</a>
-            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/humanize">Humanize AI Texts</a>
-        </div>
-        <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                const currentPath = window.location.pathname;
-                document.querySelectorAll('nav a.nav-link').forEach(link => {
-                    const href = link.getAttribute('href');
-                    let isActive = false;
-
-                    if (currentPath === href) {
-                        isActive = true;
-                    } else if (href !== '/' && currentPath.startsWith(href)) {
-                        isActive = true;
-                    } else if (href === '/pdftools' && currentPath.includes('pdf')) {
-                        isActive = true;
-                    }
-
-                    if (isActive) {
-                        link.className = "nav-link font-body-md text-body-md text-primary font-bold border-b-2 border-primary pb-1";
-                        // Also handle mobile menu links
-                        if (link.classList.contains('py-2')) {
-                            link.className = "nav-link font-body-lg text-primary font-bold py-2";
-                        }
-                    } else {
-                        link.className = "nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors";
-                        if (link.classList.contains('py-2')) {
-                            link.className = "nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2";
-                        }
-                    }
-                });
-            });
-
-            function toggleMobileMenu() {
-                const menu = document.getElementById('mobileMenu');
-                const overlay = document.getElementById('mobileMenuOverlay');
-                if (menu.classList.contains('translate-x-full')) {
-                    menu.classList.remove('translate-x-full');
-                    overlay.classList.remove('hidden');
-                } else {
-                    menu.classList.add('translate-x-full');
-                    overlay.classList.add('hidden');
-                }
-            }
-        </script>
-    </nav>
+<body class="bg-mesh font-body-md text-on-surface antialiased"><div id="navbar-placeholder"></div>
+    <script src="/components/navbar.js?v=2"></script>
     <!-- Navigation Header -->
     
 
@@ -1220,7 +1200,7 @@
     <!-- Hero Section -->
     <main class="pt-20 pb-16 min-h-screen"><section class="hero-section">
         <div class="hero-container">
-            <span class="hero-badge">AI bypass platform</span>
+            <span class="hero-badge">AI Content Generator</span>
             <h1 class="hero-title">Humanize AI Text Instantly</h1>
             <p class="hero-subtitle">Turn robotic AI writing into natural human content in seconds. Improve readability, vary structure, and bypass standard AI detection tools completely offline.</p>
             <button class="btn-saas" onclick="document.getElementById('aiTextInput').focus()">
@@ -1414,59 +1394,7 @@
             </div>
 
         </div>
-    </main><section class="pricing-section">
-        <div class="pricing-header">
-            <h2>Flexible Plans for Every Writer</h2>
-            <p>Choose the model that matches your volume and speed requirements. No hidden fees.</p>
-        </div>
-
-        <div class="pricing-grid">
-            <!-- Free Plan -->
-            <div class="pricing-card">
-                <h3>Free Tier</h3>
-                <div class="price">$0<span>/ month</span></div>
-                <p>Perfect for testing and casual writing projects.</p>
-                <ul class="pricing-features">
-                    <li><i data-lucide="check"></i> Up to 1,500 characters / request</li>
-                    <li><i data-lucide="check"></i> Standard &amp; Casual modes</li>
-                    <li><i data-lucide="check"></i> Local secure processing</li>
-                    <li><i data-lucide="check"></i> Basic analytics dashboard</li>
-                </ul>
-                <button class="pricing-btn" onclick="document.getElementById('aiTextInput').focus()">Current Plan</button>
-            </div>
-
-            <!-- Pro Plan -->
-            <div class="pricing-card premium">
-                <span class="pricing-badge">Popular</span>
-                <h3>Premium Pro</h3>
-                <div class="price">$9<span>/ month</span></div>
-                <p>For heavy copywriters, students, and SEO managers.</p>
-                <ul class="pricing-features">
-                    <li><i data-lucide="check"></i> Up to 8,000 characters / request</li>
-                    <li><i data-lucide="check"></i> All 5 specialized modes</li>
-                    <li><i data-lucide="check"></i> Advanced OpenRouter model API</li>
-                    <li><i data-lucide="check"></i> Compare sentence audit highlight</li>
-                    <li><i data-lucide="check"></i> High rate limits</li>
-                </ul>
-                <button class="pricing-btn">Upgrade to Pro</button>
-            </div>
-
-            <!-- API Plan -->
-            <div class="pricing-card">
-                <h3>Enterprise API</h3>
-                <div class="price">$29<span>/ month</span></div>
-                <p>Integrate local bypass engines into your application.</p>
-                <ul class="pricing-features">
-                    <li><i data-lucide="check"></i> Unlimited characters</li>
-                    <li><i data-lucide="check"></i> Developer REST endpoints</li>
-                    <li><i data-lucide="check"></i> Low latency execution</li>
-                    <li><i data-lucide="check"></i> Detailed JSON-LD analytics</li>
-                    <li><i data-lucide="check"></i> 24/7 dedicated support</li>
-                </ul>
-                <button class="pricing-btn">Request API Key</button>
-            </div>
-        </div>
-    </section><section class="faq-section">
+    </main><section class="faq-section">
         <div class="faq-header">
             <h2>Frequently Asked Questions</h2>
             <p>Learn more about our AI humanization technology and security protocols.</p>
@@ -1508,71 +1436,21 @@
     
 
     <!-- Footer -->
-    <footer class="bg-deep-navy w-full py-16 px-margin-desktop border-t border-white/5">
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter-desktop max-w-max-width mx-auto">
-<div class="lg:col-span-1">
-<div class="flex items-center gap-2 mb-6">
-<span class="text-headline-lg font-headline-lg font-black text-white">FlashSuite</span>
-</div>
-<p class="text-secondary-fixed-dim/70 font-body-md mb-8">
-                    Secure, client-side, and lightning fast. Professional-grade URL management and PDF utility platform.
-                </p>
-<div class="flex gap-4">
-<a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors" href="#">
-<img alt="Twitter" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_oyTLfFal6ibPHeyrRmdSLvsssQ73bQLD2JFEaxxZCkQkPoxRAvxHpf8Tip0xwW4uCDxgv08U2qOT-3n91oEL7lyG1y9gNqSi7GhGvpqaXP_xd7sb58nF-6BsaBxa9VKzDimDflcBOVThavlh_8erOhSk186tv3xLlI-ON7c05vPEnbNzt61X7ZffHZRdFRBmHB6hPl4tnPtQKzefFcfbUdjwa4MrNWmqPGi7Gce85IR9wwhTYN99VN5RXazvFIJULvJgU1eiQteY">
-</a>
-<a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors" href="#">
-<img alt="LinkedIn" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWkcnDTp_CtFOGkRby_ofx20CBW7ngkaAqHNjQs6vk5DUDbqI4q0pJnOMtbsNt5Y-qOQAuntuaA8XX3QoWTuSHiqil0dY195sE7j6eUqZjEq1TIdkGqyWxvLTRIDsSq2QBJWgvsq0o_dmm9CLg4GP01PWhl7NB8KDImJLAN4wGgyBLU8EBL4hKYjRDe3Il7sFxlaSMTPquTWoinMrrc-IFyKMtzW6cGGMKWXCTz7N_KBU2-biUxZ8hWsRldtmRkkJFGMEAPdTmt16w">
-</a>
-</div>
-</div>
-<div>
-<h4 class="text-white font-title-lg mb-6">Platform</h4>
-<ul class="space-y-4">
-<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/urlshortener">URL Shortener</a></li>
-<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/qrcode">QR Generator</a></li>
-<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/pdftools">PDF Tools</a></li>
-<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/api">API Docs</a></li>
-</ul>
-</div>
-<div>
-<h4 class="text-white font-title-lg mb-6">Company</h4>
-<ul class="space-y-4">
-<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/about">About Us</a></li>
-<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/about">Help Center</a></li>
-<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/privacy">Security</a></li>
-<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="#">Bulk URL Shortener</a></li>
-</ul>
-</div>
-<div>
-<h4 class="text-white font-title-lg mb-6">Legal</h4>
-<ul class="space-y-4">
-<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/privacy">Privacy Policy</a></li>
-<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/terms">Terms of Service</a></li>
-</ul>
-</div>
-</div>
-<div class="max-w-max-width mx-auto pt-12 mt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
-<p class="text-secondary-fixed-dim/50 text-label-md">
-                © 2024 FlashSuite. Secure, client-side, and lightning fast.
-            </p>
-<div class="flex gap-8">
-<span class="flex items-center gap-2 text-secondary-fixed-dim/50 text-label-md">
-<span class="w-2 h-2 rounded-full bg-green-500"></span> Globally Distributed
-                </span>
-</div>
-</div>
-</footer>
+    <div id="footer-placeholder"></div>
+    <script>
+        fetch('/components/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').outerHTML = data;
+            });
+    </script>
 
     <!-- Toast Notification Container -->
     
 
     <!-- Script Operations -->
     <script>
-        function toggleMobileMenu() {
-            document.getElementById('mobileMenu').classList.toggle('active');
-            document.getElementById('mobileMenuOverlay').classList.toggle('active');
-        }
+        
 
         function toggleFaq(card) {
             card.classList.toggle('active');

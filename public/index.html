@@ -156,90 +156,14 @@
     <link rel="icon" type="image/png" href="/favicon.png">
 </head>
 
-<body class="bg-mesh font-body-md text-on-surface antialiased"><nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/10 shadow-sm">
-        <div class="flex justify-between items-center w-full px-margin-desktop max-w-max-width mx-auto h-20">
-            <div class="flex items-center gap-2">
-                <a href="/" class="flex items-center">
-                    <img alt="FlashSuite Logo" class="h-16 md:h-20 w-auto max-w-[200px] object-contain" src="/flashsuite_logo.png">
-                </a>
-            </div>
-            <div class="hidden md:flex items-center gap-8">
-                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/">Home</a>
-                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/urlshortener">URL Shortener</a>
-                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/qrcode">QR Codes</a>
-                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/pdftools">PDF Tools</a>
-                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/humanize">Humanize AI Texts</a>
-            </div>
-            <div class="flex items-center gap-4">
-                <button onclick="window.location.href='/login.html'" class="hidden lg:block px-6 py-2.5 rounded-full font-label-lg text-secondary hover:bg-surface-container-high/50 transition-all duration-200">Login</button>
-                <button onclick="window.location.href='/login.html#signup'" class="hidden md:block px-6 py-2.5 rounded-full bg-primary-container text-on-primary-container font-label-lg shadow-md hover:scale-95 transition-all">Get Started</button>
-                <button class="md:hidden p-2 text-on-surface hover:bg-surface-container-high rounded-full transition-colors" onclick="toggleMobileMenu()">
-                    <span class="material-symbols-outlined">menu</span>
-                </button>
-            </div>
-        </div>
-        <!-- Mobile Menu -->
-        <div id="mobileMenuOverlay" class="fixed inset-0 bg-black/50 z-[60] hidden transition-opacity duration-300" onclick="toggleMobileMenu()"></div>
-        <div id="mobileMenu" class="fixed top-0 right-0 w-64 h-full bg-surface z-[70] transform translate-x-full transition-transform duration-300 p-6 flex flex-col gap-6 shadow-2xl">
-            <div class="flex justify-between items-center mb-4">
-                <img alt="FlashSuite Logo" class="h-12 w-auto max-w-[160px] object-contain" src="/flashsuite_logo.png">
-                <button onclick="toggleMobileMenu()" class="p-2 text-on-surface hover:bg-surface-container-high rounded-full transition-colors"><span class="material-symbols-outlined">close</span></button>
-            </div>
-            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/">Home</a>
-            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/urlshortener">URL Shortener</a>
-            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/qrcode">QR Codes</a>
-            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/pdftools">PDF Tools</a>
-            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/humanize">Humanize AI Texts</a>
-        </div>
-        <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                const currentPath = window.location.pathname;
-                document.querySelectorAll('nav a.nav-link').forEach(link => {
-                    const href = link.getAttribute('href');
-                    let isActive = false;
-
-                    if (currentPath === href) {
-                        isActive = true;
-                    } else if (href !== '/' && currentPath.startsWith(href)) {
-                        isActive = true;
-                    } else if (href === '/pdftools' && currentPath.includes('pdf')) {
-                        isActive = true;
-                    }
-
-                    if (isActive) {
-                        link.className = "nav-link font-body-md text-body-md text-primary font-bold border-b-2 border-primary pb-1";
-                        // Also handle mobile menu links
-                        if (link.classList.contains('py-2')) {
-                            link.className = "nav-link font-body-lg text-primary font-bold py-2";
-                        }
-                    } else {
-                        link.className = "nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors";
-                        if (link.classList.contains('py-2')) {
-                            link.className = "nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2";
-                        }
-                    }
-                });
-            });
-
-            function toggleMobileMenu() {
-                const menu = document.getElementById('mobileMenu');
-                const overlay = document.getElementById('mobileMenuOverlay');
-                if (menu.classList.contains('translate-x-full')) {
-                    menu.classList.remove('translate-x-full');
-                    overlay.classList.remove('hidden');
-                } else {
-                    menu.classList.add('translate-x-full');
-                    overlay.classList.add('hidden');
-                }
-            }
-        </script>
-    </nav>
+<body class="bg-mesh font-body-md text-on-surface antialiased">    <div id="navbar-placeholder"></div>
+    <script src="/components/navbar.js?v=2"></script>
     
     <!-- TopNavBar -->
 
     <main class="pt-20">
         <!-- Hero Section -->
-        <section class="relative overflow-hidden pt-20 pb-32 px-margin-desktop bg-surface-light">
+        <section class="relative overflow-hidden pt-20 pb-32 px-4 md:px-8 lg:px-margin-desktop bg-surface-light">
             <!-- Refined Business Graph Background -->
             <div class="absolute inset-0 z-0 opacity-60 pointer-events-none flex items-end">
                 <svg viewBox="0 0 1440 600" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full object-cover origin-bottom scale-105">
@@ -276,7 +200,7 @@
                     </defs>
                 </svg>
             </div>
-            <div class="max-w-max-width mx-auto grid lg:grid-cols-2 gap-16 items-center relative z-10">
+            <div class="max-w-max-width mx-auto grid lg:grid-cols-2 gap-8 lg:gap-16 items-center relative z-10">
                 <div class="z-10">
                     <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary font-label-md mb-6">
                         <span class="material-symbols-outlined text-[18px]">bolt</span>
@@ -289,7 +213,7 @@
                         FlashSuite is a professional-grade URL management and PDF utility platform designed to help you
                         organize links, track analytics, and manage documents seamlessly.
                     </p>
-                    <div class="flex flex-wrap gap-4">
+                    <div class="flex flex-col sm:flex-row flex-wrap gap-4">
                         <button class="flex items-center gap-2 px-8 py-4 rounded-xl bg-vibrant-fuchsia text-white font-title-lg shadow-xl shadow-vibrant-fuchsia/20 hover:scale-105 transition-transform">
                             Shorten Link <span class="material-symbols-outlined">arrow_forward</span>
                         </button>
@@ -319,7 +243,7 @@
                         <div class="space-y-6">
                             <div class="space-y-2">
                                 <label class="font-label-md text-on-surface-variant ml-1">Paste your long URL</label>
-                                <div class="flex gap-2">
+                                <div class="flex flex-col sm:flex-row gap-2">
                                     <input class="flex-grow px-4 py-4 rounded-xl border border-outline-variant focus:ring-2 focus:ring-vibrant-fuchsia focus:border-vibrant-fuchsia bg-white/50 transition-all outline-none" placeholder="https://very-long-and-messy-url-example.com/analytics/..." type="text" id="longUrl">
                                     <button class="px-6 py-4 bg-deep-navy text-white rounded-xl font-label-lg hover:bg-deep-navy/90 transition-all" id="actionBtn" onclick="performAction()">
                                         Shorten
@@ -333,7 +257,7 @@
                                         Shortened Link</span>
                                     <span class="text-vibrant-fuchsia font-label-md font-bold">Success</span>
                                 </div>
-                                <div class="flex items-center justify-between gap-4 p-4 rounded-xl bg-white border border-outline-variant/50 flex-wrap">
+                                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-xl bg-white border border-outline-variant/50 flex-wrap">
                                     <span id="shortenedLink" class="text-body-md font-medium text-deep-navy break-all"></span>
                                     <div class="flex gap-2">
                                         <button id="copyBtn" onclick="copyLink()" class="flex items-center gap-2 px-4 py-2 hover:bg-surface-container-high rounded-lg transition-colors font-label-md"><span class="material-symbols-outlined text-[20px] text-on-surface-variant">content_copy</span>
@@ -354,7 +278,7 @@
             </div>
         </section>
         <!-- Features Bento Grid -->
-        <section class="py-24 px-margin-desktop bg-white">
+        <section class="py-24 px-4 md:px-8 lg:px-margin-desktop bg-white">
             <div class="max-w-max-width mx-auto">
                 <div class="text-center mb-16">
                     <h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Everything you need to scale</h2>
@@ -375,7 +299,7 @@
                                         insights into user behavior, geographic distribution, and referring platforms in
                                         real-time.</p>
                                 </div>
-                                <a class="mt-8 font-label-lg text-primary flex items-center gap-2 group-hover:translate-x-2 transition-transform" href="#">
+                                <a class="mt-8 font-label-lg text-primary flex items-center gap-2 group-hover:translate-x-2 transition-transform cursor-pointer" onclick="showComingSoonPopup(event)">
                                     Explore Dashboard <span class="material-symbols-outlined">chevron_right</span>
                                 </a>
                             </div>
@@ -484,7 +408,7 @@
             </div>
         </section>
         <!-- CTA Section -->
-        <section class="py-24 px-margin-desktop">
+        <section class="py-24 px-4 md:px-8 lg:px-margin-desktop">
             <div class="max-w-max-width mx-auto rounded-[48px] bg-vibrant-fuchsia p-16 relative overflow-hidden text-center text-white">
                 <div class="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl">
                 </div>
@@ -506,61 +430,14 @@
         </section>
     </main>
     <!-- Footer -->
-    <footer class="bg-deep-navy w-full py-16 px-margin-desktop border-t border-white/5">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter-desktop max-w-max-width mx-auto">
-            <div class="lg:col-span-1">
-                <div class="flex items-center gap-2 mb-6">
-                    <span class="text-headline-lg font-headline-lg font-black text-white">FlashSuite</span>
-                </div>
-                <p class="text-secondary-fixed-dim/70 font-body-md mb-8">
-                    Secure, client-side, and lightning fast. Professional-grade URL management and PDF utility platform.
-                </p>
-                <div class="flex gap-4">
-                    <a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors" href="#">
-                        <img alt="Twitter" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_oyTLfFal6ibPHeyrRmdSLvsssQ73bQLD2JFEaxxZCkQkPoxRAvxHpf8Tip0xwW4uCDxgv08U2qOT-3n91oEL7lyG1y9gNqSi7GhGvpqaXP_xd7sb58nF-6BsaBxa9VKzDimDflcBOVThavlh_8erOhSk186tv3xLlI-ON7c05vPEnbNzt61X7ZffHZRdFRBmHB6hPl4tnPtQKzefFcfbUdjwa4MrNWmqPGi7Gce85IR9wwhTYN99VN5RXazvFIJULvJgU1eiQteY">
-                    </a>
-                    <a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors" href="#">
-                        <img alt="LinkedIn" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWkcnDTp_CtFOGkRby_ofx20CBW7ngkaAqHNjQs6vk5DUDbqI4q0pJnOMtbsNt5Y-qOQAuntuaA8XX3QoWTuSHiqil0dY195sE7j6eUqZjEq1TIdkGqyWxvLTRIDsSq2QBJWgvsq0o_dmm9CLg4GP01PWhl7NB8KDImJLAN4wGgyBLU8EBL4hKYjRDe3Il7sFxlaSMTPquTWoinMrrc-IFyKMtzW6cGGMKWXCTz7N_KBU2-biUxZ8hWsRldtmRkkJFGMEAPdTmt16w">
-                    </a>
-                </div>
-            </div>
-            <div>
-                <h4 class="text-white font-title-lg mb-6">Platform</h4>
-                <ul class="space-y-4">
-                    <li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/urlshortener">URL Shortener</a></li>
-                    <li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/qrcode">QR Generator</a></li>
-                    <li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/pdftools">PDF Tools</a></li>
-                    <li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/api">API Docs</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-white font-title-lg mb-6">Company</h4>
-                <ul class="space-y-4">
-                    <li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/about">About Us</a></li>
-                    <li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/about">Help Center</a></li>
-                    <li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/privacy">Security</a></li>
-                    <li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="#">Bulk URL Shortener</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-white font-title-lg mb-6">Legal</h4>
-                <ul class="space-y-4">
-                    <li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/privacy">Privacy Policy</a></li>
-                    <li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/terms">Terms of Service</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="max-w-max-width mx-auto pt-12 mt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p class="text-secondary-fixed-dim/50 text-label-md">
-                © 2024 FlashSuite. Secure, client-side, and lightning fast.
-            </p>
-            <div class="flex gap-8">
-                <span class="flex items-center gap-2 text-secondary-fixed-dim/50 text-label-md">
-                    <span class="w-2 h-2 rounded-full bg-green-500"></span> Globally Distributed
-                </span>
-            </div>
-        </div>
-    </footer>
+        <div id="footer-placeholder"></div>
+    <script>
+        fetch('/components/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            });
+    </script>
 
     <div class="qr-modal-overlay" id="qrModal">
         <div class="qr-modal-content">
@@ -598,11 +475,6 @@
     </div>
     <script src="qr-generator.js"></script>
     <script>
-        function toggleMobileMenu() {
-            document.getElementById('mobileMenu').classList.toggle('active');
-            document.getElementById('mobileMenuOverlay').classList.toggle('active');
-        }
-
         // Smooth scroll observer for features
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -772,5 +644,52 @@
         });
     </script>
 
+    <!-- Coming Soon Modal -->
+    <div id="comingSoonModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center px-4">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onclick="closeComingSoonPopup()"></div>
+        
+        <!-- Modal Content -->
+        <div class="bg-white rounded-[32px] p-8 max-w-md w-full relative z-10 shadow-2xl transform scale-95 opacity-0 transition-all duration-300 border border-outline-variant/20" id="comingSoonContent">
+            <button onclick="closeComingSoonPopup()" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-surface-container-high text-on-surface-variant hover:bg-surface-variant hover:text-on-surface transition-colors">
+                <span class="material-symbols-outlined text-[20px]">close</span>
+            </button>
+            
+            <div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-6">
+                <span class="material-symbols-outlined text-[32px]">insights</span>
+            </div>
+            
+            <h3 class="text-title-lg font-title-lg text-on-surface mb-3">Coming Soon</h3>
+            <p class="text-body-lg text-on-surface-variant mb-8">
+                We're building intelligent analytics and insights to help you make faster, data-driven decisions.
+            </p>
+            
+            <button onclick="closeComingSoonPopup()" class="w-full py-3.5 bg-primary text-white rounded-xl font-label-lg hover:bg-primary/90 transition-colors shadow-md">
+                Got it
+            </button>
+        </div>
+    </div>
 
+    <script>
+        function showComingSoonPopup(e) {
+            e.preventDefault();
+            const modal = document.getElementById('comingSoonModal');
+            const content = document.getElementById('comingSoonContent');
+            modal.classList.remove('hidden');
+            // Trigger reflow
+            void modal.offsetWidth;
+            content.classList.remove('scale-95', 'opacity-0');
+            content.classList.add('scale-100', 'opacity-100');
+        }
+
+        function closeComingSoonPopup() {
+            const modal = document.getElementById('comingSoonModal');
+            const content = document.getElementById('comingSoonContent');
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+    </script>
 </body></html>

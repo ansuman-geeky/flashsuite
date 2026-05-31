@@ -1,544 +1,552 @@
-<!DOCTYPE html><html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
     <!-- Google tag (gtag.js) -->
     <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-3B61CKGJL7"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
 
-      gtag('config', 'G-3B61CKGJL7');
+        gtag('config', 'G-3B61CKGJL7');
     </script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDF Tools | FlashSuite - Merge, Split, and Compress PDFs</title>
-    <meta name="description" content="Powerful, fast, and secure PDF tools. Merge, split, compress, and convert PDFs online for free with FlashSuite.">
+    <meta name="description"
+        content="Powerful, fast, and secure PDF tools. Merge, split, compress, and convert PDFs online for free with FlashSuite.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script defer="" src="https://unpkg.com/lucide@latest"></script>
-    
+
 
     <!-- New Design System -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script id="tailwind-config">
         tailwind.config = {
-          darkMode: "class",
-          theme: {
-            extend: {
-              "colors": {
-                      "background": "#f8f9fa",
-                      "surface-container": "#edeeef",
-                      "on-secondary-container": "#5a6574",
-                      "deep-navy": "#0B1622",
-                      "tertiary-fixed": "#ffd9e2",
-                      "secondary-fixed-dim": "#bcc7d8",
-                      "on-primary-fixed-variant": "#7d008c",
-                      "inverse-on-surface": "#f0f1f2",
-                      "surface-container-highest": "#e1e3e4",
-                      "surface-dim": "#d9dadb",
-                      "on-surface": "#191c1d",
-                      "on-secondary-fixed": "#121c29",
-                      "on-error": "#ffffff",
-                      "surface-container-high": "#e7e8e9",
-                      "surface-tint": "#a400b7",
-                      "secondary-fixed": "#d8e3f5",
-                      "inverse-surface": "#2e3132",
-                      "on-tertiary-fixed": "#3f001c",
-                      "surface": "#f8f9fa",
-                      "power-pink": "#DB2777",
-                      "tertiary-container": "#d92575",
-                      "error-container": "#ffdad6",
-                      "primary-container": "#c026d3",
-                      "on-primary-container": "#fffafa",
-                      "on-primary": "#ffffff",
-                      "on-surface-variant": "#524151",
-                      "vibrant-fuchsia": "#C026D3",
-                      "surface-container-low": "#f3f4f5",
-                      "secondary": "#545f6e",
-                      "outline-variant": "#d7c0d3",
-                      "surface-container-lowest": "#ffffff",
-                      "on-tertiary-container": "#fffafa",
-                      "surface-variant": "#e1e3e4",
-                      "on-tertiary-fixed-variant": "#8e0048",
-                      "surface-light": "#F8F9FA",
-                      "outline": "#857182",
-                      "error": "#ba1a1a",
-                      "surface-bright": "#f8f9fa",
-                      "tertiary": "#b4005d",
-                      "on-secondary": "#ffffff",
-                      "primary-fixed-dim": "#fda9ff",
-                      "on-primary-fixed": "#36003d",
-                      "on-tertiary": "#ffffff",
-                      "on-error-container": "#93000a",
-                      "on-secondary-fixed-variant": "#3d4855",
-                      "primary": "#9e00b1",
-                      "primary-fixed": "#ffd6fb",
-                      "tertiary-fixed-dim": "#ffb1c7",
-                      "inverse-primary": "#fda9ff",
-                      "on-background": "#191c1d",
-                      "secondary-container": "#d8e3f5"
-              },
-              "borderRadius": {
-                      "DEFAULT": "0.25rem",
-                      "lg": "0.5rem",
-                      "xl": "0.75rem",
-                      "full": "9999px"
-              },
-              "spacing": {
-                      "margin-desktop": "64px",
-                      "gutter-desktop": "24px",
-                      "max-width": "1280px",
-                      "gutter-mobile": "16px",
-                      "margin-mobile": "16px",
-                      "baseline": "4px"
-              },
-              "fontFamily": {
-                      "headline-lg": ["Inter"],
-                      "label-lg": ["Inter"],
-                      "title-lg": ["Inter"],
-                      "body-md": ["Inter"],
-                      "label-md": ["Inter"],
-                      "display-lg": ["Inter"],
-                      "headline-lg-mobile": ["Inter"],
-                      "body-lg": ["Inter"]
-              },
-              "fontSize": {
-                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
-                      "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500"}],
-                      "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
-                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
-                      "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
-                      "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
-                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
-              }
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#f8f9fa",
+                        "surface-container": "#edeeef",
+                        "on-secondary-container": "#5a6574",
+                        "deep-navy": "#0B1622",
+                        "tertiary-fixed": "#ffd9e2",
+                        "secondary-fixed-dim": "#bcc7d8",
+                        "on-primary-fixed-variant": "#7d008c",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-container-highest": "#e1e3e4",
+                        "surface-dim": "#d9dadb",
+                        "on-surface": "#191c1d",
+                        "on-secondary-fixed": "#121c29",
+                        "on-error": "#ffffff",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-tint": "#a400b7",
+                        "secondary-fixed": "#d8e3f5",
+                        "inverse-surface": "#2e3132",
+                        "on-tertiary-fixed": "#3f001c",
+                        "surface": "#f8f9fa",
+                        "power-pink": "#DB2777",
+                        "tertiary-container": "#d92575",
+                        "error-container": "#ffdad6",
+                        "primary-container": "#c026d3",
+                        "on-primary-container": "#fffafa",
+                        "on-primary": "#ffffff",
+                        "on-surface-variant": "#524151",
+                        "vibrant-fuchsia": "#C026D3",
+                        "surface-container-low": "#f3f4f5",
+                        "secondary": "#545f6e",
+                        "outline-variant": "#d7c0d3",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#fffafa",
+                        "surface-variant": "#e1e3e4",
+                        "on-tertiary-fixed-variant": "#8e0048",
+                        "surface-light": "#F8F9FA",
+                        "outline": "#857182",
+                        "error": "#ba1a1a",
+                        "surface-bright": "#f8f9fa",
+                        "tertiary": "#b4005d",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed-dim": "#fda9ff",
+                        "on-primary-fixed": "#36003d",
+                        "on-tertiary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#3d4855",
+                        "primary": "#9e00b1",
+                        "primary-fixed": "#ffd6fb",
+                        "tertiary-fixed-dim": "#ffb1c7",
+                        "inverse-primary": "#fda9ff",
+                        "on-background": "#191c1d",
+                        "secondary-container": "#d8e3f5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "gutter-desktop": "24px",
+                        "max-width": "1280px",
+                        "gutter-mobile": "16px",
+                        "margin-mobile": "16px",
+                        "baseline": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500" }],
+                        "title-lg": ["22px", { "lineHeight": "28px", "fontWeight": "500" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "display-lg": ["57px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                },
             },
-          },
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-    
-<style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+
+    <style>
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
             vertical-align: middle;
         }
+
         .glass-card {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
+
         .gradient-text {
             background: linear-gradient(135deg, #9e00b1 0%, #C026D3 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
         .bento-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 24px;
         }
+
         @media (min-width: 1024px) {
             .bento-grid {
                 grid-template-columns: repeat(4, 1fr);
             }
-            .bento-large { grid-column: span 2; grid-row: span 2; }
-            .bento-wide { grid-column: span 2; }
+
+            .bento-large {
+                grid-column: span 2;
+                grid-row: span 2;
+            }
+
+            .bento-wide {
+                grid-column: span 2;
+            }
         }
     </style>
     <link rel="icon" type="image/png" href="/favicon.png">
 </head>
 
-<body class="bg-mesh font-body-md text-on-surface antialiased"><nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/10 shadow-sm">
-        <div class="flex justify-between items-center w-full px-margin-desktop max-w-max-width mx-auto h-20">
-            <div class="flex items-center gap-2">
-                <a href="/" class="flex items-center">
-                    <img alt="FlashSuite Logo" class="h-16 md:h-20 w-auto max-w-[200px] object-contain" src="/flashsuite_logo.png">
-                </a>
-            </div>
-            <div class="hidden md:flex items-center gap-8">
-                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/">Home</a>
-                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/urlshortener">URL Shortener</a>
-                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/qrcode">QR Codes</a>
-                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/pdftools">PDF Tools</a>
-                <a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/humanize">Humanize AI Texts</a>
-            </div>
-            <div class="flex items-center gap-4">
-                <button onclick="window.location.href='/login.html'" class="hidden lg:block px-6 py-2.5 rounded-full font-label-lg text-secondary hover:bg-surface-container-high/50 transition-all duration-200">Login</button>
-                <button onclick="window.location.href='/login.html#signup'" class="hidden md:block px-6 py-2.5 rounded-full bg-primary-container text-on-primary-container font-label-lg shadow-md hover:scale-95 transition-all">Get Started</button>
-                <button class="md:hidden p-2 text-on-surface hover:bg-surface-container-high rounded-full transition-colors" onclick="toggleMobileMenu()">
-                    <span class="material-symbols-outlined">menu</span>
-                </button>
-            </div>
+<body class="bg-mesh font-body-md text-on-surface antialiased">
+    <div id="navbar-placeholder"></div>
+    <script src="/components/navbar.js?v=2"></script>
+    <!-- Mobile Menu -->
+    <div id="mobileMenuOverlay" class="fixed inset-0 bg-black/50 z-[60] hidden transition-opacity duration-300"
+        onclick="toggleMobileMenu()"></div>
+    <div id="mobileMenu"
+        class="fixed top-0 right-0 w-64 h-full bg-surface z-[70] transform translate-x-full transition-transform duration-300 p-6 flex flex-col gap-6 shadow-2xl">
+        <div class="flex justify-between items-center mb-4">
+            <img alt="FlashSuite Logo" class="h-12 w-auto max-w-[160px] object-contain" src="/flashsuite_logo.png">
+            <button onclick="toggleMobileMenu()"
+                class="p-2 text-on-surface hover:bg-surface-container-high rounded-full transition-colors"><span
+                    class="material-symbols-outlined">close</span></button>
         </div>
-        <!-- Mobile Menu -->
-        <div id="mobileMenuOverlay" class="fixed inset-0 bg-black/50 z-[60] hidden transition-opacity duration-300" onclick="toggleMobileMenu()"></div>
-        <div id="mobileMenu" class="fixed top-0 right-0 w-64 h-full bg-surface z-[70] transform translate-x-full transition-transform duration-300 p-6 flex flex-col gap-6 shadow-2xl">
-            <div class="flex justify-between items-center mb-4">
-                <img alt="FlashSuite Logo" class="h-12 w-auto max-w-[160px] object-contain" src="/flashsuite_logo.png">
-                <button onclick="toggleMobileMenu()" class="p-2 text-on-surface hover:bg-surface-container-high rounded-full transition-colors"><span class="material-symbols-outlined">close</span></button>
-            </div>
-            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/">Home</a>
-            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/urlshortener">URL Shortener</a>
-            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/qrcode">QR Codes</a>
-            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/pdftools">PDF Tools</a>
-            <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2" href="/humanize">Humanize AI Texts</a>
-        </div>
-        <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                const currentPath = window.location.pathname;
-                document.querySelectorAll('nav a.nav-link').forEach(link => {
-                    const href = link.getAttribute('href');
-                    let isActive = false;
+        <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2"
+            href="/">Home</a>
+        <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2"
+            href="/urlshortener">URL Shortener</a>
+        <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2"
+            href="/qrcode">QR Codes</a>
+        <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2"
+            href="/pdftools">PDF Tools</a>
+        <a class="nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2"
+            href="/humanize">Humanize AI Texts</a>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const currentPath = window.location.pathname;
+            document.querySelectorAll('nav a.nav-link').forEach(link => {
+                const href = link.getAttribute('href');
+                let isActive = false;
 
-                    if (currentPath === href) {
-                        isActive = true;
-                    } else if (href !== '/' && currentPath.startsWith(href)) {
-                        isActive = true;
-                    } else if (href === '/pdftools' && currentPath.includes('pdf')) {
-                        isActive = true;
-                    }
-
-                    if (isActive) {
-                        link.className = "nav-link font-body-md text-body-md text-primary font-bold border-b-2 border-primary pb-1";
-                        // Also handle mobile menu links
-                        if (link.classList.contains('py-2')) {
-                            link.className = "nav-link font-body-lg text-primary font-bold py-2";
-                        }
-                    } else {
-                        link.className = "nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors";
-                        if (link.classList.contains('py-2')) {
-                            link.className = "nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2";
-                        }
-                    }
-                });
-            });
-
-            function toggleMobileMenu() {
-                const menu = document.getElementById('mobileMenu');
-                const overlay = document.getElementById('mobileMenuOverlay');
-                if (menu.classList.contains('translate-x-full')) {
-                    menu.classList.remove('translate-x-full');
-                    overlay.classList.remove('hidden');
-                } else {
-                    menu.classList.add('translate-x-full');
-                    overlay.classList.add('hidden');
+                if (currentPath === href) {
+                    isActive = true;
+                } else if (href !== '/' && currentPath.startsWith(href)) {
+                    isActive = true;
+                } else if (href === '/pdftools' && currentPath.includes('pdf')) {
+                    isActive = true;
                 }
+
+                if (isActive) {
+                    link.className = "nav-link font-body-md text-body-md text-primary font-bold border-b-2 border-primary pb-1";
+                    // Also handle mobile menu links
+                    if (link.classList.contains('py-2')) {
+                        link.className = "nav-link font-body-lg text-primary font-bold py-2";
+                    }
+                } else {
+                    link.className = "nav-link font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors";
+                    if (link.classList.contains('py-2')) {
+                        link.className = "nav-link font-body-lg text-on-surface-variant hover:text-primary transition-colors py-2";
+                    }
+                }
+            });
+        });
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const overlay = document.getElementById('mobileMenuOverlay');
+            if (menu.classList.contains('translate-x-full')) {
+                menu.classList.remove('translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                menu.classList.add('translate-x-full');
+                overlay.classList.add('hidden');
             }
-        </script>
+        }
+    </script>
     </nav>
     <!-- Navigation -->
-    
+
 
     <!-- Mobile Menu Overlay -->
-    
-    
+
+
 
     <!-- Hero Section -->
     <main class="pt-32 pb-24 pt-20">
-<section class="max-w-max-width mx-auto px-margin-desktop mb-16">
-<div class="max-w-3xl">
-<div class="inline-flex items-center gap-2 px-3 py-1 bg-primary-fixed text-on-primary-fixed-variant rounded-full text-label-md font-medium mb-6">
-<span class="material-symbols-outlined text-[18px]">verified_user</span>
+        <section class="max-w-max-width mx-auto px-margin-desktop mb-16">
+            <div class="max-w-3xl relative z-10">
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1 bg-primary-fixed text-on-primary-fixed-variant rounded-full text-label-md font-medium mb-6">
+                    <span class="material-symbols-outlined text-[18px]">verified_user</span>
                     100% Client-Side Privacy
                 </div>
-<h1 class="font-headline-lg text-headline-lg md:text-display-lg md:font-display-lg text-on-surface mb-6 leading-tight">
+                <h1
+                    class="font-headline-lg text-headline-lg md:text-display-lg md:font-display-lg text-on-surface mb-6 leading-tight">
                     Complete <span class="gradient-text">PDF Toolkit</span> for Modern Professionals.
                 </h1>
-<p class="text-body-lg font-body-lg text-on-surface-variant max-w-2xl">
-                    Supercharge your productivity with secure, fast, and 100% free PDF management tools. No installation required — handle all your document needs right in your browser without ever uploading a file.
+                <p class="text-body-lg font-body-lg text-on-surface-variant max-w-2xl">
+                    Boost your productivity with fast, secure and completely free PDF tools.No installation required.
+                    Just open your browser and manage all your documents by using our <strong>FlashSuite</strong> tools.
                 </p>
-</div>
-</section>
-<section class="max-w-max-width mx-auto px-margin-desktop mb-24">
-<div class="bg-deep-navy rounded-[32px] p-8 md:p-12 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 group">
-<div class="absolute inset-0 opacity-10 pointer-events-none">
-<div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_120%,#C026D3,transparent)]"></div>
-</div>
-<div class="relative z-10 max-w-xl">
-<div class="flex items-center gap-4 mb-4">
-<div class="p-3 bg-vibrant-fuchsia/20 rounded-2xl">
-<span class="material-symbols-outlined text-vibrant-fuchsia text-[32px]">shield_lock</span>
-</div>
-<h2 class="text-white font-headline-lg text-headline-lg">Zero-Trust Processing</h2>
-</div>
-<p class="text-secondary-fixed-dim font-body-lg leading-relaxed">
-                        Your documents are processed entirely in your web browser using local compute resources. <strong>No files are ever uploaded or saved to our servers.</strong> This ensures maximum compliance for legal, medical, and sensitive corporate data.
+            </div>
+            <!-- Hero Illustration -->
+            <div
+                class="hidden lg:block absolute right-4 lg:right-margin-desktop top-1/2 -translate-y-1/2 w-[450px] xl:w-[550px] opacity-60 pointer-events-none z-0 mix-blend-multiply">
+                <img src="/pdf_illustration.png" alt="PDF Tools Graphic"
+                    class="w-full h-auto object-contain drop-shadow-2xl">
+            </div>
+        </section>
+        <section class="max-w-max-width mx-auto px-margin-desktop mb-24">
+            <div
+                class="bg-deep-navy rounded-[32px] p-8 md:p-12 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 group">
+                <div class="absolute inset-0 opacity-10 pointer-events-none">
+                    <div
+                        class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_120%,#C026D3,transparent)]">
+                    </div>
+                </div>
+                <div class="relative z-10 max-w-xl">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="p-3 bg-vibrant-fuchsia/20 rounded-2xl">
+                            <span class="material-symbols-outlined text-vibrant-fuchsia text-[32px]">shield_lock</span>
+                        </div>
+                        <h2 class="text-white font-headline-lg text-headline-lg">Zero-Trust Processing</h2>
+                    </div>
+                    <p class="text-secondary-fixed-dim font-body-lg leading-relaxed">
+                        Your documents are processed entirely in your web browser using local compute resources.
+                        <strong>No files are ever uploaded or saved to our servers.</strong> This ensures maximum
+                        compliance for legal, medical, and sensitive corporate data.
                     </p>
-</div>
-<div class="relative z-10 grid grid-cols-2 gap-4">
-<div class="p-6 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm">
-<span class="material-symbols-outlined text-vibrant-fuchsia block mb-2">wifi_off</span>
-<div class="text-white font-bold text-title-lg">Offline Ready</div>
-<div class="text-secondary-fixed-dim text-label-md">Works without internet once loaded</div>
-</div>
-<div class="p-6 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm">
-<span class="material-symbols-outlined text-vibrant-fuchsia block mb-2">speed</span>
-<div class="text-white font-bold text-title-lg">Instant</div>
-<div class="text-secondary-fixed-dim text-label-md">Zero upload/download latency</div>
-</div>
-</div>
-</div>
-</section>
-<section class="max-w-max-width mx-auto px-margin-desktop">
-<div class="flex items-center justify-between mb-12">
-<h2 class="font-headline-lg text-headline-lg text-on-surface">Powerful Capabilities</h2>
-<div class="flex gap-2">
-<button id="btn-list" class="p-2 rounded-full border border-outline-variant hover:bg-surface-container-high transition-colors">
-<span class="material-symbols-outlined">view_list</span>
-</button>
-<button id="btn-grid" class="p-2 rounded-full border border-primary bg-primary/10 text-primary transition-colors">
-<span class="material-symbols-outlined">grid_view</span>
-</button>
-</div>
-</div>
-<div class="bento-grid relative z-20">
-<a class="bento-large glass-card rounded-[32px] p-8 flex flex-col justify-between hover:border-primary/50 transition-all group overflow-hidden relative z-20" href="/mergepdf">
-<div class="relative z-10">
-<div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 bg-primary-container text-on-primary-container">
-<span class="material-symbols-outlined text-[32px]">merge</span>
-</div>
-<h3 class="text-headline-lg font-headline-lg text-on-surface mb-3">Merge PDF</h3>
-<p class="text-on-surface-variant font-body-md leading-relaxed">Combine multiple PDF files into a single document in seconds. Arrange pages with a drag-and-drop interface before finalizing.</p>
-</div>
-<div class="mt-8 flex items-center text-primary font-bold group-hover:translate-x-2 transition-transform relative z-10">
+                </div>
+                <div class="relative z-10 grid grid-cols-2 gap-4">
+                    <div class="p-6 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm">
+                        <span class="material-symbols-outlined text-vibrant-fuchsia block mb-2">laptop_windows</span>
+                        <div class="text-white font-bold text-title-lg">Enterprise-Ready</div>
+                        <div class="text-secondary-fixed-dim text-label-md">Work with large legal, financial, and
+                            technical files while keeping data entirely local.</div>
+                    </div>
+                    <div class="p-6 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm">
+                        <span class="material-symbols-outlined text-vibrant-fuchsia block mb-2">privacy</span>
+                        <div class="text-white font-bold text-title-lg">Privacy First</div>
+                        <div class="text-secondary-fixed-dim text-label-md">Process sensitive documents of any length
+                            without sending data to external servers.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="max-w-max-width mx-auto px-margin-desktop">
+            <div class="flex items-center justify-between mb-12">
+                <h2 class="font-headline-lg text-headline-lg text-on-surface">Powerful Capabilities</h2>
+                <div class="flex gap-2">
+                    <button id="btn-list"
+                        class="p-2 rounded-full border border-outline-variant hover:bg-surface-container-high transition-colors">
+                        <span class="material-symbols-outlined">view_list</span>
+                    </button>
+                    <button id="btn-grid"
+                        class="p-2 rounded-full border border-primary bg-primary/10 text-primary transition-colors">
+                        <span class="material-symbols-outlined">grid_view</span>
+                    </button>
+                </div>
+            </div>
+            <div class="bento-grid relative z-20">
+                <a class="bento-large glass-card rounded-[32px] p-8 flex flex-col justify-between hover:border-primary/50 transition-all group overflow-hidden relative z-20"
+                    href="/mergepdf">
+                    <div class="relative z-10">
+                        <div
+                            class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 bg-primary-container text-on-primary-container">
+                            <span class="material-symbols-outlined text-[32px]">merge</span>
+                        </div>
+                        <h3 class="text-headline-lg font-headline-lg text-on-surface mb-3">Merge PDF</h3>
+                        <p class="text-on-surface-variant font-body-md leading-relaxed">Combine multiple PDF files into
+                            a single document in seconds. Arrange pages with a drag-and-drop interface before
+                            finalizing.</p>
+                    </div>
+                    <div
+                        class="mt-8 flex items-center text-primary font-bold group-hover:translate-x-2 transition-transform relative z-10">
                         Launch Tool <span class="material-symbols-outlined ml-2">arrow_forward</span>
-</div>
-<div class="absolute -right-16 -bottom-16 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
-</a>
-<a class="glass-card rounded-[32px] p-8 flex flex-col hover:border-primary/50 transition-all group relative z-20" href="/splitpdf">
-<div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-tertiary-container text-on-tertiary-container">
-<span class="material-symbols-outlined text-[24px]">call_split</span>
-</div>
-<h3 class="text-title-lg font-title-lg text-on-surface mb-2">Split PDF</h3>
-<p class="text-on-surface-variant text-body-md">Extract specific pages or save each page as a separate PDF file instantly.</p>
-</a>
-<a class="glass-card rounded-[32px] p-8 flex flex-col hover:border-primary/50 transition-all group relative z-20" href="/compresspdf">
-<div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-error-container text-on-error-container">
-<span class="material-symbols-outlined text-[24px]">compress</span>
-</div>
-<h3 class="text-title-lg font-title-lg text-on-surface mb-2">Compress PDF</h3>
-<p class="text-on-surface-variant text-body-md">Reduce file size dramatically while maintaining maximum possible quality.</p>
-</a>
-<a class="glass-card rounded-[32px] p-8 flex flex-col hover:border-primary/50 transition-all group relative z-20" href="/croppdf">
-<div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-primary/20 text-primary">
-<span class="material-symbols-outlined text-[24px]">crop</span>
-</div>
-<h3 class="text-title-lg font-title-lg text-on-surface mb-2">PDF Cropper</h3>
-<p class="text-on-surface-variant text-body-md">Crop selected areas from your PDF files with pixel-perfect precision control.</p>
-</a><a class="glass-card rounded-[32px] p-8 flex flex-col hover:border-primary/50 transition-all group relative z-20" href="/pdftodoc">
-<div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-tertiary-container text-on-tertiary-container">
-<span class="material-symbols-outlined text-[24px]">description</span>
-</div>
-<h3 class="text-title-lg font-title-lg text-on-surface mb-2">PDF to Doc</h3>
-<p class="text-on-surface-variant text-body-md">Convert PDF files into editable Word documents quickly and easily.</p>
-</a>
-<a class="bento-wide glass-card rounded-[32px] p-8 flex flex-col md:flex-row items-center gap-8 hover:border-primary/50 transition-all group relative z-20" href="/editpdf">
-<div class="w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center bg-vibrant-fuchsia/20 text-vibrant-fuchsia">
-<span class="material-symbols-outlined text-[32px]">edit</span>
-</div>
-<div>
-<h3 class="text-title-lg font-title-lg text-on-surface mb-2">Edit &amp; Annotate PDF</h3>
-<p class="text-on-surface-variant text-body-md">Modify text, add shapes, highlight sections, and write directly on your PDF pages online. A full office suite in your browser.</p>
-</div>
-</a>
-<a class="glass-card rounded-[32px] p-8 flex flex-col hover:border-primary/50 transition-all group relative z-20" href="/signpdf">
-<div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-secondary-container text-on-secondary-container">
-<span class="material-symbols-outlined text-[24px]">signature</span>
-</div>
-<h3 class="text-title-lg font-title-lg text-on-surface mb-2">Sign PDF</h3>
-<p class="text-on-surface-variant text-body-md">Add custom digital signatures, draw, or type your legal signature securely.</p>
-</a>
-<a class="glass-card rounded-[32px] p-8 flex flex-col hover:border-primary/50 transition-all group relative z-20" href="/exceltopdf">
-<div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-tertiary-container text-on-tertiary-container">
-<span class="material-symbols-outlined text-[24px]">table_view</span>
-</div>
-<h3 class="text-title-lg font-title-lg text-on-surface mb-2">Excel to PDF</h3>
-<p class="text-on-surface-variant text-body-md">Convert .xlsx and .csv spreadsheets into clean, professional PDF tables locally.</p>
-</a>
-<a class="glass-card rounded-[32px] p-8 flex flex-col hover:border-primary/50 transition-all group relative z-20" href="/protectpdf">
-<div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-error-container text-on-error-container">
-<span class="material-symbols-outlined text-[24px]">lock</span>
-</div>
-<h3 class="text-title-lg font-title-lg text-on-surface mb-2">Protect PDF</h3>
-<p class="text-on-surface-variant text-body-md">Add industrial-grade password encryption to your sensitive PDF files.</p>
-</a><a class="glass-card rounded-[32px] p-8 flex flex-col hover:border-primary/50 transition-all group relative z-20" href="/unlockpdf">
-<div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-vibrant-fuchsia/20 text-vibrant-fuchsia">
-<span class="material-symbols-outlined text-[24px]">lock_open</span>
-</div>
-<h3 class="text-title-lg font-title-lg text-on-surface mb-2">Unlock PDF</h3>
-<p class="text-on-surface-variant text-body-md">Remove password protection and restrictions from your PDF files.</p>
-</a>
-<a class="glass-card rounded-[32px] p-8 flex flex-col hover:border-primary/50 transition-all group relative z-20" href="/pdftoimage">
-<div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-primary/20 text-primary">
-<span class="material-symbols-outlined text-[24px]">image</span>
-</div>
-<h3 class="text-title-lg font-title-lg text-on-surface mb-2">PDF to Image</h3>
-<p class="text-on-surface-variant text-body-md">Extract embedded images or convert entire pages into PNG/JPG formats.</p>
-</a>
+                    </div>
+                    <div
+                        class="absolute -right-16 -bottom-16 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none">
+                    </div>
+                </a>
+                <a class="glass-card rounded-[32px] p-8 flex flex-col hover:border-primary/50 transition-all group relative z-20"
+                    href="/splitpdf">
+                    <div
+                        class="w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-tertiary-container text-on-tertiary-container">
+                        <span class="material-symbols-outlined text-[24px]">call_split</span>
+                    </div>
+                    <h3 class="text-title-lg font-title-lg text-on-surface mb-2">Split PDF</h3>
+                    <p class="text-on-surface-variant text-body-md">Extract specific pages or save each page as a
+                        separate PDF file instantly.</p>
+                </a>
+                <a class="glass-card rounded-[32px] p-8 flex flex-col hover:border-primary/50 transition-all group relative z-20"
+                    href="/compresspdf">
+                    <div
+                        class="w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-error-container text-on-error-container">
+                        <span class="material-symbols-outlined text-[24px]">compress</span>
+                    </div>
+                    <h3 class="text-title-lg font-title-lg text-on-surface mb-2">Compress PDF</h3>
+                    <p class="text-on-surface-variant text-body-md">Reduce file size dramatically while maintaining
+                        maximum possible quality.</p>
+                </a>
+                <a class="glass-card rounded-[32px] p-8 flex flex-col hover:border-primary/50 transition-all group relative z-20"
+                    href="/croppdf">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-primary/20 text-primary">
+                        <span class="material-symbols-outlined text-[24px]">crop</span>
+                    </div>
+                    <h3 class="text-title-lg font-title-lg text-on-surface mb-2">PDF Cropper</h3>
+                    <p class="text-on-surface-variant text-body-md">Crop selected areas from your PDF files with
+                        pixel-perfect precision control.</p>
+                </a><a
+                    class="glass-card rounded-[32px] p-8 flex flex-col hover:border-primary/50 transition-all group relative z-20"
+                    href="/pdftodoc">
+                    <div
+                        class="w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-tertiary-container text-on-tertiary-container">
+                        <span class="material-symbols-outlined text-[24px]">description</span>
+                    </div>
+                    <h3 class="text-title-lg font-title-lg text-on-surface mb-2">PDF to Doc</h3>
+                    <p class="text-on-surface-variant text-body-md">Convert PDF files into editable Word documents
+                        quickly and easily.</p>
+                </a>
+                <a class="bento-wide glass-card rounded-[32px] p-8 flex flex-col md:flex-row items-center gap-8 hover:border-primary/50 transition-all group relative z-20"
+                    href="/editpdf">
+                    <div
+                        class="w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center bg-vibrant-fuchsia/20 text-vibrant-fuchsia">
+                        <span class="material-symbols-outlined text-[32px]">edit</span>
+                    </div>
+                    <div>
+                        <h3 class="text-title-lg font-title-lg text-on-surface mb-2">Edit &amp; Annotate PDF</h3>
+                        <p class="text-on-surface-variant text-body-md">Modify text, add shapes, highlight sections, and
+                            write directly on your PDF pages online. A full office suite in your browser.</p>
+                    </div>
+                </a>
+                <a class="glass-card rounded-[32px] p-8 flex flex-col hover:border-primary/50 transition-all group relative z-20"
+                    href="/signpdf">
+                    <div
+                        class="w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-secondary-container text-on-secondary-container">
+                        <span class="material-symbols-outlined text-[24px]">signature</span>
+                    </div>
+                    <h3 class="text-title-lg font-title-lg text-on-surface mb-2">Sign PDF</h3>
+                    <p class="text-on-surface-variant text-body-md">Add custom digital signatures, draw, or type your
+                        legal signature securely.</p>
+                </a>
+                <a class="glass-card rounded-[32px] p-8 flex flex-col hover:border-primary/50 transition-all group relative z-20"
+                    href="/exceltopdf">
+                    <div
+                        class="w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-tertiary-container text-on-tertiary-container">
+                        <span class="material-symbols-outlined text-[24px]">table_view</span>
+                    </div>
+                    <h3 class="text-title-lg font-title-lg text-on-surface mb-2">Excel to PDF</h3>
+                    <p class="text-on-surface-variant text-body-md">Convert .xlsx and .csv spreadsheets into clean,
+                        professional PDF tables locally.</p>
+                </a>
+                <a class="glass-card rounded-[32px] p-8 flex flex-col hover:border-primary/50 transition-all group relative z-20"
+                    href="/protectpdf">
+                    <div
+                        class="w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-error-container text-on-error-container">
+                        <span class="material-symbols-outlined text-[24px]">lock</span>
+                    </div>
+                    <h3 class="text-title-lg font-title-lg text-on-surface mb-2">Protect PDF</h3>
+                    <p class="text-on-surface-variant text-body-md">Add industrial-grade password encryption to your
+                        sensitive PDF files.</p>
+                </a><a
+                    class="glass-card rounded-[32px] p-8 flex flex-col hover:border-primary/50 transition-all group relative z-20"
+                    href="/unlockpdf">
+                    <div
+                        class="w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-vibrant-fuchsia/20 text-vibrant-fuchsia">
+                        <span class="material-symbols-outlined text-[24px]">lock_open</span>
+                    </div>
+                    <h3 class="text-title-lg font-title-lg text-on-surface mb-2">Unlock PDF</h3>
+                    <p class="text-on-surface-variant text-body-md">Remove password protection and restrictions from
+                        your PDF files.</p>
+                </a>
+                <a class="glass-card rounded-[32px] p-8 flex flex-col hover:border-primary/50 transition-all group relative z-20"
+                    href="/pdftoimage">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-primary/20 text-primary">
+                        <span class="material-symbols-outlined text-[24px]">image</span>
+                    </div>
+                    <h3 class="text-title-lg font-title-lg text-on-surface mb-2">PDF to Image</h3>
+                    <p class="text-on-surface-variant text-body-md">Extract embedded images or convert entire pages into
+                        PNG/JPG formats.</p>
+                </a>
 
-<a class="glass-card rounded-[32px] p-8 flex flex-col hover:border-primary/50 transition-all group relative z-20" href="/imagetopdf">
-<div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-primary-container text-on-primary-container">
-<span class="material-symbols-outlined text-[24px]">photo_library</span>
-</div>
-<h3 class="text-title-lg font-title-lg text-on-surface mb-2">Image to PDF</h3>
-<p class="text-on-surface-variant text-body-md">Convert PNG, JPG, and other images into a single PDF document.</p>
-</a>
+                <a class="glass-card rounded-[32px] p-8 flex flex-col hover:border-primary/50 transition-all group relative z-20"
+                    href="/imagetopdf">
+                    <div
+                        class="w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-primary-container text-on-primary-container">
+                        <span class="material-symbols-outlined text-[24px]">photo_library</span>
+                    </div>
+                    <h3 class="text-title-lg font-title-lg text-on-surface mb-2">Image to PDF</h3>
+                    <p class="text-on-surface-variant text-body-md">Convert PNG, JPG, and other images into a single PDF
+                        document.</p>
+                </a>
 
-</div>
-<div class="mt-16 flex justify-center relative z-20">
-<button onclick="window.scrollTo({ top: document.querySelector('.bento-grid').offsetTop - 100, behavior: 'smooth' })" class="flex items-center gap-2 px-8 py-4 bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-bold rounded-full transition-all group">
+            </div>
+            <div class="mt-16 flex justify-center relative z-20">
+                <button
+                    onclick="window.scrollTo({ top: document.querySelector('.bento-grid').offsetTop - 100, behavior: 'smooth' })"
+                    class="flex items-center gap-2 px-8 py-4 bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-bold rounded-full transition-all group">
                     Explore All 24 PDF Tools
-                    <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">keyboard_double_arrow_right</span>
-</button>
-</div>
-</section>
-<section class="mt-32 max-w-max-width mx-auto px-margin-desktop">
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-<div class="relative">
-<div class="absolute -top-12 -left-12 w-48 h-48 bg-vibrant-fuchsia/10 rounded-full blur-3xl"></div>
-<img class="rounded-[40px] shadow-2xl relative z-10 w-full object-cover aspect-[4/3]" data-alt="A clean and minimal workspace overhead shot featuring a sleek silver laptop, a white tablet, and organized documents on a light oak desk. The scene is bathed in soft, natural morning sunlight coming from a nearby window, creating a calm and professional atmosphere. The color palette is dominated by airy whites and warm wood tones, reflecting a high-end corporate but accessible aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmRqAIi3k4rSdRUpHn2A4N2KwJGZRAMKjlBF5lgAAFS2nsw02LxzIXrkE0uzp1UOuXadDII_s_g4bLHmRaWrYMb_sxfK0P51cr3smkQZdWv8dfy31RMAbMV8MddoEtuJGZODmoXPFGwmrB_TFLUxu1pofdtT4Jiizho3QzpccknKWlQ5NVMg9GREf404Ego1uCXdsCVTOdJKwywLQUnlGrWXhMq8lhu8lyPXpVdYJZrsryBV0c-bNWB42Wm8I_tlrfH2W-Dv8GP07Y">
-<div class="absolute -bottom-8 -right-8 glass-card p-8 rounded-[32px] shadow-xl z-20 hidden md:block">
-<div class="text-display-lg font-display-lg text-primary leading-none">24+</div>
-<div class="text-title-lg font-title-lg text-on-surface-variant">Professional Tools</div>
-</div>
-</div>
-<div>
-<h2 class="text-headline-lg font-headline-lg text-on-surface mb-8">Why Professionals Trust FlashSuite</h2>
-<div class="space-y-8">
-<div class="flex gap-6">
-<div class="w-12 h-12 shrink-0 bg-primary/10 text-primary rounded-full flex items-center justify-center">
-<span class="material-symbols-outlined">corporate_fare</span>
-</div>
-<div>
-<h4 class="text-title-lg font-title-lg text-on-surface mb-2">Enterprise-Grade Infrastructure</h4>
-<p class="text-on-surface-variant font-body-md">Built on a highly resilient edge network ensuring 99.99% uptime and lightning-fast document processing.</p>
-</div>
-</div>
-<div class="flex gap-6">
-<div class="w-12 h-12 shrink-0 bg-primary/10 text-primary rounded-full flex items-center justify-center">
-<span class="material-symbols-outlined">verified</span>
-</div>
-<div>
-<h4 class="text-title-lg font-title-lg text-on-surface mb-2">Privacy First DNA</h4>
-<p class="text-on-surface-variant font-body-md">FlashSuite was engineered with a privacy-first philosophy, ensuring no data ever leaves your device.</p>
-</div>
-</div>
-<div class="flex gap-6">
-<div class="w-12 h-12 shrink-0 bg-primary/10 text-primary rounded-full flex items-center justify-center">
-<span class="material-symbols-outlined">rocket_launch</span>
-</div>
-<div>
-<h4 class="text-title-lg font-title-lg text-on-surface mb-2">Minimalist &amp; Fast</h4>
-<p class="text-on-surface-variant font-body-md">No bloated interfaces or distracting ads. Just pure, functional tools that get the job done in seconds.</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-</main>
+                    <span
+                        class="material-symbols-outlined group-hover:translate-x-1 transition-transform">keyboard_double_arrow_right</span>
+                </button>
+            </div>
+        </section>
+        <section class="mt-32 max-w-max-width mx-auto px-margin-desktop">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="relative">
+                    <div class="absolute -top-12 -left-12 w-48 h-48 bg-vibrant-fuchsia/10 rounded-full blur-3xl"></div>
+                    <img class="rounded-[40px] shadow-2xl relative z-10 w-full object-cover aspect-[4/3]"
+                        data-alt="A clean and minimal workspace overhead shot featuring a sleek silver laptop, a white tablet, and organized documents on a light oak desk. The scene is bathed in soft, natural morning sunlight coming from a nearby window, creating a calm and professional atmosphere. The color palette is dominated by airy whites and warm wood tones, reflecting a high-end corporate but accessible aesthetic."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmRqAIi3k4rSdRUpHn2A4N2KwJGZRAMKjlBF5lgAAFS2nsw02LxzIXrkE0uzp1UOuXadDII_s_g4bLHmRaWrYMb_sxfK0P51cr3smkQZdWv8dfy31RMAbMV8MddoEtuJGZODmoXPFGwmrB_TFLUxu1pofdtT4Jiizho3QzpccknKWlQ5NVMg9GREf404Ego1uCXdsCVTOdJKwywLQUnlGrWXhMq8lhu8lyPXpVdYJZrsryBV0c-bNWB42Wm8I_tlrfH2W-Dv8GP07Y">
+                    <div
+                        class="absolute -bottom-8 -right-8 glass-card p-8 rounded-[32px] shadow-xl z-20 hidden md:block">
+                        <div class="text-display-lg font-display-lg text-primary leading-none">24+</div>
+                        <div class="text-title-lg font-title-lg text-on-surface-variant">Professional Tools</div>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="text-headline-lg font-headline-lg text-on-surface mb-8">Why Professionals Trust
+                        FlashSuite</h2>
+                    <div class="space-y-8">
+                        <div class="flex gap-6">
+                            <div
+                                class="w-12 h-12 shrink-0 bg-primary/10 text-primary rounded-full flex items-center justify-center">
+                                <span class="material-symbols-outlined">corporate_fare</span>
+                            </div>
+                            <div>
+                                <h4 class="text-title-lg font-title-lg text-on-surface mb-2">Enterprise-Grade
+                                    Infrastructure</h4>
+                                <p class="text-on-surface-variant font-body-md">Built on a highly resilient edge network
+                                    ensuring 99.99% uptime and lightning-fast document processing.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-6">
+                            <div
+                                class="w-12 h-12 shrink-0 bg-primary/10 text-primary rounded-full flex items-center justify-center">
+                                <span class="material-symbols-outlined">verified</span>
+                            </div>
+                            <div>
+                                <h4 class="text-title-lg font-title-lg text-on-surface mb-2">Privacy First DNA</h4>
+                                <p class="text-on-surface-variant font-body-md">FlashSuite was engineered with a
+                                    privacy-first philosophy, ensuring no data ever leaves your device.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-6">
+                            <div
+                                class="w-12 h-12 shrink-0 bg-primary/10 text-primary rounded-full flex items-center justify-center">
+                                <span class="material-symbols-outlined">rocket_launch</span>
+                            </div>
+                            <div>
+                                <h4 class="text-title-lg font-title-lg text-on-surface mb-2">Minimalist &amp; Fast</h4>
+                                <p class="text-on-surface-variant font-body-md">No bloated interfaces or distracting
+                                    ads. Just pure, functional tools that get the job done in seconds.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <!-- PDF Tools Grid -->
-    
+
 
     <!-- Premium SEO Content Section -->
-    
+
 
     <!-- Footer -->
-    <footer class="bg-deep-navy w-full py-16 px-margin-desktop border-t border-white/5">
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter-desktop max-w-max-width mx-auto">
-<div class="lg:col-span-1">
-<div class="flex items-center gap-2 mb-6">
-<span class="text-headline-lg font-headline-lg font-black text-white">FlashSuite</span>
-</div>
-<p class="text-secondary-fixed-dim/70 font-body-md mb-8">
-                    Secure, client-side, and lightning fast. Professional-grade URL management and PDF utility platform.
-                </p>
-<div class="flex gap-4">
-<a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors" href="#">
-<img alt="Twitter" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_oyTLfFal6ibPHeyrRmdSLvsssQ73bQLD2JFEaxxZCkQkPoxRAvxHpf8Tip0xwW4uCDxgv08U2qOT-3n91oEL7lyG1y9gNqSi7GhGvpqaXP_xd7sb58nF-6BsaBxa9VKzDimDflcBOVThavlh_8erOhSk186tv3xLlI-ON7c05vPEnbNzt61X7ZffHZRdFRBmHB6hPl4tnPtQKzefFcfbUdjwa4MrNWmqPGi7Gce85IR9wwhTYN99VN5RXazvFIJULvJgU1eiQteY">
-</a>
-<a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors" href="#">
-<img alt="LinkedIn" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWkcnDTp_CtFOGkRby_ofx20CBW7ngkaAqHNjQs6vk5DUDbqI4q0pJnOMtbsNt5Y-qOQAuntuaA8XX3QoWTuSHiqil0dY195sE7j6eUqZjEq1TIdkGqyWxvLTRIDsSq2QBJWgvsq0o_dmm9CLg4GP01PWhl7NB8KDImJLAN4wGgyBLU8EBL4hKYjRDe3Il7sFxlaSMTPquTWoinMrrc-IFyKMtzW6cGGMKWXCTz7N_KBU2-biUxZ8hWsRldtmRkkJFGMEAPdTmt16w">
-</a>
-</div>
-</div>
-<div>
-<h4 class="text-white font-title-lg mb-6">Platform</h4>
-<ul class="space-y-4">
-<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/urlshortener">URL Shortener</a></li>
-<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/qrcode">QR Generator</a></li>
-<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/pdftools">PDF Tools</a></li>
-<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/api">API Docs</a></li>
-</ul>
-</div>
-<div>
-<h4 class="text-white font-title-lg mb-6">Company</h4>
-<ul class="space-y-4">
-<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/about">About Us</a></li>
-<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/about">Help Center</a></li>
-<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/privacy">Security</a></li>
-<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="#">Bulk URL Shortener</a></li>
-</ul>
-</div>
-<div>
-<h4 class="text-white font-title-lg mb-6">Legal</h4>
-<ul class="space-y-4">
-<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/privacy">Privacy Policy</a></li>
-<li><a class="text-secondary-fixed-dim/70 hover:text-white transition-colors hover:underline decoration-vibrant-fuchsia underline-offset-4" href="/terms">Terms of Service</a></li>
-</ul>
-</div>
-</div>
-<div class="max-w-max-width mx-auto pt-12 mt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
-<p class="text-secondary-fixed-dim/50 text-label-md">
-                © 2024 FlashSuite. Secure, client-side, and lightning fast.
-            </p>
-<div class="flex gap-8">
-<span class="flex items-center gap-2 text-secondary-fixed-dim/50 text-label-md">
-<span class="w-2 h-2 rounded-full bg-green-500"></span> Globally Distributed
-                </span>
-</div>
-</div>
-</footer>
+
+
+
+
 
     <script>
-        function toggleMobileMenu() {
-            document.getElementById('mobileMenu').classList.toggle('active');
-            document.getElementById('mobileMenuOverlay').classList.toggle('active');
-        }
-
-        // Intersection Observer for animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in-up');
-                    entry.target.style.opacity = 1;
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.fade-in-up').forEach((el) => {
-            observer.observe(el);
-        });
-
-        window.addEventListener('DOMContentLoaded', () => { if (window.lucide) lucide.createIcons(); else window.addEventListener('load', () => window.lucide && lucide.createIcons()); });
-    </script>
-
-
-<script>
         // Micro-interactions for glass cards
         document.querySelectorAll('.glass-card').forEach(card => {
             card.addEventListener('mousemove', e => {
                 const rect = card.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
-                
+
                 card.style.setProperty('--mouse-x', `${x}px`);
                 card.style.setProperty('--mouse-y', `${y}px`);
             });
@@ -562,7 +570,8 @@
             el.classList.add('transition-all', 'duration-700', 'opacity-0', 'translate-y-8');
             observer.observe(el);
         });
-    </script><script>
+    </script>
+    <script>
         const btnList = document.getElementById('btn-list');
         const btnGrid = document.getElementById('btn-grid');
         const bentoGrid = document.querySelector('.bento-grid');
@@ -571,22 +580,34 @@
             btnList.addEventListener('click', () => {
                 bentoGrid.style.display = 'flex';
                 bentoGrid.style.flexDirection = 'column';
-                
+
                 btnList.classList.remove('border-outline-variant', 'hover:bg-surface-container-high');
                 btnList.classList.add('border-primary', 'bg-primary/10', 'text-primary');
-                
+
                 btnGrid.classList.add('border-outline-variant', 'hover:bg-surface-container-high');
                 btnGrid.classList.remove('border-primary', 'bg-primary/10', 'text-primary');
             });
 
             btnGrid.addEventListener('click', () => {
                 bentoGrid.style.display = 'grid';
-                
+
                 btnGrid.classList.remove('border-outline-variant', 'hover:bg-surface-container-high');
                 btnGrid.classList.add('border-primary', 'bg-primary/10', 'text-primary');
-                
+
                 btnList.classList.add('border-outline-variant', 'hover:bg-surface-container-high');
                 btnList.classList.remove('border-primary', 'bg-primary/10', 'text-primary');
             });
         }
-    </script></body></html>
+    </script>
+    <div id="footer-placeholder"></div>
+    <script>
+        fetch('/components/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                const placeholder = document.getElementById('footer-placeholder');
+                if (placeholder) placeholder.outerHTML = data;
+            });
+    </script>
+</body>
+
+</html>
