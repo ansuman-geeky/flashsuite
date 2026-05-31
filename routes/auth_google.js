@@ -7,7 +7,8 @@ const router = express.Router();
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID || 'dummy_client_id_please_configure_in_env',
     clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'dummy_client_secret',
-    callbackURL: "/api/auth/google/callback"
+    callbackURL: process.env.GOOGLE_CALLBACK_URL || "/api/auth/google/callback",
+    proxy: true
   },
   function(accessToken, refreshToken, profile, cb) {
       const googleId = profile.id;
@@ -57,7 +58,10 @@ passport.use(new GoogleStrategy({
 router.use(passport.initialize());
 
 // Route to trigger Google Auth
-router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+router.get('/google', passport.authenticate('google', { 
+    scope: ['profile', 'email'],
+    prompt: 'select_account'
+}));
 
 // Google Auth Callback
 router.get('/google/callback', 
@@ -69,12 +73,19 @@ router.get('/google/callback',
             req.session.userId = req.user.id;
             req.session.role = req.user.role;
             
-            // Redirect based on role
-            if (req.user.role === 'admin') {
-                res.redirect('/admin.html');
-            } else {
-                res.redirect('/dashboard.html');
-            }
+            // Save the session explicitly before redirecting
+            req.session.save((err) => {
+                if (err) {
+                    console.error('Session save error:', err);
+                    return res.redirect('/login.html?error=session_failed');
+                }
+                // Redirect based on role
+                if (req.user.role === 'admin') {
+                    res.redirect('/admin.html');
+                } else {
+                    res.redirect('/dashboard.html');
+                }
+            });
         } else {
             res.redirect('/login.html?error=google_failed');
         }
