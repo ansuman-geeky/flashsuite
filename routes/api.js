@@ -37,15 +37,19 @@ router.post('/shorten', (req, res) => {
 router.post('/admin/login', authLimiter, (req, res) => {
     const { username, password } = req.body;
     db.get("SELECT * FROM users WHERE username = ? AND role = 'admin'", [username], async (err, user) => {
-        if (err || !user) return res.status(401).json({ error: 'Invalid admin credentials' });
+        if (err || !user || !user.password) return res.status(401).json({ error: 'Invalid admin credentials' });
 
-        const valid = await bcrypt.compare(password, user.password);
-        if (valid) {
-            req.session.userId = user.id;
-            req.session.role = user.role;
-            res.json({ success: true, role: user.role });
-        } else {
-            res.status(401).json({ error: 'Invalid admin credentials' });
+        try {
+            const valid = await bcrypt.compare(password, user.password);
+            if (valid) {
+                req.session.userId = user.id;
+                req.session.role = user.role;
+                res.json({ success: true, role: user.role });
+            } else {
+                res.status(401).json({ error: 'Invalid admin credentials' });
+            }
+        } catch (error) {
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 });
@@ -54,20 +58,24 @@ router.post('/admin/login', authLimiter, (req, res) => {
 router.post('/login', authLimiter, (req, res) => {
     const { username, password } = req.body;
     db.get("SELECT * FROM users WHERE username = ?", [username], async (err, user) => {
-        if (err || !user) return res.status(401).json({ error: 'Invalid credentials' });
+        if (err || !user || !user.password) return res.status(401).json({ error: 'Invalid credentials' });
 
         // Reject admins trying to login via the user portal
         if (user.role === 'admin') {
             return res.status(403).json({ error: 'Admin access restricted. Please use the admin login portal.' });
         }
 
-        const valid = await bcrypt.compare(password, user.password);
-        if (valid) {
-            req.session.userId = user.id;
-            req.session.role = user.role;
-            res.json({ success: true, role: user.role });
-        } else {
-            res.status(401).json({ error: 'Invalid credentials' });
+        try {
+            const valid = await bcrypt.compare(password, user.password);
+            if (valid) {
+                req.session.userId = user.id;
+                req.session.role = user.role;
+                res.json({ success: true, role: user.role });
+            } else {
+                res.status(401).json({ error: 'Invalid credentials' });
+            }
+        } catch (error) {
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 });

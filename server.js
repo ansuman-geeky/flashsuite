@@ -15,6 +15,7 @@ const seoRouter = require('./routes/seo');
 const pseoRouter = require('./routes/pseo');
 
 const app = express();
+app.set('trust proxy', 1); // Essential for rate limiting behind Hostinger/Cloudflare proxies
 app.use(compression());
 
 // Apply global SEO Prerender Hook
@@ -166,18 +167,19 @@ app.get('/:code', (req, res) => {
     const code = req.params.code;
     db.get("SELECT * FROM links WHERE short_code = ?", [code], (err, link) => {
         if (link) {
-            const ip = req.ip;
-            const ua = req.headers['user-agent'];
+            const ip = req.ip || '0.0.0.0';
+            const ua = req.headers['user-agent'] || '';
             const ref = req.headers['referer'] || 'Direct';
+            const originalUrl = link.original_url || '';
 
             db.run("INSERT INTO analytics (link_id, ip_address, user_agent, referrer) VALUES (?, ?, ?, ?)",
                 [link.id, ip, ua, ref]);
 
             const socialMediaDomains = ['youtube.com', 'youtu.be', 'instagram.com', 'facebook.com', 'fb.watch', 'twitter.com', 'x.com', 'tiktok.com'];
-            const isSocialMedia = socialMediaDomains.some(domain => link.original_url.toLowerCase().includes(domain));
+            const isSocialMedia = socialMediaDomains.some(domain => originalUrl.toLowerCase().includes(domain));
             const isMobile = /mobile|android|iphone|ipad/i.test(ua);
 
-            if (isSocialMedia && isMobile) {
+            if (isSocialMedia && isMobile && originalUrl) {
                 // Serve a deep-link bridge page
                 return res.send(`
                     <!DOCTYPE html>
