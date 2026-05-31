@@ -46,8 +46,8 @@ router.post('/checkout', async (req, res) => {
                     user_id: req.session.userId.toString(),
                     plan_id: plan.id.toString()
                 },
-                success_url: `${req.headers.origin}/dashboard.html?session_id={CHECKOUT_SESSION_ID}`,
-                cancel_url: `${req.headers.origin}/pricing.html`,
+                success_url: `${req.headers.origin}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
+                cancel_url: `${req.headers.origin}/pricing`,
             };
 
             // Check if user already has a stripe_customer_id
@@ -87,7 +87,7 @@ router.post('/portal', async (req, res) => {
         try {
             const portalSession = await stripe.billingPortal.sessions.create({
                 customer: user.stripe_customer_id,
-                return_url: `${req.headers.origin}/dashboard.html`,
+                return_url: `${req.headers.origin}/dashboard`,
             });
             res.json({ url: portalSession.url });
         } catch (error) {

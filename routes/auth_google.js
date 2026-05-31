@@ -65,7 +65,7 @@ router.get('/google', passport.authenticate('google', {
 
 // Google Auth Callback
 router.get('/google/callback', 
-    passport.authenticate('google', { failureRedirect: '/login.html?error=google_failed', session: false }),
+    passport.authenticate('google', { failureRedirect: '/login?error=google_failed', session: false }),
     (req, res) => {
         // Successful authentication
         // We set the session manually to match the rest of the app's architecture
@@ -77,17 +77,17 @@ router.get('/google/callback',
             req.session.save((err) => {
                 if (err) {
                     console.error('Session save error:', err);
-                    return res.redirect('/login.html?error=session_failed');
+                    return res.redirect('/login?error=session_failed');
                 }
                 // Redirect based on role
                 if (req.user.role === 'admin') {
-                    res.redirect('/admin.html');
+                    res.redirect('/admin');
                 } else {
-                    res.redirect('/dashboard.html');
+                    res.redirect('/dashboard');
                 }
             });
         } else {
-            res.redirect('/login.html?error=google_failed');
+            res.redirect('/login?error=google_failed');
         }
     }
 );
