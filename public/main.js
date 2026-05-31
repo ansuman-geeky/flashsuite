@@ -1,10 +1,9 @@
 let quill;
 
 document.addEventListener('DOMContentLoaded', () => {
-    if (window.location.pathname.includes('admin.html')) {
+    if (window.location.pathname === '/admin' || window.location.pathname.includes('admin.html')) {
         loadDashboardData();
         loadBlogsData();
-        initQuill();
     }
 });
 
@@ -110,7 +109,7 @@ function selectLocalImage() {
             const data = await res.json();
             
             const range = quill.getSelection();
-            const index = range ? range.index : quill.getLength() - 1;
+            const index = range ? range.index : 0;
             quill.insertEmbed(index, 'image', data.imageUrl);
             quill.setSelection(index + 1);
         } catch (err) {
@@ -138,7 +137,7 @@ async function uploadBlogImage() {
         const data = await res.json();
         
         const range = quill.getSelection();
-        const index = range ? range.index : quill.getLength() - 1;
+        const index = range ? range.index : 0;
         quill.insertEmbed(index, 'image', data.imageUrl);
         quill.setSelection(index + 1);
         
@@ -290,6 +289,7 @@ function switchView(viewId) {
     } else if (viewId === 'blogs') {
         document.getElementById('blogView').style.display = 'block';
         if (titleEl) titleEl.innerText = 'Blog Management';
+        if (!quill) initQuill();
     } else if (viewId === 'settings') {
         document.getElementById('settingsView').style.display = 'block';
         if (titleEl) titleEl.innerText = 'System Settings';
@@ -349,8 +349,32 @@ function cancelEditBlog() {
 
 async function saveBlog() {
     const title = document.getElementById('blogTitle').value;
-    const content = quill ? quill.root.innerHTML : '';
     const status = document.getElementById('blogStatus').value;
+
+    const fileInput = document.getElementById('blogImageFile');
+    if (fileInput && fileInput.files[0]) {
+        try {
+            const compressedFile = await compressImage(fileInput.files[0]);
+            const formData = new FormData();
+            formData.append('image', compressedFile);
+
+            const res = await fetch('/api/admin/upload-image', {
+                method: 'POST',
+                body: formData
+            });
+            if (res.ok) {
+                const data = await res.json();
+                if (quill) {
+                    quill.insertEmbed(0, 'image', data.imageUrl);
+                }
+                fileInput.value = '';
+            }
+        } catch (err) {
+            console.error("Auto-upload failed", err);
+        }
+    }
+
+    const content = quill ? quill.root.innerHTML : '';
 
     if (!title) return alert("Blog title is required");
 
