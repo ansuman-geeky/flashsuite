@@ -307,13 +307,26 @@ async function loadBlogsData() {
 
         const tbody = document.getElementById('blogsBody');
         tbody.innerHTML = blogs.map(blog => `
-            <tr>
-                <td><strong>${blog.title}</strong></td>
-                <td><span class="status-badge ${blog.status}">${blog.status.toUpperCase()}</span></td>
-                <td>${new Date(blog.created_at).toLocaleDateString()}</td>
-                <td>
-                    <button onclick='startEditBlog(${JSON.stringify(blog).replace(/'/g, "&apos;")})' class="btn-action btn-edit">Edit</button>
-                    <button onclick="deleteBlog(${blog.id})" class="btn-action btn-delete">Delete</button>
+            <tr class="hover:bg-surface-container-low/30 transition-colors group">
+                <td class="px-6 py-4">
+                    <div class="flex flex-col">
+                        <span class="font-body-md text-body-md font-semibold text-on-surface">${blog.title}</span>
+                        <span class="text-body-sm text-secondary truncate max-w-xs">flashsuite.com/blog/${blog.id}</span>
+                    </div>
+                </td>
+                <td class="px-6 py-4">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold ${blog.status === 'published' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'} uppercase tracking-tighter">
+                        ${blog.status.toUpperCase()}
+                    </span>
+                </td>
+                <td class="px-6 py-4">
+                    <span class="text-body-sm text-secondary">${new Date(blog.created_at).toLocaleDateString()}</span>
+                </td>
+                <td class="px-6 py-4 text-right">
+                    <div class="flex items-center justify-end gap-3 transition-opacity">
+                        <button onclick='startEditBlog(${JSON.stringify(blog).replace(/'/g, "&apos;")})' class="text-brand-purple hover:underline font-label-caps text-xs uppercase font-bold">EDIT</button>
+                        <button onclick="deleteBlog(${blog.id})" class="text-red-600 hover:underline font-label-caps text-xs uppercase font-bold">DELETE</button>
+                    </div>
                 </td>
             </tr>
         `).join('');
