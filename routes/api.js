@@ -5,6 +5,13 @@ const { nanoid } = require('nanoid');
 const bcrypt = require('bcryptjs');
 const rateLimit = require('express-rate-limit');
 
+const slugify = (text) => text.toString().toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+
 const authLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 10, // Limit each IP to 10 requests per `window` (here, per 15 minutes)
@@ -255,11 +262,28 @@ router.post('/admin/upload-image', isAuthenticated, upload.single('image'), (req
 // Admin: Create Blog
 router.post('/admin/blogs', isAuthenticated, (req, res) => {
     const { title, content, status } = req.body;
-    db.run("INSERT INTO blogs (title, content, status) VALUES (?, ?, ?)",
-        [title, content, status || 'published'],
+    let slug = slugify(title);
+    if (!slug) slug = 'blog-post-' + Date.now();
+    
+    db.run("INSERT INTO blogs (title, slug, content, status) VALUES (?, ?, ?, ?)",
+        [title, slug, content, status || 'published'],
         function (err) {
-            if (err) return res.status(500).json({ error: err.message });
-            res.json({ id: this.lastID });
+            if (err) {
+                if (err.message.includes('UNIQUE constraint failed')) {
+                    slug = slug + '-' + Date.now();
+                    db.run("INSERT INTO blogs (title, slug, content, status) VALUES (?, ?, ?, ?)",
+                        [title, slug, content, status || 'published'],
+                        function (err2) {
+                            if (err2) return res.status(500).json({ error: err2.message });
+                            res.json({ id: this.lastID });
+                        }
+                    );
+                } else {
+                    return res.status(500).json({ error: err.message });
+                }
+            } else {
+                res.json({ id: this.lastID });
+            }
         }
     );
 });
@@ -267,11 +291,28 @@ router.post('/admin/blogs', isAuthenticated, (req, res) => {
 // Admin: Update Blog
 router.put('/admin/blogs/:id', isAuthenticated, (req, res) => {
     const { title, content, status } = req.body;
-    db.run("UPDATE blogs SET title = ?, content = ?, status = ? WHERE id = ?",
-        [title, content, status, req.params.id],
+    let slug = slugify(title);
+    if (!slug) slug = 'blog-post-' + req.params.id;
+    
+    db.run("UPDATE blogs SET title = ?, slug = ?, content = ?, status = ? WHERE id = ?",
+        [title, slug, content, status, req.params.id],
         function (err) {
-            if (err) return res.status(500).json({ error: err.message });
-            res.status(200).send();
+            if (err) {
+                if (err.message.includes('UNIQUE constraint failed')) {
+                    slug = slug + '-' + Date.now();
+                    db.run("UPDATE blogs SET title = ?, slug = ?, content = ?, status = ? WHERE id = ?",
+                        [title, slug, content, status, req.params.id],
+                        function (err2) {
+                            if (err2) return res.status(500).json({ error: err2.message });
+                            res.status(200).send();
+                        }
+                    );
+                } else {
+                    return res.status(500).json({ error: err.message });
+                }
+            } else {
+                res.status(200).send();
+            }
         }
     );
 });
@@ -301,12 +342,17 @@ router.get('/blogs', (req, res) => {
 });
 
 // Public: Get single published blog
-router.get('/blogs/:id', (req, res) => {
-    db.get("SELECT * FROM blogs WHERE id = ? AND status = 'published'", [req.params.id], (err, blog) => {
+router.get('/blogs/:idOrSlug', (req, res) => {
+    const isId = !isNaN(req.params.idOrSlug);
+    const query = isId 
+        ? "SELECT * FROM blogs WHERE id = ? AND status = 'published'"
+        : "SELECT * FROM blogs WHERE slug = ? AND status = 'published'";
+        
+    db.get(query, [req.params.idOrSlug], (err, blog) => {
         if (err) return res.status(500).json({ error: err.message });
         if (!blog) return res.status(404).json({ error: 'Blog not found' });
         res.json(blog);
-    }); // This closing brace/parenthesis pair was the primary culprit
+    });
 });
 
 // Admin: Update Credentials

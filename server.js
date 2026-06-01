@@ -159,6 +159,11 @@ app.use('/api', humanizeRoutes);
 app.use('/api/admin/subs', adminSubsRoutes);
 app.use('/api/stripe', stripeRoutes);
 
+// Blog Routing
+app.get('/blogs/:slug', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'post.html'));
+});
+
 // Redirection Logic
 app.get('/:code', (req, res) => {
     const code = req.params.code;

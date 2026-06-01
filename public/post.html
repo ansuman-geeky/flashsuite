@@ -231,7 +231,13 @@
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
-            const postId = urlParams.get('id');
+            let postId = urlParams.get('id');
+            if (!postId) {
+                const parts = window.location.pathname.split('/');
+                if (parts[1] === 'blogs' && parts[2]) {
+                    postId = parts[2];
+                }
+            }
             const container = document.getElementById('postContainer');
 
             if (!postId) {

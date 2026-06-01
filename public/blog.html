@@ -349,7 +349,7 @@
                                 <span class="blog-meta">${new Date(blog.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
                                 <h2 title="${blog.title}">${blog.title}</h2>
                                 <p class="blog-card-text">${textPreview}</p>
-                                <a href="/post.html?id=${blog.id}" class="read-more-btn">Read More</a>
+                                <a href="/blogs/${blog.slug || blog.id}" class="read-more-btn">Read More</a>
                             </div>
                         </article>
                     `;
