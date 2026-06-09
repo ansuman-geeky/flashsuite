@@ -11,6 +11,7 @@
         "@capacitor/cli": "^8.3.1",
         "@capacitor/core": "^8.3.1",
         "@capacitor/ios": "^8.3.1",
+        "@localonlytools/pdf-decrypt": "^1.0.1",
         "@pdfsmaller/pdf-decrypt": "^1.0.1",
         "@pdfsmaller/pdf-encrypt-lite": "^1.0.2",
         "bcryptjs": "^2.4.3",
@@ -31,6 +32,7 @@
         "sharp": "^0.34.5",
         "sqlite3": "^5.1.6",
         "stripe": "^22.2.0",
-        "useragent": "^2.3.0"
+        "useragent": "^2.3.0",
+        "uuid": "^14.0.0"
     }
 }

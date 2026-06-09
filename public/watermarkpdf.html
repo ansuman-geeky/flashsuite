@@ -1,0 +1,520 @@
+<!DOCTYPE html><html lang="en"><head>
+    <!-- Google tag (gtag.js) -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-3B61CKGJL7"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-3B61CKGJL7');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watermark PDF Online Free - Add Text Watermark Locally | FlashSuite</title>
+    <meta name="description" content="Add text watermarks to your PDF documents locally in your browser. 100% free, private, and secure. Your files never leave your computer.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script defer="" src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <style>
+        .pdf-hero {
+            text-align: center;
+            padding: 80px 0 40px;
+            background: var(--bg);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .drop-zone {
+            border: 2px dashed rgba(157, 28, 68, 0.25);
+            border-radius: 20px;
+            background: rgba(157, 28, 68, 0.005);
+            padding: 60px 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .drop-zone:hover, .drop-zone.dragover {
+            border-color: var(--primary);
+            background: rgba(157, 28, 68, 0.04);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(157, 28, 68, 0.05);
+        }
+
+        .drop-zone input[type="file"] {
+            display: none;
+        }
+
+        .upload-icon {
+            width: 52px;
+            height: 52px;
+            color: var(--primary);
+            margin-bottom: 20px;
+            stroke-width: 1.5;
+        }
+
+        .file-limits {
+            display: inline-block;
+            font-size: 0.8rem;
+            color: #999;
+            background: #f3f3f3;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        /* Config Panel Styling */
+        .config-panel {
+            background: #fbfbfb;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 24px;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        .config-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .config-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            background: white;
+            transition: all 0.2s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(157, 28, 68, 0.1);
+        }
+
+        .btn-merge {
+            background: var(--primary);
+            color: white;
+            padding: 16px 36px;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            justify-content: center;
+            margin-top: 24px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-merge:hover:not(:disabled) {
+            background: #7A1232;
+            transform: translateY(-2px);
+        }
+
+        .btn-merge:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Processing State */
+        .processing-state {
+            text-align: center;
+            padding: 50px 20px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .loader-spinner {
+            width: 54px;
+            height: 54px;
+            border: 4px solid rgba(157, 28, 68, 0.1);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 24px auto;
+        }
+
+        /* Success State */
+        .success-state {
+            text-align: center;
+            padding: 20px 0;
+            animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .success-icon-pulse {
+            width: 76px;
+            height: 76px;
+            background: rgba(46, 204, 113, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2ecc71;
+            margin: 0 auto 24px auto;
+            animation: pulseSuccess 2s infinite;
+        }
+
+        .btn-download {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(157, 28, 68, 0.25);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 36px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 1.05rem;
+            cursor: pointer;
+            border: none;
+            margin: 0 auto;
+        }
+
+        .btn-reset {
+            background: transparent;
+            color: var(--secondary);
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            padding: 16px 28px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulseSuccess {
+            0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(46, 204, 113, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+
+    <!-- Tailwind Config -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "background": "#f8f9fa",
+                      "primary": "#9e00b1",
+                      "primary-container": "#c026d3",
+                      "vibrant-fuchsia": "#C026D3"
+              }
+            }
+          }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+</head>
+
+<body class="bg-background font-body-md text-gray-800 antialiased">
+    <div id="navbar-placeholder"></div>
+    <script src="/components/navbar.js?v=2"></script>
+
+    <main class="pt-20 pb-16 min-h-screen">
+        <section class="pt-32 pb-16 text-center px-4 max-w-4xl mx-auto">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary font-medium mb-6">
+                🔒 100% Private &amp; Client-Side
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
+                Add Watermark to <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-vibrant-fuchsia">PDF</span>
+            </h1>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+                Stamp your documents with text watermarks instantly. Processed completely offline in your browser for absolute data privacy.
+            </p>
+        </section>
+
+        <main class="container mx-auto px-4" style="max-width: 860px;">
+            <div class="bg-white border border-gray-200 rounded-3xl p-8 md:p-12 shadow-sm max-w-4xl mx-auto mb-24 relative overflow-hidden">
+                
+                <!-- Main App UI -->
+                <div id="appUI">
+                    <!-- Drop Zone -->
+                    <div class="drop-zone" id="dropZone">
+                        <i data-lucide="file-badge" class="upload-icon mx-auto block mb-4"></i>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Drag &amp; drop a PDF file here</h3>
+                        <p class="text-gray-500 mb-4">or click to browse your computer</p>
+                        <span class="file-limits">Supports any valid PDF file</span>
+                        <input type="file" id="fileInput" accept=".pdf">
+                    </div>
+                    
+                    <div id="selectedFileInfo" class="hidden mt-4 text-center font-medium text-primary"></div>
+
+                    <!-- Config Panel (Hidden Initially) -->
+                    <div class="config-panel hidden" id="configPanel">
+                        <h4 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Watermark Settings</h4>
+                        <div class="config-grid">
+                            <div class="form-group">
+                                <label>Watermark Text</label>
+                                <input type="text" id="wmText" class="form-control" value="CONFIDENTIAL" placeholder="Enter watermark text...">
+                            </div>
+                            <div class="form-group">
+                                <label>Text Color</label>
+                                <div class="flex items-center gap-3">
+                                    <input type="color" id="wmColor" class="h-12 w-full rounded-lg cursor-pointer border border-gray-200" value="#ff0000">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Opacity (0.1 - 1.0)</label>
+                                <input type="range" id="wmOpacity" min="0.1" max="1.0" step="0.1" value="0.3" class="w-full mt-2 accent-primary">
+                                <div class="text-xs text-gray-500 text-center mt-1" id="opacityLabel">30%</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Rotation Angle (Degrees)</label>
+                                <input type="range" id="wmRotation" min="-90" max="90" step="5" value="45" class="w-full mt-2 accent-primary">
+                                <div class="text-xs text-gray-500 text-center mt-1" id="rotationLabel">45°</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Font Size</label>
+                                <input type="number" id="wmSize" class="form-control" value="60" min="10" max="200">
+                            </div>
+                        </div>
+
+                        <button class="btn-merge mt-6" id="btnProcess">
+                            <i data-lucide="stamp"></i> Add Watermark
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Processing Spinner -->
+                <div class="processing-state hidden" id="processingState">
+                    <div class="loader-spinner"></div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Watermarking your file...</h3>
+                    <p class="text-gray-500">Processing locally in your browser. This will only take a moment.</p>
+                </div>
+
+                <!-- Success State -->
+                <div class="success-state hidden" id="successState">
+                    <div class="success-icon-pulse">
+                        <i data-lucide="check-circle-2"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-800 mb-2">Watermark Added!</h3>
+                    <p class="text-gray-500 mb-8">Your PDF has been successfully watermarked.</p>
+                    
+                    <div class="flex flex-col items-center">
+                        <button class="btn-download" id="btnDownload">
+                            <i data-lucide="download"></i> Download PDF
+                        </button>
+                        <button class="btn-reset" onclick="location.reload()">
+                            Watermark Another PDF
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script>
+        fetch('/components/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                const placeholder = document.getElementById('footer-placeholder');
+                if (placeholder) placeholder.outerHTML = data;
+            });
+    </script>
+
+    <script>
+        // Init Lucide Icons
+        lucide.createIcons();
+
+        // UI Elements
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const configPanel = document.getElementById('configPanel');
+        const selectedFileInfo = document.getElementById('selectedFileInfo');
+        const appUI = document.getElementById('appUI');
+        const processingState = document.getElementById('processingState');
+        const successState = document.getElementById('successState');
+        const btnProcess = document.getElementById('btnProcess');
+        const btnDownload = document.getElementById('btnDownload');
+
+        // Inputs
+        const wmText = document.getElementById('wmText');
+        const wmColor = document.getElementById('wmColor');
+        const wmOpacity = document.getElementById('wmOpacity');
+        const wmRotation = document.getElementById('wmRotation');
+        const wmSize = document.getElementById('wmSize');
+        const opacityLabel = document.getElementById('opacityLabel');
+        const rotationLabel = document.getElementById('rotationLabel');
+
+        let selectedFile = null;
+        let processedPdfBytes = null;
+
+        // UI Listeners
+        wmOpacity.addEventListener('input', (e) => opacityLabel.innerText = Math.round(e.target.value * 100) + '%');
+        wmRotation.addEventListener('input', (e) => rotationLabel.innerText = e.target.value + '°');
+
+        // Drag and Drop
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => dropZone.classList.add('dragover'), false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => dropZone.classList.remove('dragover'), false);
+        });
+
+        dropZone.addEventListener('drop', handleDrop, false);
+        dropZone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        }
+
+        function handleFiles(files) {
+            if (files.length === 0) return;
+            const file = files[0];
+            
+            if (file.type !== 'application/pdf') {
+                alert('Please upload a valid PDF file.');
+                return;
+            }
+
+            selectedFile = file;
+            selectedFileInfo.innerText = `Selected: ${file.name}`;
+            selectedFileInfo.classList.remove('hidden');
+            configPanel.classList.remove('hidden');
+            dropZone.style.padding = '30px';
+        }
+
+        // Hex to RGB Helper
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16) / 255,
+                g: parseInt(result[2], 16) / 255,
+                b: parseInt(result[3], 16) / 255
+            } : { r: 0, g: 0, b: 0 };
+        }
+
+        // Processing Logic
+        btnProcess.addEventListener('click', async () => {
+            if (!selectedFile) return;
+
+            // Show Processing UI
+            appUI.classList.add('hidden');
+            processingState.classList.remove('hidden');
+
+            try {
+                // Read File
+                const arrayBuffer = await selectedFile.arrayBuffer();
+                
+                // Load PDF
+                const { PDFDocument, rgb, degrees } = PDFLib;
+                const pdfDoc = await PDFDocument.load(arrayBuffer);
+                const pages = pdfDoc.getPages();
+
+                // Get Settings
+                const text = wmText.value || 'CONFIDENTIAL';
+                const colorRgb = hexToRgb(wmColor.value);
+                const opacity = parseFloat(wmOpacity.value);
+                const rotation = parseFloat(wmRotation.value);
+                const size = parseInt(wmSize.value) || 60;
+
+                // Process Pages
+                for (let page of pages) {
+                    const { width, height } = page.getSize();
+                    // Basic centering logic (can be complex based on string length, but pdf-lib doesn't have native text measurement without embedding fonts deeply)
+                    // We will just draw it near center.
+                    page.drawText(text, {
+                        x: width / 2 - (size * text.length) / 4, // Rough center approximation
+                        y: height / 2 - size / 2,
+                        size: size,
+                        color: rgb(colorRgb.r, colorRgb.g, colorRgb.b),
+                        opacity: opacity,
+                        rotate: degrees(rotation),
+                    });
+                }
+
+                processedPdfBytes = await pdfDoc.save();
+
+                // Show Success
+                processingState.classList.add('hidden');
+                successState.classList.remove('hidden');
+
+            } catch (error) {
+                    if (error && error.message && error.message.toLowerCase().includes('encrypted')) {
+                        if (confirm("This PDF is password protected. Would you like to go to the Unlock PDF tool to remove the password first?")) {
+                            window.location.href = '/unlockpdf';
+                        }
+                        if (typeof clearWorkspace === 'function') clearWorkspace();
+                        return;
+                    }
+                console.error(error);
+                alert('An error occurred while adding the watermark. Please check the console.');
+                appUI.classList.remove('hidden');
+                processingState.classList.add('hidden');
+            }
+        });
+
+        // Download Logic
+        btnDownload.addEventListener('click', () => {
+            if (!processedPdfBytes) return;
+            const blob = new Blob([processedPdfBytes], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `watermarked_${selectedFile.name}`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+
+    </script>
+</body>
+</html>

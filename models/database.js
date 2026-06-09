@@ -39,6 +39,7 @@ db.serialize(() => {
   db.run(`CREATE TABLE IF NOT EXISTS blogs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
+    slug TEXT UNIQUE,
     content TEXT,
     status TEXT DEFAULT 'published',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
