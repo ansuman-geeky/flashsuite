@@ -54,6 +54,7 @@ window.History = {
         state.replacements = JSON.parse(JSON.stringify(snapshot.replacements || []));
         
         document.querySelectorAll('.interactive-element').forEach(el => el.remove());
+        document.querySelectorAll('.svg-layer path').forEach(el => el.remove());
         window.AnnotationLayer.deselectAll();
         
         // Restore replaced text overlay UI
@@ -95,10 +96,26 @@ window.History = {
         });
         
         state.elements.forEach(elState => {
-            const annoLayer = document.getElementById(`anno-${elState.pageIndex + 1}`);
-            if (annoLayer) {
-                const el = window.AnnotationLayer.createElementNode(elState, zoom);
-                annoLayer.appendChild(el);
+            if (elState.type === 'path') {
+                const svgLayer = document.getElementById(`svg-${elState.pageIndex + 1}`);
+                if (svgLayer) {
+                    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                    path.id = elState.id;
+                    path.setAttribute("d", elState.pathData);
+                    path.setAttribute("fill", "none");
+                    path.setAttribute("stroke", elState.strokeColor);
+                    path.setAttribute("stroke-width", elState.strokeWidth);
+                    path.setAttribute("stroke-linecap", "round");
+                    path.setAttribute("stroke-linejoin", "round");
+                    path.setAttribute("transform", `scale(${zoom})`);
+                    svgLayer.appendChild(path);
+                }
+            } else {
+                const annoLayer = document.getElementById(`anno-${elState.pageIndex + 1}`);
+                if (annoLayer) {
+                    const el = window.AnnotationLayer.createElementNode(elState, zoom);
+                    annoLayer.appendChild(el);
+                }
             }
         });
     }

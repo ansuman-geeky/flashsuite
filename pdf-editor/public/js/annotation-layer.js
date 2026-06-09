@@ -2,29 +2,29 @@
 // Handles user interactions (adding text, shapes, images, drawing, moving, resizing)
 
 window.AnnotationLayer = {
-    init: function() {
+    init: function () {
         const state = window.PDFEditor.state;
-        
+
         // Listen for clicks/drags on the viewport for new elements
         const container = document.getElementById('pagesContainer');
-        
+
         let isDrawing = false;
         let currentSvgPath = null;
         let currentPathData = '';
-        
+
         container.addEventListener('mousedown', (e) => {
             if (state.currentTool === 'select') return;
-            
+
             // Only left click
             if (e.button !== 0) return;
-            
+
             // Find which page was clicked
             const pageDiv = e.target.closest('.page-container');
             if (!pageDiv) return;
-            
+
             const annoLayer = pageDiv.querySelector('.annotation-layer');
             const svgLayer = pageDiv.querySelector('.svg-layer');
-            
+
             if (!annoLayer || !svgLayer) return;
 
             const rect = annoLayer.getBoundingClientRect();
@@ -35,7 +35,7 @@ window.AnnotationLayer = {
             if (state.currentTool === 'text') {
                 document.querySelector('.tool-btn[data-tool="select"]').click();
                 this.addTextElement(pageNum, x, y);
-            } 
+            }
             else if (state.currentTool === 'shape') {
                 document.querySelector('.tool-btn[data-tool="select"]').click();
                 this.addShapeElement(pageNum, x, y);
@@ -44,24 +44,24 @@ window.AnnotationLayer = {
                 isDrawing = true;
                 const zoom = state.zoom;
                 // Start SVG path
-                currentPathData = `M ${x/zoom} ${y/zoom}`;
-                
+                currentPathData = `M ${x / zoom} ${y / zoom}`;
+
                 currentSvgPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
                 currentSvgPath.setAttribute("d", currentPathData);
                 currentSvgPath.setAttribute("fill", "none");
-                
+
                 const propStroke = document.getElementById('propShapeStroke').value || '#4f46e5';
                 const propStrokeWidth = document.getElementById('propShapeStrokeWidth').value || 2;
-                
+
                 currentSvgPath.setAttribute("stroke", propStroke);
                 currentSvgPath.setAttribute("stroke-width", propStrokeWidth);
                 currentSvgPath.setAttribute("stroke-linecap", "round");
                 currentSvgPath.setAttribute("stroke-linejoin", "round");
-                
+
                 svgLayer.appendChild(currentSvgPath);
-                
+
                 window.History.saveState();
-                
+
                 // Add to state elements
                 const elState = {
                     id: `path_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -78,28 +78,28 @@ window.AnnotationLayer = {
                 currentSvgPath.id = elState.id;
             }
         });
-        
+
         container.addEventListener('mousemove', (e) => {
             if (!isDrawing || state.currentTool !== 'draw' || !currentSvgPath) return;
-            
+
             const pageDiv = e.target.closest('.page-container');
             if (!pageDiv) return;
-            
+
             const rect = pageDiv.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
             const zoom = state.zoom;
-            
-            currentPathData += ` L ${x/zoom} ${y/zoom}`;
+
+            currentPathData += ` L ${x / zoom} ${y / zoom}`;
             currentSvgPath.setAttribute("d", currentPathData);
-            
+
             // Update state
             const elState = state.elements.find(el => el.id === currentSvgPath.id);
             if (elState) {
                 elState.pathData = currentPathData;
             }
         });
-        
+
         container.addEventListener('mouseup', () => {
             if (isDrawing) {
                 isDrawing = false;
@@ -107,23 +107,23 @@ window.AnnotationLayer = {
                 currentPathData = '';
             }
         });
-        
+
         // Deselect on click outside
         document.addEventListener('mousedown', (e) => {
-            if (!e.target.closest('.interactive-element') && 
-                !e.target.closest('.pdf-text-box') && 
-                !e.target.closest('.tool-btn') && 
+            if (!e.target.closest('.interactive-element') &&
+                !e.target.closest('.pdf-text-box') &&
+                !e.target.closest('.tool-btn') &&
                 !e.target.closest('aside')) {
                 this.deselectAll();
             }
         });
     },
 
-    deselectAll: function() {
+    deselectAll: function () {
         document.querySelectorAll('.interactive-element.selected, .pdf-text-box.selected').forEach(el => {
             el.classList.remove('selected');
         });
-        
+
         // Reset properties panels to empty state
         document.getElementById('propTextState').classList.add('hidden');
         document.getElementById('propShapeState').classList.add('hidden');
@@ -131,13 +131,13 @@ window.AnnotationLayer = {
         document.getElementById('propEmptyState').classList.remove('hidden');
     },
 
-    addTextElement: function(pageNum, layerX, layerY) {
+    addTextElement: function (pageNum, layerX, layerY) {
         const state = window.PDFEditor.state;
         window.History.saveState();
-        
+
         const id = `text_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
         const annoLayer = document.getElementById(`anno-${pageNum}`);
-        
+
         const zoom = state.zoom;
         const elState = {
             id: id,
@@ -152,26 +152,26 @@ window.AnnotationLayer = {
             opacity: 1.0,
             lineHeight: 1.2
         };
-        
+
         state.elements.push(elState);
         const el = this.createElementNode(elState, zoom);
         annoLayer.appendChild(el);
-        
+
         this.selectElement(el, elState);
         el.focus();
     },
 
-    addShapeElement: function(pageNum, layerX, layerY) {
+    addShapeElement: function (pageNum, layerX, layerY) {
         const state = window.PDFEditor.state;
         window.History.saveState();
-        
+
         const id = `shape_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
         const annoLayer = document.getElementById(`anno-${pageNum}`);
-        
+
         // Get active sub-tool
         const activeSub = document.querySelector('.sub-tool.active');
         const shapeType = activeSub ? activeSub.dataset.subTool : 'rect';
-        
+
         const zoom = state.zoom;
         const elState = {
             id: id,
@@ -186,21 +186,21 @@ window.AnnotationLayer = {
             strokeWidth: 2,
             opacity: 1.0
         };
-        
+
         state.elements.push(elState);
         const el = this.createElementNode(elState, zoom);
         annoLayer.appendChild(el);
-        
+
         this.selectElement(el, elState);
     },
 
-    addImageElement: function(pageNum, dataUrl, imgWidth, imgHeight) {
+    addImageElement: function (pageNum, dataUrl, imgWidth, imgHeight) {
         const state = window.PDFEditor.state;
         window.History.saveState();
-        
+
         const id = `image_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
         const annoLayer = document.getElementById(`anno-${pageNum}`);
-        
+
         const zoom = state.zoom;
         // Default size logic: limit max width to 200px initially
         let w = imgWidth;
@@ -221,19 +221,19 @@ window.AnnotationLayer = {
             dataUrl: dataUrl,
             opacity: 1.0
         };
-        
+
         state.elements.push(elState);
         const el = this.createElementNode(elState, zoom);
         annoLayer.appendChild(el);
-        
+
         this.selectElement(el, elState);
     },
 
-    createElementNode: function(elState, zoom) {
+    createElementNode: function (elState, zoom) {
         const el = document.createElement('div');
         el.className = 'interactive-element';
         el.id = elState.id;
-        
+
         el.style.left = (elState.x * zoom) + 'px';
         el.style.top = (elState.y * zoom) + 'px';
         el.style.opacity = elState.opacity;
@@ -246,7 +246,7 @@ window.AnnotationLayer = {
             el.style.color = elState.color;
             el.style.lineHeight = elState.lineHeight;
             el.textContent = elState.text || '';
-            
+
             el.addEventListener('input', () => { elState.text = el.innerText; });
             el.addEventListener('blur', () => {
                 if (!el.innerText.trim()) {
@@ -254,12 +254,12 @@ window.AnnotationLayer = {
                     window.PDFEditor.state.elements = window.PDFEditor.state.elements.filter(e => e.id !== elState.id);
                 }
             });
-        } 
+        }
         else if (['rect', 'circle', 'line'].includes(elState.type)) {
             el.classList.add('shape-element');
             el.style.width = (elState.width * zoom) + 'px';
             el.style.height = (elState.height * zoom) + 'px';
-            
+
             if (elState.fillColor) el.style.backgroundColor = elState.fillColor;
             if (elState.strokeColor && elState.strokeWidth) {
                 el.style.border = `${elState.strokeWidth * zoom}px solid ${elState.strokeColor}`;
@@ -290,7 +290,7 @@ window.AnnotationLayer = {
         return el;
     },
 
-    addResizeHandles: function(el) {
+    addResizeHandles: function (el) {
         const positions = ['tl', 'tr', 'bl', 'br', 'tc', 'bc', 'ml', 'mr'];
         positions.forEach(pos => {
             const handle = document.createElement('div');
@@ -300,16 +300,16 @@ window.AnnotationLayer = {
         });
     },
 
-    selectElement: function(el, elState) {
+    selectElement: function (el, elState) {
         if (window.PDFEditor.state.currentTool !== 'select') return;
-        
+
         this.deselectAll();
         el.classList.add('selected');
         window.PDFEditor.state.selectedElement = elState;
-        
+
         // Populate properties panel
         document.getElementById('propEmptyState').classList.add('hidden');
-        
+
         if (elState.type === 'text') {
             document.getElementById('propTextState').classList.remove('hidden');
             document.getElementById('propFontFamily').value = elState.fontFamily;
@@ -317,7 +317,7 @@ window.AnnotationLayer = {
             document.getElementById('propFontColor').value = elState.color;
             document.getElementById('propOpacityText').value = elState.opacity;
             document.getElementById('propOpacityTextVal').textContent = Math.round(elState.opacity * 100) + '%';
-        } 
+        }
         else if (['rect', 'circle', 'line'].includes(elState.type)) {
             document.getElementById('propShapeState').classList.remove('hidden');
             if (elState.fillColor) {
@@ -338,34 +338,34 @@ window.AnnotationLayer = {
         }
     },
 
-    startDrag: function(e, el, elState) {
+    startDrag: function (e, el, elState) {
         if (window.PDFEditor.state.currentTool !== 'select') return;
         e.stopPropagation();
-        
+
         // Don't drag if actively typing text
         if (elState.type === 'text' && document.activeElement === el) return;
-        
+
         this.selectElement(el, elState);
-        
+
         const zoom = window.PDFEditor.state.zoom;
         const startX = e.clientX;
         const startY = e.clientY;
         const startElX = elState.x * zoom;
         const startElY = elState.y * zoom;
-        
+
         let dragged = false;
 
         const onMouseMove = (ev) => {
             dragged = true;
             const dx = ev.clientX - startX;
             const dy = ev.clientY - startY;
-            
+
             const newX = startElX + dx;
             const newY = startElY + dy;
-            
+
             el.style.left = newX + 'px';
             el.style.top = newY + 'px';
-            
+
             elState.x = newX / zoom;
             elState.y = newY / zoom;
         };
@@ -380,7 +380,7 @@ window.AnnotationLayer = {
         document.addEventListener('mouseup', onMouseUp);
     },
 
-    startResize: function(e, el, pos) {
+    startResize: function (e, el, pos) {
         e.stopPropagation();
         const state = window.PDFEditor.state;
         const elState = state.selectedElement;
@@ -389,21 +389,21 @@ window.AnnotationLayer = {
         const zoom = state.zoom;
         const startX = e.clientX;
         const startY = e.clientY;
-        
+
         const startElX = elState.x * zoom;
         const startElY = elState.y * zoom;
-        
+
         // Text elements resize via font size mostly, but for shapes/images we resize container
-        const startW = (elState.width || el.offsetWidth/zoom) * zoom;
-        const startH = (elState.height || el.offsetHeight/zoom) * zoom;
-        
+        const startW = (elState.width || el.offsetWidth / zoom) * zoom;
+        const startH = (elState.height || el.offsetHeight / zoom) * zoom;
+
         let dragged = false;
 
         const onMouseMove = (ev) => {
             dragged = true;
             const dx = ev.clientX - startX;
             const dy = ev.clientY - startY;
-            
+
             let newW = startW;
             let newH = startH;
             let newX = startElX;
@@ -422,7 +422,7 @@ window.AnnotationLayer = {
             el.style.height = newH + 'px';
             el.style.left = newX + 'px';
             el.style.top = newY + 'px';
-            
+
             elState.width = newW / zoom;
             elState.height = newH / zoom;
             elState.x = newX / zoom;
@@ -439,10 +439,10 @@ window.AnnotationLayer = {
         document.addEventListener('mouseup', onMouseUp);
     },
 
-    recalculateZoom: function() {
+    recalculateZoom: function () {
         const state = window.PDFEditor.state;
         const zoom = state.zoom;
-        
+
         state.elements.forEach(elState => {
             if (elState.type === 'path') {
                 // Update SVG path scaling
@@ -463,7 +463,7 @@ window.AnnotationLayer = {
                     } else if (elState.width && elState.height) {
                         el.style.width = (elState.width * zoom) + 'px';
                         el.style.height = (elState.height * zoom) + 'px';
-                        
+
                         if (elState.strokeWidth) {
                             el.style.borderWidth = `${elState.strokeWidth * zoom}px`;
                         }

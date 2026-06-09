@@ -2,12 +2,12 @@
 // Handles left toolbar, top bar controls, and right properties panel
 
 window.Toolbar = {
-    init: function() {
+    init: function () {
         this.bindZoomControls();
         this.bindPageControls();
         this.bindToolSelection();
         this.bindPropertiesPanel();
-        
+
         // Export button
         document.getElementById('btnExport').addEventListener('click', () => {
             window.PDFExporter.export();
@@ -40,7 +40,7 @@ window.Toolbar = {
                 deleteSelectedElement();
             }
         });
-        
+
         document.getElementById('btnDelete').addEventListener('click', deleteSelectedElement);
 
         // Image Tool File Input
@@ -48,10 +48,10 @@ window.Toolbar = {
             if (e.target.files && e.target.files[0]) {
                 const file = e.target.files[0];
                 const reader = new FileReader();
-                reader.onload = function(evt) {
+                reader.onload = function (evt) {
                     // Create an offscreen image to get intrinsic dimensions
                     const img = new Image();
-                    img.onload = function() {
+                    img.onload = function () {
                         const state = window.PDFEditor.state;
                         // Default to placing image on current page center (or page 1)
                         const pageNum = state.currentPage || 1;
@@ -60,7 +60,7 @@ window.Toolbar = {
                     img.src = evt.target.result;
                 };
                 reader.readAsDataURL(file);
-                
+
                 // Reset input
                 e.target.value = '';
                 // Auto switch back to select tool
@@ -69,7 +69,7 @@ window.Toolbar = {
         });
     },
 
-    bindZoomControls: function() {
+    bindZoomControls: function () {
         const state = window.PDFEditor.state;
         document.getElementById('btnZoomIn').addEventListener('click', () => {
             if (state.zoom < 3.0) { state.zoom += 0.25; window.PDFRenderer.updateZoom(); }
@@ -79,7 +79,7 @@ window.Toolbar = {
         });
     },
 
-    bindPageControls: function() {
+    bindPageControls: function () {
         const state = window.PDFEditor.state;
         const container = document.getElementById('viewport');
 
@@ -104,7 +104,7 @@ window.Toolbar = {
         });
     },
 
-    bindToolSelection: function() {
+    bindToolSelection: function () {
         const state = window.PDFEditor.state;
         const btns = document.querySelectorAll('.tool-btn[data-tool]');
 
@@ -113,10 +113,10 @@ window.Toolbar = {
                 btns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 state.currentTool = btn.dataset.tool;
-                
+
                 const annoLayers = document.querySelectorAll('.annotation-layer');
                 const svgLayers = document.querySelectorAll('.svg-layer');
-                
+
                 if (state.currentTool === 'text') {
                     annoLayers.forEach(l => l.style.cursor = 'text');
                     svgLayers.forEach(l => l.classList.remove('active'));
@@ -126,11 +126,16 @@ window.Toolbar = {
                 } else if (state.currentTool === 'draw') {
                     annoLayers.forEach(l => l.style.cursor = 'crosshair');
                     svgLayers.forEach(l => l.classList.add('active'));
+                } else if (state.currentTool === 'image') {
+                    annoLayers.forEach(l => l.style.cursor = 'default');
+                    svgLayers.forEach(l => l.classList.remove('active'));
+                    document.getElementById('imageInput').click();
+                    setTimeout(() => document.querySelector('.tool-btn[data-tool="select"]').click(), 50);
                 } else {
                     annoLayers.forEach(l => l.style.cursor = 'default');
                     svgLayers.forEach(l => l.classList.remove('active'));
                 }
-                
+
                 window.AnnotationLayer.deselectAll();
             });
         });
@@ -142,7 +147,7 @@ window.Toolbar = {
                 e.stopPropagation(); // prevent closing menu immediately
                 subBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                
+
                 // Set primary tool to shape and update icon
                 document.querySelector('.tool-btn[data-tool="shape"]').click();
                 const primaryIcon = document.querySelector('.tool-btn[data-tool="shape"] > i');
@@ -152,9 +157,9 @@ window.Toolbar = {
         });
     },
 
-    bindPropertiesPanel: function() {
+    bindPropertiesPanel: function () {
         const state = window.PDFEditor.state;
-        
+
         // --- TEXT PROPERTIES ---
         document.getElementById('propFontFamily').addEventListener('change', (e) => {
             this.updateSelectedElement({ fontName: e.target.value }, el => el.style.fontFamily = e.target.value);
@@ -217,10 +222,10 @@ window.Toolbar = {
         });
     },
 
-    updateSelectedElement: function(changes, domCallback) {
+    updateSelectedElement: function (changes, domCallback) {
         const state = window.PDFEditor.state;
         const selected = document.querySelector('.interactive-element.selected');
-        
+
         if (selected) {
             const elState = state.elements.find(e => e.id === selected.id);
             if (elState) {
@@ -236,7 +241,7 @@ window.Toolbar = {
                 if (!item) return;
 
                 window.History.saveState();
-                
+
                 // Ensure replacement exists
                 let replacement = state.replacements.find(r => r.originalText === item.text && r.x === item.x && r.y === item.y);
                 if (!replacement) {
@@ -257,7 +262,7 @@ window.Toolbar = {
                     };
                     state.replacements.push(replacement);
                 }
-                
+
                 Object.assign(replacement, changes);
 
                 // Update visual styling of the box to overlay original
