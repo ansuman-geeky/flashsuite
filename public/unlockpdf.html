@@ -876,7 +876,7 @@
 
     <!-- Modern ESM Module Controller loaded via esm.sh -->
     <script type="module">
-        import { decryptPDF } from "https://esm.sh/@pdfsmaller/pdf-decrypt";
+        import { decryptPDF } from "https://esm.sh/@localonlytools/pdf-decrypt";
         import { PDFDocument } from "https://esm.sh/pdf-lib";
 
         let uploadedFile = null;
@@ -967,11 +967,28 @@
                     successState.style.display = 'block';
                 } catch (loadErr) {
                     // Decryption failed without password, which means it IS encrypted!
-                    // This is exactly what we want!
-                    processingState.style.display = 'none';
-                    unlockWorkspace.style.display = 'grid';
-                    inputPassword.value = '';
-                    errorMessage.style.display = 'none';
+                    // Let's check if it just has an owner password (empty user password)
+                    try {
+                        const bytes = new Uint8Array(arrayBuffer);
+                        const decryptedBytes = await decryptPDF(bytes, "");
+                        await PDFDocument.load(decryptedBytes);
+                        
+                        // It unlocked successfully with an empty password!
+                        unlockedBlob = new Blob([decryptedBytes], { type: 'application/pdf' });
+                        unlockedName = file.name.replace(/\.[^/.]+$/, "") + '_unlocked.pdf';
+                        successFileName.innerText = unlockedName;
+                        successFileSize.innerText = formatBytes(decryptedBytes.length);
+                        
+                        processingState.style.display = 'none';
+                        successState.style.display = 'block';
+                        return; // Done
+                    } catch (emptyPwdErr) {
+                        // Empty password failed, ask user for the password
+                        processingState.style.display = 'none';
+                        unlockWorkspace.style.display = 'grid';
+                        inputPassword.value = '';
+                        errorMessage.style.display = 'none';
+                    }
                 }
             } catch (err) {
                 console.error("Error loading document:", err);
@@ -1016,7 +1033,7 @@
                 const arrayBuffer = await uploadedFile.arrayBuffer();
                 const bytes = new Uint8Array(arrayBuffer);
                 
-                // Decrypt the PDF document using @pdfsmaller/pdf-decrypt
+                // Decrypt the PDF document
                 const decryptedBytes = await decryptPDF(bytes, password);
                 
                 // Verify that the decrypted bytes are a valid PDF

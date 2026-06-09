@@ -1,1412 +1,18 @@
-<!DOCTYPE html><html lang="en"><head>
-    <!-- Google tag (gtag.js) -->
-    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-3B61CKGJL7"></script>
-    <script>
+
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
       gtag('config', 'G-3B61CKGJL7');
-    </script>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Online PDF Editor - Edit PDF Online Free | FlashSuite</title>
-    <meta name="description" content="Free online PDF editor. Add text, edit existing text, annotations, shapes, forms, signatures and manage pages locally and securely.">
-    <link rel="canonical" href="https://flashsuite.pro/editpdf.html">
-
-    <!-- Structured Data Schema for SEO -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "SoftwareApplication",
-          "@id": "https://flashsuite.pro/editpdf.html#software",
-          "name": "FlashSuite PDF Editor",
-          "operatingSystem": "All",
-          "applicationCategory": "BusinessApplication",
-          "offers": {
-            "@type": "Offer",
-            "price": "0.00",
-            "priceCurrency": "USD"
-          },
-          "description": "Free online PDF editor. Annotate, edit text, embed images, draw shapes, or draw freehand onto PDF files locally."
-        },
-        {
-          "@type": "FAQPage",
-          "@id": "https://flashsuite.pro/editpdf.html#faq",
-          "mainEntity": [
-            {
-              "@type": "Question",
-              "name": "Is editing PDFs with FlashSuite secure?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Yes. Your files are temporarily cached only for range streaming, and processing is done securely client-side. No data is stored permanently."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Can I edit existing text in my PDF?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Yes, FlashSuite provides an 'Edit Text' mode where you can click existing text fields to rewrite or update them."
-              }
-            }
-          ]
-        }
-      ]
-    }
-    </script>
-
-    <!-- Google Fonts & Style Libraries -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
     
-    <!-- PDF & Canvas Libraries CDN -->
-    <script defer="" src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
-    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
 
-    <style>
-        /* PDF Studio Overrides & Reset */
-        :root {
-            --sidebar-width: 250px;
-            --properties-width: 320px;
-            --primary-accent: #9D1C44;
-            --dark-gray: #1E1E24;
-            --border-color: rgba(0, 0, 0, 0.08);
-            --bg-canvas: #E2E8F0;
-        }
-
-        body.studio-active {
-            overflow: hidden;
-            height: 100vh;
-        }
-
-        body.studio-active .seo-content-section,
-        body.studio-active .site-footer {
-            display: none !important;
-        }
-
-        .navbar-space {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
-
-        /* 3-Panel Studio Layout */
-        .studio-container {
-            display: none; /* Shown after PDF load */
-            flex: 1;
-            overflow: hidden;
-            background: var(--bg-canvas);
-            position: relative;
-        }
-
-        /* Top Toolbar */
-        .studio-topbar {
-            background: #ffffff;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 8px 16px;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .mode-selector {
-            display: flex;
-            background: #F1F5F9;
-            padding: 4px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-
-        .mode-btn {
-            padding: 6px 16px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-            background: transparent;
-            color: #64748B;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            box-shadow: none;
-        }
-
-        .mode-btn.active {
-            background: #ffffff;
-            color: var(--primary-accent);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .mode-btn:hover {
-            transform: none;
-            opacity: 1;
-        }
-
-        .tool-groups {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            background: #F8FAFC;
-            padding: 4px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-
-        .tool-btn {
-            background: transparent;
-            color: #475569;
-            border: none;
-            padding: 8px;
-            border-radius: 6px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            box-shadow: none;
-            position: relative;
-        }
-
-        .tool-btn:hover {
-            background: #E2E8F0;
-            color: var(--primary-accent);
-            transform: none;
-        }
-
-        .tool-btn.active {
-            background: var(--primary-accent);
-            color: #ffffff;
-        }
-
-        .tool-btn svg {
-            width: 18px;
-            height: 18px;
-        }
-
-        .tool-divider {
-            width: 1px;
-            height: 20px;
-            background: var(--border-color);
-            margin: 0 4px;
-        }
-
-        /* Thumbnails Sidebar */
-        .sidebar-left {
-            width: var(--sidebar-width);
-            min-width: 150px;
-            max-width: 400px;
-            background: #ffffff;
-            border-right: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .sidebar-header {
-            padding: 12px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .slider-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .slider-container label {
-            font-size: 0.75rem;
-            color: #64748B;
-            font-weight: 600;
-        }
-
-        .thumb-slider {
-            flex: 1;
-            height: 4px;
-            accent-color: var(--primary-accent);
-        }
-
-        .thumbnails-list {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .thumb-item {
-            position: relative;
-            background: #F8FAFC;
-            border: 2px solid transparent;
-            border-radius: 8px;
-            padding: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .thumb-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 12px rgba(0,0,0,0.08);
-            border-color: #CBD5E1;
-        }
-
-        .thumb-item.active {
-            border-color: var(--primary-accent);
-            background: rgba(157, 28, 68, 0.02);
-        }
-
-        .thumb-item canvas {
-            display: block;
-            border-radius: 4px;
-            background: white;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .thumb-number {
-            margin-top: 6px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: #64748B;
-        }
-
-        /* Overlay Tools on Thumbnails */
-        .thumb-actions {
-            position: absolute;
-            top: 4px;
-            right: 4px;
-            display: flex;
-            gap: 2px;
-            opacity: 0;
-            transition: opacity 0.2s;
-            background: rgba(255,255,255,0.9);
-            padding: 2px;
-            border-radius: 4px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .thumb-item:hover .thumb-actions {
-            opacity: 1;
-        }
-
-        .thumb-act-btn {
-            background: transparent;
-            border: none;
-            padding: 4px;
-            border-radius: 3px;
-            cursor: pointer;
-            color: #475569;
-            display: flex;
-            align-items: center;
-            box-shadow: none;
-        }
-
-        .thumb-act-btn:hover {
-            background: #F1F5F9;
-            color: var(--primary-accent);
-            transform: none;
-        }
-
-        .thumb-act-btn svg {
-            width: 12px;
-            height: 12px;
-        }
-
-        /* Center Canvas Workspace */
-        .workspace-center {
-            flex: 1;
-            overflow: auto;
-            position: relative;
-            padding: 40px 40px 120px 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 40px;
-            scroll-behavior: smooth;
-        }
-
-        .page-container {
-            position: relative;
-            background: #ffffff;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            border-radius: 4px;
-            transition: transform 0.2s;
-        }
-
-        .pdf-canvas-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1;
-        }
-
-        .fabric-canvas-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 3;
-        }
-
-        /* pdf.js Text Layer overlay */
-        .textLayer {
-            position: absolute;
-            left: 0;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            overflow: hidden;
-            opacity: 0.2; /* Visible only for hover-detection */
-            line-height: 1.0;
-            z-index: 2;
-            pointer-events: none; /* Handled in custom select detection */
-        }
-
-        .textLayer span {
-            color: transparent;
-            position: absolute;
-            white-space: pre;
-            cursor: text;
-            transform-origin: 0% 0%;
-            pointer-events: auto;
-        }
-
-        /* Under Edit mode, show bounds */
-        .studio-edit-mode .textLayer {
-            opacity: 1;
-            z-index: 4; /* Overlay on top of fabric for clicks */
-        }
-
-        .studio-edit-mode .textLayer span {
-            border: 1px dashed rgba(157, 28, 68, 0.35);
-            background: rgba(157, 28, 68, 0.03);
-            pointer-events: auto;
-        }
-
-        .studio-edit-mode .textLayer span:hover {
-            border-color: var(--primary-accent);
-            background: rgba(157, 28, 68, 0.08);
-        }
-
-        .textLayer span.hidden-text {
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        /* When a Fabric textbox is actively being edited, suppress the text layer
-           so it doesn't block keyboard/mouse input to the Fabric canvas */
-        .studio-edit-mode.editing-fabric-text .textLayer {
-            pointer-events: none;
-            z-index: 2;
-            opacity: 0.2;
-        }
-
-        /* Floating bottom controls */
-        .floating-bottom-bar {
-            position: absolute;
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(30, 41, 59, 0.95);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #ffffff;
-            padding: 8px 16px;
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            z-index: 1000;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        .bar-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .bar-btn {
-            background: transparent;
-            border: none;
-            color: #CBD5E1;
-            cursor: pointer;
-            padding: 6px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            box-shadow: none;
-        }
-
-        .bar-btn:hover {
-            background: rgba(255,255,255,0.1);
-            color: #ffffff;
-            transform: none;
-        }
-
-        .bar-btn svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        .page-indicator {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #F1F5F9;
-        }
-
-        .page-num-input {
-            width: 40px;
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.2);
-            color: white;
-            text-align: center;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            padding: 2px;
-            outline: none;
-        }
-
-        /* Properties Right Panel */
-        .properties-panel {
-            width: var(--properties-width);
-            min-width: 200px;
-            max-width: 500px;
-            background: #ffffff;
-            border-left: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-            position: relative;
-        }
-
-        .props-header {
-            padding: 16px;
-            border-bottom: 1px solid var(--border-color);
-            font-weight: 700;
-            color: #1E293B;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .props-content {
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .prop-section {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .prop-section label {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: #64748B;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .prop-row {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .prop-input, .prop-select {
-            width: 100%;
-            padding: 8px 12px;
-            border-radius: 6px;
-            border: 1px solid #CBD5E1;
-            font-size: 0.9rem;
-            outline: none;
-            background: #ffffff;
-        }
-
-        .prop-input:focus, .prop-select:focus {
-            border-color: var(--primary-accent);
-        }
-
-        /* Color bubbles */
-        .color-palette {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
-        .color-bubble {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.2s;
-        }
-
-        .color-bubble:hover {
-            transform: scale(1.1);
-        }
-
-        .color-bubble.active {
-            border-color: #64748B;
-            box-shadow: 0 0 0 2px #ffffff inset;
-        }
-
-        .btn-style-toggle {
-            background: #F1F5F9;
-            border: 1px solid #E2E8F0;
-            color: #475569;
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex: 1;
-            box-shadow: none;
-        }
-
-        .btn-style-toggle.active {
-            background: rgba(157, 28, 68, 0.08);
-            border-color: var(--primary-accent);
-            color: var(--primary-accent);
-            font-weight: 600;
-        }
-
-        .btn-style-toggle:hover {
-            transform: none;
-        }
-
-        /* Save & Action Row */
-        .sidebar-save-box {
-            margin-top: auto;
-            padding: 16px;
-            border-top: 1px solid var(--border-color);
-            background: #F8FAFC;
-        }
-
-        .btn-action-primary {
-            background: var(--primary-accent);
-            color: white;
-            width: 100%;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            font-weight: 700;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(157,28,68,0.2);
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn-action-primary:hover {
-            background: #7A1232;
-            box-shadow: 0 6px 20px rgba(157,28,68,0.3);
-        }
-
-        /* Drag handle dividers */
-        .sidebar-resize-handle, .props-resize-handle {
-            width: 4px;
-            background: transparent;
-            cursor: col-resize;
-            transition: background 0.2s;
-        }
-
-        .sidebar-resize-handle:hover, .props-resize-handle:hover {
-            background: var(--primary-accent);
-        }
-
-        /* Drop Zone Landing */
-        .drop-zone-wrapper {
-            max-width: 600px;
-            margin: 80px auto;
-            padding: 20px;
-        }
-
-        .drop-zone {
-            border: 2px dashed rgba(157, 28, 68, 0.3);
-            border-radius: 16px;
-            background: #ffffff;
-            padding: 60px 40px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .drop-zone:hover, .drop-zone.dragover {
-            border-color: var(--primary-accent);
-            background: rgba(157, 28, 68, 0.02);
-        }
-
-        .upload-icon {
-            color: var(--primary-accent);
-            margin-bottom: 16px;
-            width: 48px;
-            height: 48px;
-        }
-
-        .progress-container {
-            display: none;
-            margin-top: 20px;
-        }
-
-        .progress-bar {
-            height: 6px;
-            background: #E2E8F0;
-            border-radius: 4px;
-            overflow: hidden;
-            width: 100%;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--primary-accent);
-            width: 0%;
-            transition: width 0.1s;
-        }
-
-        .progress-text {
-            font-size: 0.8rem;
-            color: #64748B;
-            margin-top: 8px;
-            font-weight: 500;
-        }
-
-        /* Modal windows */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(4px);
-            z-index: 2000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-card {
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-            width: 90%;
-            max-width: 500px;
-            overflow: hidden;
-            animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .modal-header {
-            padding: 16px 20px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-header h3 {
-            margin: 0;
-            font-size: 1.1rem;
-            color: #1E293B;
-        }
-
-        .modal-body {
-            padding: 20px;
-        }
-
-        .modal-footer {
-            padding: 12px 20px;
-            border-top: 1px solid var(--border-color);
-            background: #F8FAFC;
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-        }
-
-        /* Signature panel tabs */
-        .sig-tabs {
-            display: flex;
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 16px;
-        }
-
-        .sig-tab-btn {
-            flex: 1;
-            padding: 10px;
-            text-align: center;
-            cursor: pointer;
-            border: none;
-            background: transparent;
-            font-weight: 600;
-            font-size: 0.85rem;
-            color: #64748B;
-            border-bottom: 2px solid transparent;
-            box-shadow: none;
-        }
-
-        .sig-tab-btn.active {
-            color: var(--primary-accent);
-            border-bottom-color: var(--primary-accent);
-        }
-
-        .sig-tab-content {
-            display: none;
-        }
-
-        .sig-tab-content.active {
-            display: block;
-        }
-
-        #sigCanvas {
-            border: 1px solid #CBD5E1;
-            border-radius: 8px;
-            background: #F8FAFC;
-            cursor: crosshair;
-        }
-
-        @keyframes modalFadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Utility classes */
-        .hidden {
-            display: none !important;
-        }
-
-        .comments-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .comment-item {
-            background: #F8FAFC;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 8px;
-            font-size: 0.8rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-
-        .comment-item button {
-            background: transparent;
-            border: none;
-            color: #EF4444;
-            cursor: pointer;
-            padding: 2px;
-            box-shadow: none;
-        }
-
-        /* Collapsible & Responsive Sidebar Styles */
-        @media (min-width: 993px) {
-            .sidebar-left.collapsed {
-                display: none !important;
-            }
-            .properties-panel.collapsed {
-                display: none !important;
-            }
-        }
-
-        @media (max-width: 992px) {
-            .sidebar-left {
-                display: none;
-                position: absolute;
-                left: 0;
-                top: 55px;
-                bottom: 0;
-                z-index: 1001;
-                width: 250px !important;
-                background: #ffffff;
-                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-            }
-            .sidebar-left.show-mobile {
-                display: flex !important;
-            }
-            .properties-panel {
-                display: none;
-                position: absolute;
-                right: 0;
-                top: 55px;
-                bottom: 0;
-                z-index: 1001;
-                width: 320px !important;
-                background: #ffffff;
-                box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
-            }
-            .properties-panel.show-mobile {
-                display: flex !important;
-            }
-            .sidebar-resize-handle,
-            .props-resize-handle {
-                display: none !important;
-            }
-        }
-    </style>
-
-    <!-- New Design System -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script id="tailwind-config">
-        tailwind.config = {
-          darkMode: "class",
-          theme: {
-            extend: {
-              "colors": {
-                      "background": "#f8f9fa",
-                      "surface-container": "#edeeef",
-                      "on-secondary-container": "#5a6574",
-                      "deep-navy": "#0B1622",
-                      "tertiary-fixed": "#ffd9e2",
-                      "secondary-fixed-dim": "#bcc7d8",
-                      "on-primary-fixed-variant": "#7d008c",
-                      "inverse-on-surface": "#f0f1f2",
-                      "surface-container-highest": "#e1e3e4",
-                      "surface-dim": "#d9dadb",
-                      "on-surface": "#191c1d",
-                      "on-secondary-fixed": "#121c29",
-                      "on-error": "#ffffff",
-                      "surface-container-high": "#e7e8e9",
-                      "surface-tint": "#a400b7",
-                      "secondary-fixed": "#d8e3f5",
-                      "inverse-surface": "#2e3132",
-                      "on-tertiary-fixed": "#3f001c",
-                      "surface": "#f8f9fa",
-                      "power-pink": "#DB2777",
-                      "tertiary-container": "#d92575",
-                      "error-container": "#ffdad6",
-                      "primary-container": "#c026d3",
-                      "on-primary-container": "#fffafa",
-                      "on-primary": "#ffffff",
-                      "on-surface-variant": "#524151",
-                      "vibrant-fuchsia": "#C026D3",
-                      "surface-container-low": "#f3f4f5",
-                      "secondary": "#545f6e",
-                      "outline-variant": "#d7c0d3",
-                      "surface-container-lowest": "#ffffff",
-                      "on-tertiary-container": "#fffafa",
-                      "surface-variant": "#e1e3e4",
-                      "on-tertiary-fixed-variant": "#8e0048",
-                      "surface-light": "#F8F9FA",
-                      "outline": "#857182",
-                      "error": "#ba1a1a",
-                      "surface-bright": "#f8f9fa",
-                      "tertiary": "#b4005d",
-                      "on-secondary": "#ffffff",
-                      "primary-fixed-dim": "#fda9ff",
-                      "on-primary-fixed": "#36003d",
-                      "on-tertiary": "#ffffff",
-                      "on-error-container": "#93000a",
-                      "on-secondary-fixed-variant": "#3d4855",
-                      "primary": "#9e00b1",
-                      "primary-fixed": "#ffd6fb",
-                      "tertiary-fixed-dim": "#ffb1c7",
-                      "inverse-primary": "#fda9ff",
-                      "on-background": "#191c1d",
-                      "secondary-container": "#d8e3f5"
-              },
-              "borderRadius": {
-                      "DEFAULT": "0.25rem",
-                      "lg": "0.5rem",
-                      "xl": "0.75rem",
-                      "full": "9999px"
-              },
-              "spacing": {
-                      "margin-desktop": "64px",
-                      "gutter-desktop": "24px",
-                      "max-width": "1280px",
-                      "gutter-mobile": "16px",
-                      "margin-mobile": "16px",
-                      "baseline": "4px"
-              },
-              "fontFamily": {
-                      "headline-lg": ["Inter"],
-                      "label-lg": ["Inter"],
-                      "title-lg": ["Inter"],
-                      "body-md": ["Inter"],
-                      "label-md": ["Inter"],
-                      "display-lg": ["Inter"],
-                      "headline-lg-mobile": ["Inter"],
-                      "body-lg": ["Inter"]
-              },
-              "fontSize": {
-                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
-                      "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500"}],
-                      "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
-                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
-                      "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
-                      "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
-                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
-              }
-            },
-          },
-        }
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-    <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            vertical-align: middle;
-        }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        .bg-mesh {
-            background-color: #f8f9fa;
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(192, 38, 211, 0.05) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(158, 0, 177, 0.05) 0px, transparent 50%);
-        }
-        .nav-pill-active {
-            position: relative;
-        }
-        .nav-pill-active::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: #9e00b1;
-        }
-    </style>
-
-    <link rel="icon" type="image/png" href="/favicon.png">
-</head>
-
-<body class="bg-mesh font-body-md text-on-surface antialiased">    <div id="navbar-placeholder"></div>
-    <script src="/components/navbar.js?v=2"></script>
-    <main class="pt-20 pb-16 min-h-screen"><div class="navbar-space">
-        <!-- Navigation Header -->
-        
-
-        <!-- PDF Dropzone Panel -->
-        <div id="uploadPanel">
-            <div class="drop-zone-wrapper">
-                <!-- Breadcrumbs -->
-                <div class="breadcrumb-container" style="margin-bottom: 20px;">
-                    <ul class="breadcrumbs">
-                        <li class="breadcrumb-item"><a href="/pdftools"><i data-lucide="layout-grid"></i> PDF Tools</a></li>
-                        <li class="breadcrumb-separator"><i data-lucide="chevron-right"></i></li>
-                        <li class="breadcrumb-item active">Edit PDF</li>
-                    </ul>
-                </div>
-
-                <h1 style="text-align: center; margin-bottom: 24px; font-weight: 700; color: #1E293B; font-size: 2.2rem; font-family: 'Inter', sans-serif;">Free Online PDF Editor</h1>
-                <div class="drop-zone border-2 border-dashed border-primary/30 bg-primary/5 rounded-[24px] p-12 text-center cursor-pointer hover:border-primary hover:bg-primary/10 transition-all" id="dropZone">
-                    <i data-lucide="upload-cloud" class="upload-icon mx-auto block mb-4 w-12 h-12 text-primary"></i>
-                    <h3 class="text-title-lg font-title-lg text-on-surface mb-2">Drag &amp; Drop your PDF here</h3>
-                    <p class="text-body-md font-body-md text-on-surface-variant mb-4">or click to browse from files</p>
-                    <input type="file" id="fileInput" accept=".pdf" class="hidden">
-                    <div class="file-limits inline-block text-label-md bg-surface-container-low text-secondary px-4 py-1 rounded-full">Supports documents up to 150MB</div>
-                </div>
-            <!-- Trust Info Banner -->
-            <div class="trust-info-banner">
-                <div class="trust-info-icon"><i data-lucide="shield-check"></i></div>
-                <div class="trust-info-text">
-                    <strong>100% Secure &amp; Client-Side:</strong> Your file is processed entirely in your web browser. No documents are ever uploaded to our servers, keeping your data completely private.
-                </div>
-            </div>
-
-                <!-- Loading Progress -->
-                <div class="progress-container" id="progressContainer">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill"></div>
-                    </div>
-                    <div class="progress-text" id="progressText">Uploading vector file... (0%)</div>
-                </div>
-            </div>
-
-            <!-- Premium SEO Content Section -->
-            <section class="seo-content-section">
-                <h2>How to Edit PDF Online Free</h2>
-                <p>Modifying documents and adding annotations to files should be simple and accessible. FlashSuite's free online PDF editor operates 100% locally in your web browser. This means your sensitive business files, invoices, and documents are never sent to remote servers. Follow these quick steps to edit your PDF:</p>
-                
-                <ol>
-                    <li><strong>Upload Your PDF:</strong> Click inside the drag &amp; drop area above to select your PDF file, or drag and drop it directly.</li>
-                    <li><strong>Choose Your Mode:</strong> Select <strong>Annotate</strong> to draw, highlight, and add shapes, or select <strong>Edit Text</strong> to modify existing text strings directly.</li>
-                    <li><strong>Use Creative Toolbar:</strong> Insert new textboxes, draw freehand, add shapes (rectangles, circles), or click <strong>Sign Doc</strong> to e-sign.</li>
-                    <li><strong>Download Your Edited PDF:</strong> Click the primary action button to save the updated PDF document locally.</li>
-                </ol>
-
-                <h2>Why Choose FlashSuite's Secure PDF Editor?</h2>
-                <p>Unlike other platforms, FlashSuite doesn't process files on cloud databases. Your documents are rendered locally using high-performance canvas libraries, guaranteeing zero data transit leaks. It's the ultimate tool for secure, client-side PDF editing.</p>
-
-                <h3>Elite Features for Every Use-Case:</h3>
-                <ul>
-                    <li><strong>Tax Form Editor &amp; Filler:</strong> Safely complete forms like W-9, 1040, or county returns without revealing sensitive SSN or financial details to third-party web servers.</li>
-                    <li><strong>Resume &amp; CV Updater:</strong> Instantly update your job history, contact details, or format layouts on your resume.</li>
-                    <li><strong>Contract Annotator &amp; Redactor:</strong> Highlight important legal clauses in business contracts or mask private sections with whiteout rectangles.</li>
-                    <li><strong>Completely Free &amp; Unlimited:</strong> Edit files of any page count with no limits, fees, or registrations.</li>
-                </ul>
-
-                <h2>Frequently Asked Questions About Editing PDFs</h2>
-                <div class="faq-grid">
-                    <div class="faq-item">
-                        <h4>Is it safe to edit confidential documents like tax forms on FlashSuite?</h4>
-                        <p>Yes, absolutely. FlashSuite operates entirely client-side using local rendering and canvas libraries. Your documents are processed in your browser's memory and are never uploaded to any remote server, keeping your private tax forms and personal data 100% secure.</p>
-                    </div>
-                    <div class="faq-item">
-                        <h4>Can I edit existing text in the PDF document?</h4>
-                        <p>Yes! Toggle the "Edit Text" mode in the studio toolbar. You can click on text strings inside your PDF to modify, delete, or append characters directly.</p>
-                    </div>
-                    <div class="faq-item">
-                        <h4>What type of files can I edit with FlashSuite?</h4>
-                        <p>FlashSuite supports standard PDF documents. You can load any PDF files including scanned documents, interactive forms, and multi-page manuscripts.</p>
-                    </div>
-                    <div class="faq-item">
-                        <h4>Does FlashSuite add watermarks to edited PDFs?</h4>
-                        <p>No, FlashSuite is completely free and does not insert any watermarks, branding, or ads onto your saved PDF documents.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Footer -->
-                <div id="footer-placeholder"></div>
-    <script>
         fetch('/components/footer.html')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('footer-placeholder').innerHTML = data;
             });
-    </script>
-        </div>
-
-        <!-- Professional 3-Panel PDF Studio Workspace -->
-        <div class="studio-container" id="studioWorkspace">
-            <!-- Left Thumbnail Panel -->
-            <div class="sidebar-left" id="sidebarLeft">
-                <div class="sidebar-header">
-                    <div class="slider-container">
-                        <label for="thumbZoom">Thumbnails</label>
-                        <input type="range" id="thumbZoom" class="thumb-slider" min="80" max="180" value="120">
-                    </div>
-                    <div style="display:flex; gap: 4px;">
-                        <button class="btn-style-toggle" style="padding:4px 8px; font-size:0.75rem;" id="btnMerge" title="Merge other PDFs"><i data-lucide="plus-circle" style="width:12px; height:12px; margin-right:4px;"></i>Merge</button>
-                        <button class="btn-style-toggle" style="padding:4px 8px; font-size:0.75rem;" id="btnSplit" title="Split pages"><i data-lucide="scissors" style="width:12px; height:12px; margin-right:4px;"></i>Split</button>
-                    </div>
-                </div>
-                <!-- Vertical Thumbnails list -->
-                <div class="thumbnails-list" id="thumbnailsList"></div>
-            </div>
-
-            <!-- Sidebar drag handle -->
-            <div class="sidebar-resize-handle" id="sidebarHandle"></div>
-
-            <!-- Center Work area -->
-            <div style="display:flex; flex-direction:column; flex:1; position:relative;">
-                <!-- Top Toolbar Options -->
-                <div class="studio-topbar">
-                    <!-- Modes tab switcher -->
-                    <div class="mode-selector">
-                        <button class="mode-btn active" id="modeAnnotate"><i data-lucide="edit-3"></i>Annotate</button>
-                        <button class="mode-btn" id="modeEdit"><i data-lucide="pencil"></i>Edit Text</button>
-                    </div>
-
-                    <!-- Category toolbar buttons group -->
-                    <div class="tool-groups">
-                        <button class="tool-btn active" id="toolPan" title="Pan / View"><i data-lucide="hand"></i></button>
-                        <button class="tool-btn" id="toolSelect" title="Select / Move / Resize"><i data-lucide="mouse-pointer"></i></button>
-                        <div class="tool-divider"></div>
-                        <button class="tool-btn" id="toolHighlight" title="Highlight"><i data-lucide="highlighter"></i></button>
-                        <button class="tool-btn" id="toolDraw" title="Free Draw"><i data-lucide="brush"></i></button>
-                        <button class="tool-btn" id="toolSticky" title="Add Sticky Comment"><i data-lucide="message-square"></i></button>
-                        <div class="tool-divider"></div>
-                        <button class="tool-btn" id="toolText" title="Add Textbox"><i data-lucide="type"></i></button>
-                        <button class="tool-btn" id="toolShape" title="Shapes Panel"><i data-lucide="shapes"></i></button>
-                        <button class="tool-btn" id="toolForms" title="Interactive Form Fields"><i data-lucide="check-square"></i></button>
-                        <button class="tool-btn" id="toolInsert" title="Insert Images &amp; Stamps"><i data-lucide="image"></i></button>
-                        <button class="tool-btn" id="toolSignature" title="Sign Document" style="background: rgba(157, 28, 68, 0.08); color: var(--primary-accent); border: 1px dashed rgba(157, 28, 68, 0.35); padding: 6px 12px; gap: 6px; font-weight: 600;"><i data-lucide="signature"></i>Sign Doc</button>
-                    </div>
-
-                    <!-- Actions -->
-                    <div style="display:flex; gap: 8px; align-items: center;">
-                        <button class="tool-btn" id="btnToggleSidebar" title="Toggle Page Thumbnails"><i data-lucide="files"></i></button>
-                        <button class="tool-btn" id="btnToggleProps" title="Toggle Properties Panel"><i data-lucide="sliders"></i></button>
-                        <div class="tool-divider"></div>
-                        <button class="tool-btn" id="btnUndo" disabled="" title="Undo (Ctrl+Z)"><i data-lucide="undo"></i></button>
-                        <button class="tool-btn" id="btnRedo" disabled="" title="Redo (Ctrl+Y)"><i data-lucide="redo"></i></button>
-                    </div>
-                </div>
-
-                <!-- Main Scrollable Canvas Viewport -->
-                <div class="workspace-center" id="workspaceCenter"></div>
-
-                <!-- Floating Bottom bar navigation -->
-                <div class="floating-bottom-bar">
-                    <div class="bar-group">
-                        <button class="bar-btn" id="btnPrevPage" title="Previous Page"><i data-lucide="chevron-left"></i></button>
-                        <div class="page-indicator">
-                            Page <input type="number" id="pageNumInput" class="page-num-input" value="1" min="1"> of <span id="totalPagesLabel">1</span>
-                        </div>
-                        <button class="bar-btn" id="btnNextPage" title="Next Page"><i data-lucide="chevron-right"></i></button>
-                    </div>
-                    <div style="width: 1px; height: 16px; background: rgba(255,255,255,0.2);"></div>
-                    <div class="bar-group">
-                        <button class="bar-btn" id="btnZoomOut" title="Zoom Out"><i data-lucide="minus"></i></button>
-                        <span style="font-size:0.8rem; font-weight:700; width:40px; text-align:center;" id="zoomPercentLabel">100%</span>
-                        <button class="bar-btn" id="btnZoomIn" title="Zoom In"><i data-lucide="plus"></i></button>
-                        <button class="bar-btn" id="btnZoomFit" title="Fit to Width / Page"><i data-lucide="maximize-2"></i></button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Properties Panel Resizer -->
-            <div class="props-resize-handle" id="propsHandle"></div>
-
-            <!-- Right Configuration Panel -->
-            <div class="properties-panel" id="propertiesPanel">
-                <div class="props-header">
-                    <span>Properties Inspector</span>
-                    <i data-lucide="sliders" style="width:16px; height:16px; color:#64748B;"></i>
-                </div>
-
-                <div class="props-content" id="propsContent">
-                    <!-- Text Styling Options (Contextual) -->
-                    <div class="prop-section" id="propsTextSection">
-                        <label>Text Styles</label>
-                        <div class="prop-row">
-                            <select id="textFontFamily" class="prop-select">
-                                <option value="Helvetica">Helvetica</option>
-                                <option value="Arial">Arial</option>
-                                <option value="Times New Roman">Times New Roman</option>
-                                <option value="Courier New">Courier New</option>
-                                <option value="Alex Brush">Handwriting (Alex)</option>
-                            </select>
-                            <input type="number" id="textFontSize" class="prop-input" value="12" style="width:70px;">
-                        </div>
-                        <div class="prop-row" style="margin-top:6px;">
-                            <button class="btn-style-toggle" id="btnBold" title="Bold"><b>B</b></button>
-                            <button class="btn-style-toggle" id="btnItalic" title="Italic"><i>I</i></button>
-                            <button class="btn-style-toggle" id="btnUnderline" title="Underline"><u>U</u></button>
-                            <button class="btn-style-toggle" id="btnStrike" title="Strikeout"><del>S</del></button>
-                        </div>
-                        <div class="prop-row" style="margin-top:6px;">
-                            <button class="btn-style-toggle" id="btnAlignLeft" title="Align Left"><i data-lucide="align-left" style="width:14px;"></i></button>
-                            <button class="btn-style-toggle" id="btnAlignCenter" title="Align Center"><i data-lucide="align-center" style="width:14px;"></i></button>
-                            <button class="btn-style-toggle" id="btnAlignRight" title="Align Right"><i data-lucide="align-right" style="width:14px;"></i></button>
-                        </div>
-                    </div>
-
-                    <!-- Shape Styling Options (Contextual) -->
-                    <div class="prop-section" id="propsShapeSection">
-                        <label>Shape Borders &amp; Fills</label>
-                        <div class="prop-row">
-                            <span style="font-size:0.8rem; width:80px; color:#64748B;">Border W</span>
-                            <input type="number" id="shapeStrokeWidth" class="prop-input" value="2" min="0" max="20">
-                        </div>
-                        <div style="display:flex; flex-direction:column; gap:4px; margin-top:8px;">
-                            <span style="font-size:0.75rem; font-weight:700; color:#64748B;">Stroke Color</span>
-                            <div class="color-palette" id="shapeStrokePalette"></div>
-                        </div>
-                        <div style="display:flex; flex-direction:column; gap:4px; margin-top:8px;">
-                            <span style="font-size:0.75rem; font-weight:700; color:#64748B;">Fill Color</span>
-                            <div class="color-palette" id="shapeFillPalette"></div>
-                        </div>
-                    </div>
-
-                    <!-- Form Attributes (Contextual) -->
-                    <div class="prop-section id-hidden" id="propsFormSection">
-                        <label>Form Field Attributes</label>
-                        <div style="display:flex; flex-direction:column; gap:6px;">
-                            <span style="font-size:0.8rem; color:#64748B;">Field Name</span>
-                            <input type="text" id="formFieldName" class="prop-input" placeholder="e.g. text_field_1">
-                            <span style="font-size:0.8rem; color:#64748B;">Placeholder</span>
-                            <input type="text" id="formFieldPlaceholder" class="prop-input" placeholder="e.g. Enter name...">
-                            <div class="prop-row" style="margin-top:4px;">
-                                <input type="checkbox" id="formFieldRequired">
-                                <label for="formFieldRequired" style="text-transform:none; font-weight:normal; margin:0; cursor:pointer;">Required Field</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Global Watermark & Page Settings -->
-                    <div class="prop-section">
-                        <label>Global Document Options</label>
-                        <button class="btn-style-toggle" style="text-align:left; justify-content:flex-start; gap:8px;" id="btnWatermarkModal"><i data-lucide="droplet" style="width:14px;"></i>Watermark Settings</button>
-                        <button class="btn-style-toggle" style="text-align:left; justify-content:flex-start; gap:8px; margin-top:6px;" id="btnPageNumModal"><i data-lucide="binary" style="width:14px;"></i>Page Number Headers</button>
-                    </div>
-
-                    <!-- Comments and Sticky Notes Section -->
-                    <div class="prop-section">
-                        <label>Comments &amp; Sticky Notes</label>
-                        <div class="comments-list" id="commentsListContainer">
-                            <div style="font-size:0.8rem; color:#94A3B8; font-style:italic;">No comments placed.</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Download / Save button Box -->
-                <div class="sidebar-save-box">
-                    <button class="btn-action-primary" id="btnExportPDF">
-                        <span>Save Changes</span>
-                        <i data-lucide="arrow-right" style="width:16px; height:16px;"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div><div class="modal-overlay" id="sigModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3>Insert Professional Signature</h3>
-                <button class="thumb-act-btn" onclick="closeModal('sigModal')"><i data-lucide="x"></i></button>
-            </div>
-            <div class="modal-body">
-                <div class="sig-tabs">
-                    <button class="sig-tab-btn active" id="tabSigDraw">Draw</button>
-                    <button class="sig-tab-btn" id="tabSigType">Type</button>
-                    <button class="sig-tab-btn" id="tabSigUpload">Upload Image</button>
-                </div>
-                
-                <!-- Draw Canvas -->
-                <div class="sig-tab-content active" id="contentSigDraw">
-                    <canvas id="sigCanvas" width="460" height="200"></canvas>
-                    <button class="btn-style-toggle" style="margin-top:8px; padding:6px 12px; font-size:0.8rem;" id="clearSigDraw">Clear Draw Pad</button>
-                </div>
-
-                <!-- Type Signature -->
-                <div class="sig-tab-content" id="contentSigType">
-                    <div style="display:flex; flex-direction:column; gap:8px;">
-                        <input type="text" id="sigTextInput" class="prop-input" placeholder="Type your signature here...">
-                        <select id="sigFontSelect" class="prop-select">
-                            <option value="Alex Brush" style="font-family:'Alex Brush'; font-size:1.5rem;">Alex Brush</option>
-                            <option value="Great Vibes" style="font-family:'Great Vibes'; font-size:1.5rem;">Great Vibes</option>
-                            <option value="Caveat" style="font-family:'Caveat'; font-size:1.5rem;">Caveat</option>
-                        </select>
-                        <div id="sigTypePreview" style="border:1px solid #E2E8F0; border-radius:8px; height:100px; display:flex; align-items:center; justify-content:center; font-size:2rem; background:#F8FAFC;"></div>
-                    </div>
-                </div>
-
-                <!-- Upload Image Signature -->
-                <div class="sig-tab-content" id="contentSigUpload">
-                    <div style="display:flex; flex-direction:column; gap:8px;">
-                        <input type="file" id="sigImageFile" accept="image/*" class="prop-input">
-                        <div style="display:flex; align-items:center; gap:6px; margin-top:4px;">
-                            <input type="checkbox" id="sigImageTransparent" checked="">
-                            <label for="sigImageTransparent" style="font-size:0.8rem; color:#475569; cursor:pointer;">Auto-transparent background</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-style-toggle" onclick="closeModal('sigModal')">Cancel</button>
-                <button class="btn-action-primary" style="width:auto; padding:8px 20px;" id="btnApplySignature">Insert</button>
-            </div>
-        </div>
-    </div><div class="modal-overlay" id="stampsModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3>Insert Annotation Stamps</h3>
-                <button class="thumb-act-btn" onclick="closeModal('stampsModal')"><i data-lucide="x"></i></button>
-            </div>
-            <div class="modal-body" style="display:grid; grid-template-columns:repeat(2, 1fr); gap:12px;">
-                <button class="btn-style-toggle" style="padding:16px; flex-direction:column; font-weight:700; color:#EF4444; border-color:#FCA5A5; font-size:1.1rem;" onclick="insertStamp('REJECTED', '#EF4444')">REJECTED</button>
-                <button class="btn-style-toggle" style="padding:16px; flex-direction:column; font-weight:700; color:#22C55E; border-color:#86EFAC; font-size:1.1rem;" onclick="insertStamp('APPROVED', '#22C55E')">APPROVED</button>
-                <button class="btn-style-toggle" style="padding:16px; flex-direction:column; font-weight:700; color:#F59E0B; border-color:#FDE047; font-size:1.1rem;" onclick="insertStamp('DRAFT', '#F59E0B')">DRAFT</button>
-                <button class="btn-style-toggle" style="padding:16px; flex-direction:column; font-weight:700; color:#3B82F6; border-color:#93C5FD; font-size:1.1rem;" onclick="insertStamp('CONFIDENTIAL', '#3B82F6')">CONFIDENTIAL</button>
-            </div>
-        </div>
-    </div><div class="modal-overlay" id="watermarkModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3>Document Watermark</h3>
-                <button class="thumb-act-btn" onclick="closeModal('watermarkModal')"><i data-lucide="x"></i></button>
-            </div>
-            <div class="modal-body" style="display:flex; flex-direction:column; gap:12px;">
-                <span style="font-size:0.8rem; color:#64748B; font-weight:700;">Watermark Text</span>
-                <input type="text" id="watermarkText" class="prop-input" placeholder="e.g. FLASH-COPY">
-                <span style="font-size:0.8rem; color:#64748B; font-weight:700;">Opacity</span>
-                <input type="range" id="watermarkOpacity" min="5" max="50" value="15" style="accent-color:var(--primary-accent);">
-            </div>
-            <div class="modal-footer">
-                <button class="btn-style-toggle" onclick="closeModal('watermarkModal')">Cancel</button>
-                <button class="btn-action-primary" style="width:auto; padding:8px 20px;" onclick="applyWatermarkSettings()">Apply</button>
-            </div>
-        </div>
-    </div><div class="modal-overlay" id="pageNumModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3>Page Number Overlay</h3>
-                <button class="thumb-act-btn" onclick="closeModal('pageNumModal')"><i data-lucide="x"></i></button>
-            </div>
-            <div class="modal-body" style="display:flex; flex-direction:column; gap:12px;">
-                <div style="display:flex; align-items:center; gap:6px;">
-                    <input type="checkbox" id="pageNumEnabled">
-                    <label for="pageNumEnabled" style="font-weight:700; color:#475569; cursor:pointer;">Enable Page Numbers</label>
-                </div>
-                <span style="font-size:0.8rem; color:#64748B; font-weight:700;">Format Options</span>
-                <select id="pageNumFormat" class="prop-select">
-                    <option value="simple">Page X</option>
-                    <option value="detailed">Page X of Y</option>
-                </select>
-                <span style="font-size:0.8rem; color:#64748B; font-weight:700;">Placement</span>
-                <select id="pageNumPosition" class="prop-select">
-                    <option value="bottom-right">Bottom Right</option>
-                    <option value="bottom-center">Bottom Center</option>
-                    <option value="top-right">Top Right</option>
-                </select>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-style-toggle" onclick="closeModal('pageNumModal')">Cancel</button>
-                <button class="btn-action-primary" style="width:auto; padding:8px 20px;" onclick="applyPageNumberSettings()">Apply</button>
-            </div>
-        </div>
-    </div></main>
-
-    <!-- MODAL: Signatures Pad -->
     
 
-    <!-- MODAL: Stamps Panel -->
-    
-
-    <!-- MODAL: Global Watermark -->
-    
-
-    <!-- MODAL: Global Page Numbers -->
-    
-
-    <!-- Global Client Studio Core Script -->
-    <script>
         // Set PDF.js Worker Src globally
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
 
@@ -1918,37 +524,78 @@
         }
 
         // ------------------ CLICK TO EDIT TEXT CONVERSION ------------------
+        function extractColorFromCanvas(span, page) {
+            try {
+                const container = document.getElementById("page-container-" + page.pageNumber);
+                const bgCanvas = container.querySelector(".pdf-canvas-bg");
+                if (!bgCanvas) return "#000000";
+                const canvasRect = bgCanvas.getBoundingClientRect();
+                const spanRect = span.getBoundingClientRect();
+                const scaleX = bgCanvas.width / canvasRect.width;
+                const scaleY = bgCanvas.height / canvasRect.height;
+                const searchHeight = spanRect.height * 0.4;
+                const searchTop = spanRect.top + (spanRect.height * 0.3);
+                const x = Math.floor((spanRect.left - canvasRect.left) * scaleX);
+                const y = Math.floor((searchTop - canvasRect.top) * scaleY);
+                const w = Math.floor(spanRect.width * scaleX);
+                const h = Math.floor(searchHeight * scaleY);
+                if (w <= 0 || h <= 0) return "#000000";
+                const ctx = bgCanvas.getContext("2d");
+                const imgData = ctx.getImageData(x, y, w, h).data;
+                let r = 0, g = 0, b = 0, count = 0;
+                for (let i = 0; i < imgData.length; i += 4) {
+                    const alpha = imgData[i+3];
+                    const red = imgData[i];
+                    const green = imgData[i+1];
+                    const blue = imgData[i+2];
+                    if (alpha > 50 && (red < 240 || green < 240 || blue < 240)) {
+                        r += red; g += green; b += blue; count++;
+                    }
+                }
+                if (count > 0) {
+                    r = Math.round(r / count);
+                    g = Math.round(g / count);
+                    b = Math.round(b / count);
+                    return "#" + (1 << 24 | r << 16 | g << 8 | b).toString(16).padStart(6, "0").slice(-6).toUpperCase();
+                }
+                const cssColor = window.getComputedStyle(span).color;
+                if (cssColor && cssColor !== "rgba(0, 0, 0, 0)" && cssColor !== "transparent") {
+                    const match = cssColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+                    if (match) {
+                        return "#" + (1 << 24 | parseInt(match[1]) << 16 | parseInt(match[2]) << 8 | parseInt(match[3])).toString(16).padStart(6, "0").slice(-6).toUpperCase();
+                    }
+                }
+                return "#000000";
+            } catch (e) {
+                return "#000000";
+            }
+        }
+
         function convertPdfTextToFabric(span, page) {
             const rect = span.getBoundingClientRect();
             const parentRect = span.parentNode.parentNode.getBoundingClientRect();
-
-            // Compute relative location inside the page wrapper
             const relativeLeft = (rect.left - parentRect.left) / zoomScale;
             const relativeTop = (rect.top - parentRect.top) / zoomScale;
             const relativeWidth = rect.width / zoomScale;
             const relativeHeight = rect.height / zoomScale;
 
             const textStr = span.innerText || span.textContent;
-            if (!textStr || !textStr.trim()) return; // Skip empty spans
-            
-            // Generate unique span ID or reuse existing
-            const spanId = span.getAttribute('data-span-id') || ('span-' + Math.random().toString(36).substr(2, 9));
-            span.setAttribute('data-span-id', spanId);
-            
-            // Hide clicked text element from layout
-            span.classList.add('hidden-text');
+            if (!textStr || !textStr.trim()) return;
+
+            const spanId = span.getAttribute("data-span-id") || ("span-" + Math.random().toString(36).substr(2, 9));
+            span.setAttribute("data-span-id", spanId);
+            span.classList.add("hidden-text");
 
             const fCanvas = page.fabricCanvas;
             if (!fCanvas) return;
 
-            // 1. Create a white background shape to cover old vector text (Lossless whiteout mask)
             const whiteoutMask = new fabric.Rect({
                 left: relativeLeft,
                 top: relativeTop,
                 width: relativeWidth + 4,
                 height: relativeHeight + 2,
-                fill: '#ffffff',
-                stroke: 'transparent',
+                fill: "#ffffff",
+                stroke: "transparent",
                 selectable: false,
                 evented: false,
                 excludeFromExport: false,
@@ -1957,69 +604,59 @@
             fCanvas.add(whiteoutMask);
             fCanvas.sendToBack(whiteoutMask);
 
-            // Extract computed text styling
             const computedStyle = window.getComputedStyle(span);
-            let textColor = computedStyle.color || '#000000';
-            // pdf.js renders text layer spans with transparent color; default to black
-            if (textColor === 'transparent' || textColor === 'rgba(0, 0, 0, 0)' || textColor.replace(/\s/g, '') === 'rgba(0,0,0,0)') {
-                textColor = '#000000';
-            }
+            let textColor = extractColorFromCanvas(span, page);
 
-            // --- Extract horizontal scaling factor from CSS transform matrix ---
-            // PDF.js applies transform: scaleX(...) or matrix(a,...) to text spans
-            let cssScaleX = 1;
-            const transformStr = computedStyle.transform;
-            if (transformStr && transformStr !== 'none') {
-                // matrix(a, b, c, d, tx, ty) — 'a' is the horizontal scale
-                const matrixMatch = transformStr.match(/matrix\(([^,]+),/);
-                if (matrixMatch) {
-                    const parsedScale = parseFloat(matrixMatch[1]);
-                    if (parsedScale > 0 && isFinite(parsedScale)) {
-                        cssScaleX = parsedScale;
-                    }
-                }
-            }
-
-            // --- Map PDF subset fonts to standard web fallbacks ---
-            // PDF.js renders embedded fonts with names like g_d0_f1, g_d1_f2 etc.
-            // These subset fonts lack full glyph maps, so typing new chars fails.
-            let fontFamily = computedStyle.fontFamily || 'Helvetica';
-            const fontLower = fontFamily.toLowerCase().replace(/["']/g, '').trim();
-            if (fontLower.startsWith('g_') || fontLower.startsWith('g_d') || fontLower.match(/^g_d\d/)) {
-                // Try to infer from fallback stack or default to Arial
-                const fallbacks = fontFamily.split(',').map(f => f.trim().replace(/["']/g, ''));
-                const knownFonts = ['Arial', 'Helvetica', 'Times New Roman', 'Times', 'Courier New', 'Courier', 'Georgia', 'Verdana', 'sans-serif', 'serif', 'monospace'];
-                let resolved = 'Arial'; // safe default
+            let fontFamily = computedStyle.fontFamily || "Helvetica";
+            const fontLower = fontFamily.toLowerCase().replace(/["']/g, "").trim();
+            if (fontLower.startsWith("g_") || fontLower.startsWith("g_d") || fontLower.match(/^g_d\d/)) {
+                const fallbacks = fontFamily.split(",").map(f => f.trim().replace(/["']/g, ""));
+                const knownFonts = ["Arial", "Helvetica", "Times New Roman", "Times", "Courier New", "Courier", "Georgia", "Verdana", "sans-serif", "serif", "monospace"];
+                let resolved = "Arial";
                 for (let i = 1; i < fallbacks.length; i++) {
                     if (knownFonts.some(k => k.toLowerCase() === fallbacks[i].toLowerCase())) {
                         resolved = fallbacks[i];
                         break;
                     }
                 }
-                // Map generic CSS families to concrete fonts
-                if (resolved === 'serif') resolved = 'Times New Roman';
-                else if (resolved === 'monospace') resolved = 'Courier New';
-                else if (resolved === 'sans-serif') resolved = 'Arial';
+                if (resolved === "serif") resolved = "Times New Roman";
+                else if (resolved === "monospace") resolved = "Courier New";
+                else if (resolved === "sans-serif") resolved = "Arial";
                 fontFamily = resolved;
             }
 
-            // Compute font size: divide by zoomScale since Fabric canvas has setZoom applied
-            const computedFontSize = parseFloat(computedStyle.fontSize) / zoomScale;
+            let cssScaleX = 1;
+            let cssScaleY = 1;
+            const transformStr = computedStyle.transform;
+            if (transformStr && transformStr !== "none") {
+                const matrixMatch = transformStr.match(/matrix\(([^,]+),\s*([^,]+),\s*([^,]+),\s*([^,]+)/);
+                if (matrixMatch) {
+                    const parsedX = parseFloat(matrixMatch[1]);
+                    const parsedY = parseFloat(matrixMatch[4]);
+                    if (parsedX > 0 && isFinite(parsedX)) cssScaleX = parsedX;
+                    if (parsedY > 0 && isFinite(parsedY)) cssScaleY = parsedY;
+                }
+            }
 
-            // Compute textbox width: undo the CSS scaleX stretch to get the natural width
-            const naturalWidth = (cssScaleX !== 1 && cssScaleX > 0)
-                ? (relativeWidth / cssScaleX) + 20
-                : relativeWidth + 20;
+            // Normalize PDF font size to web font size strictly
+            let rawFontSize = parseFloat(computedStyle.fontSize) || 12;
+            let computedFontSize = (rawFontSize / zoomScale) * 0.85; // Standard PDF.js to Web font normalization
 
-            // 2. Create the editable text layer directly on top
+            // Adjust width to undo CSS stretch so text doesn't reflow incorrectly
+            const naturalWidth = (cssScaleX !== 1 && cssScaleX > 0) ? (relativeWidth / cssScaleX) + 15 : relativeWidth + 15;
+
             const editableTextbox = new fabric.Textbox(textStr, {
                 left: relativeLeft,
-                top: relativeTop - 1,
+                top: relativeTop,
                 width: naturalWidth,
-                fontSize: computedFontSize > 0 ? computedFontSize : 12,
+                fontSize: computedFontSize,
                 fontFamily: fontFamily,
+                fontWeight: computedStyle.fontWeight === "bold" || parseInt(computedStyle.fontWeight) >= 700 ? "bold" : "normal",
+                fontStyle: computedStyle.fontStyle === "italic" ? "italic" : "normal",
                 fill: textColor,
                 scaleX: cssScaleX,
+                scaleY: cssScaleY,
+                lineHeight: 1.0,
                 hasControls: true,
                 selectable: true,
                 editable: true,
@@ -2029,27 +666,26 @@
             });
 
             fCanvas.add(editableTextbox);
+            document.body.classList.add("editing-fabric-text");
+            setTool("select");
 
-            // 3. Suppress the text layer so the user can interact with the Fabric textbox
-            document.body.classList.add('editing-fabric-text');
-
-            // Switch to select tool so Fabric canvas is interactive
-            setTool('select');
-
-            // Small delay to let the DOM settle, then activate the textbox for editing
             setTimeout(() => {
                 fCanvas.setActiveObject(editableTextbox);
+                if (fCanvas.hiddenTextarea) {
+                    fCanvas.hiddenTextarea.focus = function() {
+                        HTMLElement.prototype.focus.call(this, { preventScroll: true });
+                    };
+                }
                 editableTextbox.enterEditing();
                 editableTextbox.selectAll();
                 fCanvas.renderAll();
             }, 50);
 
-            // Listen for when the user finishes editing this textbox
-            editableTextbox.on('editing:exited', () => {
-                // Restore the text layer overlay for further edit-mode clicks
-                document.body.classList.remove('editing-fabric-text');
+            editableTextbox.on("editing:exited", () => {
+                document.body.classList.remove("editing-fabric-text");
             });
         }
+
 
         // ------------------ PROPERTIES PANEL CONTROLS ------------------
         function setupToolEvents() {
@@ -2212,12 +848,37 @@
 
         function updatePropertiesPanel(obj) {
             if (!obj) return;
-            // Update inputs in right sidebar matching selection
-            if (obj.type === 'textbox' || obj.type === 'text') {
-                document.getElementById('textFontFamily').value = obj.fontFamily || 'Helvetica';
-                document.getElementById('textFontSize').value = obj.fontSize || 12;
+            if (obj.type === "textbox" || obj.type === "text") {
+                const selectEl = document.getElementById("textFontFamily");
+                if (obj.fontFamily) {
+                    let found = Array.from(selectEl.options).some(opt => opt.value === obj.fontFamily);
+                    if (!found) {
+                        selectEl.add(new Option(obj.fontFamily, obj.fontFamily));
+                    }
+                    selectEl.value = obj.fontFamily;
+                } else {
+                    selectEl.value = "Helvetica";
+                }
+                document.getElementById("textFontSize").value = Math.round(obj.fontSize) || 12;
+                document.getElementById("btnBold").classList.toggle("active", obj.fontWeight === "bold");
+                document.getElementById("btnItalic").classList.toggle("active", obj.fontStyle === "italic");
+                document.getElementById("btnUnderline").classList.toggle("active", obj.underline === true);
+                if (obj.fill) {
+                    strokeColor = obj.fill;
+                    const container = document.getElementById("shapeStrokePalette");
+                    if (container) {
+                        container.querySelectorAll(".color-bubble").forEach(el => {
+                            el.classList.remove("active");
+                            const bg = el.style.backgroundColor.replace(/\s/g, "");
+                            if (bg === obj.fill || bg === obj.fill.replace(/\s/g, "") || (obj.fill === "transparent" && bg === "white" && el.style.backgroundImage)) {
+                                el.classList.add("active");
+                            }
+                        });
+                    }
+                }
             }
         }
+
 
         // ------------------ UNDO / REDO & SYNC ------------------
         function saveCanvasHistory(page) {
@@ -2984,8 +1645,4 @@
 
         // Run panel toggles setup
         setupTogglePanels();
-    </script>
-
-
-
-</body></html>
+    

@@ -9,6 +9,9 @@ const adminSubsRoutes = require('./routes/admin_subs');
 const stripeRoutes = require('./routes/stripe');
 const compression = require('compression');
 
+// New PDF Editor Router
+const pdfEditorRouter = require('./pdf-editor/server/routes/pdf.routes');
+
 // SEO Programmatic Middlewares & Routers
 const seoPrerender = require('./middleware/seo');
 const seoRouter = require('./routes/seo');
@@ -99,8 +102,14 @@ app.get('/login', (req, res, next) => {
     next();
 });
 
-app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'], maxAge: '1d' }));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads'), { maxAge: '1d' }));
+app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'], maxAge: 0 }));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'), { maxAge: 0 }));
+app.use('/pdf-editor', express.static(path.join(__dirname, 'pdf-editor/public'), { extensions: ['html'] }));
+
+// Redirect legacy /editpdf to the new PDF editor
+app.get('/editpdf', (req, res) => {
+    res.sendFile(path.join(__dirname, 'pdf-editor/public/pdf-editor.html'));
+});
 
 // Tool Gatekeeper Middleware
 // Intercepts requests to check if they are mapped to a tool that requires a premium plan
@@ -158,6 +167,9 @@ app.use('/api/auth', require('./routes/auth_google'));
 app.use('/api', humanizeRoutes);
 app.use('/api/admin/subs', adminSubsRoutes);
 app.use('/api/stripe', stripeRoutes);
+
+// PDF Editor Route
+app.use('/api/pdf', pdfEditorRouter);
 
 // Blog Routing
 app.get('/blogs/:slug', (req, res) => {
