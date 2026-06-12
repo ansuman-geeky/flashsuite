@@ -8,25 +8,98 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: "class",
             theme: {
                 extend: {
                     colors: {
-                        'brand-purple': '#C026D3', // Fuchsia
-                        'brand-purple-light': '#FDF4FF', // fuchsia-50
+                        'brand-purple': '#C026D3',
+                        'brand-purple-light': '#FDF4FF',
                         'surface-light': '#F9FAFB',
                         'surface': '#FFFFFF',
                         'on-surface': '#111827',
                         'on-surface-variant': '#6B7280',
                         'outline-variant': '#E5E7EB',
-                        'surface-container-high': '#F3F4F6'
+                        'surface-container-high': '#F3F4F6',
+                        "background": "#f7f9ff",
+                        "on-primary-fixed-variant": "#7e0089",
+                        "tertiary-fixed": "#dbe4ed",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#e0e3e8",
+                        "secondary-fixed-dim": "#c5c7c8",
+                        "on-tertiary-container": "#fafbff",
+                        "primary-fixed-dim": "#ffa9fd",
+                        "on-background": "#181c20",
+                        "primary-fixed": "#ffd6fa",
+                        "tertiary": "#545c64",
+                        "inverse-on-surface": "#eef1f6",
+                        "on-primary-container": "#fffafa",
+                        "tertiary-container": "#6c757d",
+                        "on-primary": "#ffffff",
+                        "secondary": "#5c5f60",
+                        "primary": "#9f00ad",
+                        "tertiary-fixed-dim": "#bfc8d0",
+                        "outline": "#857182",
+                        "on-secondary-container": "#626566",
+                        "on-tertiary-fixed-variant": "#3f484f",
+                        "error": "#ba1a1a",
+                        "surface-bright": "#f7f9ff",
+                        "on-error": "#ffffff",
+                        "secondary-fixed": "#e1e3e4",
+                        "on-tertiary-fixed": "#141d23",
+                        "surface-dim": "#d7dadf",
+                        "on-tertiary": "#ffffff",
+                        "inverse-surface": "#2d3135",
+                        "inverse-primary": "#ffa9fd",
+                        "surface-tint": "#a500b3",
+                        "surface-container-highest": "#e0e3e8",
+                        "primary-container": "#c224d0",
+                        "secondary-container": "#e1e3e4",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed": "#37003c",
+                        "on-secondary-fixed-variant": "#454748",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed": "#191c1d",
+                        "surface-container": "#ebeef3",
+                        "surface-container-low": "#f1f4f9"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "stack-lg": "1.5rem",
+                        "gutter-card": "1.5rem",
+                        "margin-page": "2rem",
+                        "stack-md": "1rem",
+                        "sidebar-width": "260px",
+                        "stack-sm": "0.5rem"
                     },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif']
+                        sans: ['Inter', 'sans-serif'],
+                        "label-caps": ["Hanken Grotesk"],
+                        "body-sm": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-md-mobile": ["Hanken Grotesk"],
+                        "title-sm": ["Hanken Grotesk"]
+                    },
+                    fontSize: {
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md-mobile": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "title-sm": ["16px", {"lineHeight": "24px", "fontWeight": "600"}]
                     }
                 }
             }
@@ -47,6 +120,10 @@
         .nav-item { transition: all 0.2s ease; border-top-right-radius: 9999px; border-bottom-right-radius: 9999px; }
         .nav-item:hover:not(.active-pill) { background-color: #F3F4F6; }
         .glass-card { background: white; border: 1px solid #E5E7EB; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #d7c0d3; border-radius: 10px; }
+        .pro-editor-toolbar button:hover { background-color: #f1f4f9; }
     </style>
 
     <link rel="icon" type="image/png" href="/favicon.png">
@@ -259,54 +336,132 @@
             </div>
 
             <!-- Blog View -->
-            <div id="blogView" style="display: none;" class="max-w-[1000px] mx-auto space-y-6">
-                <div class="glass-card p-6">
-                    <h3 class="text-lg font-bold mb-6">Create / Edit Blog</h3>
-                    <div class="space-y-6">
-                        <div>
-                            <input type="text" id="blogTitle" placeholder="Blog Title" class="w-full border border-outline-variant rounded-lg px-4 py-2 focus:outline-none focus:border-brand-purple">
+            <div id="blogView" style="display: none;" class="w-full mx-auto space-y-stack-lg font-body-md">
+                <!-- Create / Edit Blog Section -->
+                <section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-card items-start">
+                    <div class="lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="font-title-sm text-title-sm text-primary flex items-center gap-2">
+                                <span class="material-symbols-outlined">edit_note</span>
+                                Create / Edit Blog
+                            </h3>
+                            <span class="px-3 py-1 bg-surface-container-high rounded-full text-[10px] font-label-caps uppercase tracking-wider text-secondary">Pro Editor Active</span>
                         </div>
-                        <div class="bg-surface-container-high border border-dashed border-outline-variant rounded-lg p-4 flex justify-between items-center">
-                            <div>
-                                <label class="block text-sm font-bold text-brand-purple mb-1">Upload Image</label>
-                                <input type="file" id="blogImageFile" accept="image/*" class="text-xs">
+                        <div class="space-y-5">
+                            <div class="space-y-2">
+                                <label class="font-label-caps text-label-caps text-on-surface-variant">Blog Title</label>
+                                <input id="blogTitle" class="w-full px-4 py-3 bg-white border border-outline-variant rounded-lg font-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" placeholder="Enter a descriptive title..." type="text"/>
                             </div>
-                            <button type="button" onclick="uploadBlogImage()" class="bg-white border border-outline-variant px-4 py-1.5 rounded-full text-sm font-medium hover:bg-gray-50 transition">Upload</button>
-                        </div>
-                        <div>
-                            <div id="blogEditor" class="bg-white h-[300px]"></div>
-                        </div>
-                        <div class="flex items-center justify-between pt-4">
-                            <select id="blogStatus" class="border border-outline-variant rounded-lg px-4 py-2 text-sm focus:outline-none">
-                                <option value="published">Published</option>
-                                <option value="draft">Draft</option>
-                            </select>
-                            <div class="flex gap-3">
-                                <button id="blogCancelBtn" onclick="cancelEditBlog()" class="hidden px-4 py-2 border border-outline-variant rounded-lg text-sm font-medium hover:bg-surface-container-high">Cancel</button>
-                                <button id="blogSubmitBtn" onclick="saveBlog()" class="bg-brand-purple text-white px-6 py-2 rounded-lg text-sm font-bold hover:bg-[#a21caf] transition shadow">Publish Blog</button>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="space-y-2">
+                                    <label class="font-label-caps text-label-caps text-on-surface-variant">Featured Image</label>
+                                    <div class="flex items-center gap-2">
+                                        <div class="flex-1 flex items-center justify-between px-4 py-2 bg-surface-container-low border border-dashed border-outline-variant rounded-lg">
+                                            <span class="text-body-sm text-secondary truncate">No file chosen</span>
+                                            <label class="cursor-pointer text-primary font-label-caps text-xs hover:underline">
+                                                CHOOSE FILE
+                                                <input id="blogImageFile" accept="image/*" class="hidden" type="file"/>
+                                            </label>
+                                        </div>
+                                        <button type="button" onclick="uploadBlogImage()" class="px-4 py-2 bg-primary text-on-primary font-label-caps rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2">
+                                            <span class="material-symbols-outlined text-sm">upload</span>
+                                            Upload
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="font-label-caps text-label-caps text-on-surface-variant">Visibility Status</label>
+                                    <select id="blogStatus" class="w-full px-4 py-2.5 bg-white border border-outline-variant rounded-lg font-body-md outline-none appearance-none">
+                                        <option value="published">Published</option>
+                                        <option value="draft">Draft</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Rich Text Editor -->
+                            <div class="space-y-2">
+                                <label class="font-label-caps text-label-caps text-on-surface-variant">Blog Content (Pro Editor)</label>
+                                <div class="border border-outline-variant rounded-lg overflow-hidden">
+                                    <div id="blogEditor" class="bg-white h-[400px]"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-end gap-3 pt-2">
+                                <button id="blogCancelBtn" onclick="cancelEditBlog()" class="hidden px-8 py-3 border border-outline-variant text-on-surface-variant font-title-sm text-title-sm rounded-lg hover:bg-surface-container-high transition-all">
+                                    Cancel
+                                </button>
+                                <button id="blogSubmitBtn" onclick="saveBlog()" class="px-8 py-3 bg-primary text-on-primary font-title-sm text-title-sm rounded-lg hover:shadow-lg hover:shadow-primary/20 transition-all active:scale-95 flex items-center gap-2">
+                                    <span class="material-symbols-outlined">send</span>
+                                    Publish Blog
+                                </button>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="glass-card overflow-hidden">
-                    <div class="p-6 border-b border-outline-variant bg-white">
-                        <h3 class="text-lg font-bold">All Blogs</h3>
+                    <!-- Preview / Quick Stats Sidebar -->
+                    <div class="lg:col-span-4 space-y-gutter-card">
+                        <div class="bg-primary-container text-on-primary-container p-6 rounded-xl relative overflow-hidden">
+                            <div class="relative z-10">
+                                <h4 class="font-title-sm text-title-sm mb-2">Editor Insights</h4>
+                                <p class="text-body-sm opacity-80 mb-4">You've reached 65% of your target word count for today. Keep going!</p>
+                                <div class="w-full bg-white/20 h-2 rounded-full overflow-hidden mb-2">
+                                    <div class="bg-white h-full w-[65%]"></div>
+                                </div>
+                                <span class="text-label-caps font-label-caps text-[10px]">650 / 1000 WORDS</span>
+                            </div>
+                            <div class="absolute -right-6 -bottom-6 opacity-10">
+                                <span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+                            </div>
+                        </div>
+                        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
+                            <img alt="Post Preview Placeholder" class="w-full h-48 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsNxQTo1ZxVpYp90EgelECaZAlruLMyVb5C-_LWnJb2yKzEE-Un5V5bWowWfjmH9qtEUBbuSHhrSlfysPwliB3H49mKMzEaEKHUIK8Vv5_tfEvDilaGMtlW-_MN6914L4XwPQTDEn8n2RYmlCeRRDekF0YFreewTblKpueIFWAhM-ZdoQxOLaH8B8Oz34SBZa-bkWaSXlVKh2Z4Y52pg80LvrVTH91YFg3Gtk459nuFThFWo252J2Q7DwJjuxcDzYzs2vWTvrRZxM"/>
+                            <div class="p-4">
+                                <h5 class="font-title-sm text-title-sm mb-1">Preview Thumbnail</h5>
+                                <p class="text-body-sm text-secondary">This image will appear on the blog list and social shares.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- All Blogs Section -->
+                <section class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+                    <div class="p-6 border-b border-outline-variant flex items-center justify-between">
+                        <h3 class="font-title-sm text-title-sm flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">format_list_bulleted</span>
+                            All Blogs
+                        </h3>
+                        <div class="flex items-center gap-2">
+                            <button class="p-2 rounded-lg hover:bg-surface-container-low text-secondary">
+                                <span class="material-symbols-outlined">filter_list</span>
+                            </button>
+                            <button class="p-2 rounded-lg hover:bg-surface-container-low text-secondary">
+                                <span class="material-symbols-outlined">download</span>
+                            </button>
+                        </div>
                     </div>
                     <div class="overflow-x-auto w-full">
-                        <table class="w-full text-left text-sm border-collapse">
+                        <table class="w-full text-left border-collapse">
                             <thead>
-                                <tr class="border-b border-outline-variant text-on-surface-variant text-xs uppercase tracking-wider bg-surface-light/50">
-                                    <th class="py-3 px-6 font-medium">Title</th>
-                                    <th class="py-3 px-6 font-medium">Status</th>
-                                    <th class="py-3 px-6 font-medium">Date</th>
-                                    <th class="py-3 px-6 font-medium text-right">Actions</th>
+                                <tr class="bg-surface-container-low/50">
+                                    <th class="px-6 py-4 text-label-caps font-label-caps text-secondary uppercase">Title</th>
+                                    <th class="px-6 py-4 text-label-caps font-label-caps text-secondary uppercase">Status</th>
+                                    <th class="px-6 py-4 text-label-caps font-label-caps text-secondary uppercase">Date</th>
+                                    <th class="px-6 py-4 text-label-caps font-label-caps text-secondary uppercase text-right">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="blogsBody" class="divide-y divide-outline-variant"></tbody>
+                            <tbody id="blogsBody" class="divide-y divide-outline-variant/30 text-sm"></tbody>
                         </table>
                     </div>
-                </div>
+                    <div class="p-6 border-t border-outline-variant bg-surface-container-low/20 flex items-center justify-between">
+                        <p class="text-body-sm text-secondary">Showing dynamic blogs</p>
+                        <div class="flex gap-2">
+                            <button class="p-2 border border-outline-variant rounded-lg hover:bg-white transition-colors">
+                                <span class="material-symbols-outlined text-sm">chevron_left</span>
+                            </button>
+                            <button class="px-3 py-1 border border-primary bg-primary text-on-primary rounded-lg text-sm font-bold">1</button>
+                            <button class="p-2 border border-outline-variant rounded-lg hover:bg-white transition-colors">
+                                <span class="material-symbols-outlined text-sm">chevron_right</span>
+                            </button>
+                        </div>
+                    </div>
+                </section>
             </div>
 
             <!-- Subscription Config View -->

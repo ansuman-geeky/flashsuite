@@ -9,6 +9,9 @@ const adminSubsRoutes = require('./routes/admin_subs');
 const stripeRoutes = require('./routes/stripe');
 const compression = require('compression');
 
+// New PDF Editor Router
+const pdfEditorRouter = require('./pdf-editor/server/routes/pdf.routes');
+
 // SEO Programmatic Middlewares & Routers
 const seoPrerender = require('./middleware/seo');
 const seoRouter = require('./routes/seo');
@@ -45,7 +48,7 @@ function isAuthenticated(req, res, next) {
     if (req.session && req.session.userId) {
         return next();
     }
-    res.redirect('/login.html');
+    res.redirect('/login');
 }
 
 // Admin Authentication Middleware
@@ -53,15 +56,12 @@ function isAdminAuthenticated(req, res, next) {
     if (req.session && req.session.userId && req.session.role === 'admin') {
         return next();
     }
-    res.redirect('/admin-login.html');
+    res.redirect('/admin-login');
 }
 
-// Clean URLs Middleware: Redirect .html requests to clean URLs (keeping admin.html and admin-login.html authentication flow)
+// Clean URLs Middleware: Redirect .html requests to clean URLs
 app.use((req, res, next) => {
-    if (req.path === '/admin') {
-        return res.redirect('/admin.html');
-    }
-    if (req.path.endsWith('.html') && req.path !== '/admin.html' && req.path !== '/admin-login.html') {
+    if (req.path.endsWith('.html')) {
         const cleanPath = req.path === '/index.html' ? '/' : req.path.slice(0, -5);
         const queryIndex = req.url.indexOf('?');
         const queryString = queryIndex !== -1 ? req.url.slice(queryIndex) : '';
@@ -82,14 +82,14 @@ app.get('/', (req, res) => {
 });
 
 // Protect static admin files
-app.get('/admin.html', isAdminAuthenticated, (req, res, next) => {
+app.get('/admin', isAdminAuthenticated, (req, res, next) => {
     res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
 // Serve admin login file
-app.get('/admin-login.html', (req, res, next) => {
+app.get('/admin-login', (req, res, next) => {
     if (req.session && req.session.userId && req.session.role === 'admin') {
-        return res.redirect('/admin.html');
+        return res.redirect('/admin');
     }
     res.sendFile(path.join(__dirname, 'public', 'admin-login.html'));
 });
@@ -97,13 +97,19 @@ app.get('/admin-login.html', (req, res, next) => {
 // Redirect authenticated users away from the login page
 app.get('/login', (req, res, next) => {
     if (req.session && req.session.userId) {
-        return res.redirect('/dashboard.html');
+        return res.redirect('/dashboard');
     }
     next();
 });
 
-app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'], maxAge: '1d' }));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads'), { maxAge: '1d' }));
+app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'], maxAge: 0 }));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'), { maxAge: 0 }));
+app.use('/pdf-editor', express.static(path.join(__dirname, 'pdf-editor/public'), { extensions: ['html'] }));
+
+// Redirect legacy /editpdf to the new PDF editor
+app.get('/editpdf', (req, res) => {
+    res.sendFile(path.join(__dirname, 'pdf-editor/public/pdf-editor.html'));
+});
 
 // Tool Gatekeeper Middleware
 // Intercepts requests to check if they are mapped to a tool that requires a premium plan
@@ -128,7 +134,7 @@ app.use(async (req, res, next) => {
 
             // It requires a specific plan. Does the user have it?
             if (!req.session || !req.session.userId) {
-                return res.redirect('/login.html'); // Not logged in
+                return res.redirect('/login'); // Not logged in
             }
 
             const requiredPlanIds = mappings.map(m => m.plan_id);
@@ -138,14 +144,14 @@ app.use(async (req, res, next) => {
                 WHERE user_id = ? AND status = 'active'
                 ORDER BY id DESC LIMIT 1
             `, [req.session.userId], (err, sub) => {
-                if (err) return res.redirect('/pricing.html');
+                if (err) return res.redirect('/pricing');
 
                 if (sub && requiredPlanIds.includes(sub.plan_id)) {
                     // Access granted
                     return next();
                 } else {
                     // Access denied, redirect to upgrade
-                    return res.redirect('/pricing.html');
+                    return res.redirect('/pricing');
                 }
             });
         });
@@ -161,6 +167,14 @@ app.use('/api/auth', require('./routes/auth_google'));
 app.use('/api', humanizeRoutes);
 app.use('/api/admin/subs', adminSubsRoutes);
 app.use('/api/stripe', stripeRoutes);
+
+// PDF Editor Route
+app.use('/api/pdf', pdfEditorRouter);
+
+// Blog Routing
+app.get('/blogs/:slug', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'post.html'));
+});
 
 // Redirection Logic
 app.get('/:code', (req, res) => {

@@ -6,7 +6,8 @@ async function seed() {
 
     db.serialize(() => {
         // Create Admin User
-        db.run("INSERT OR IGNORE INTO users (username, password) VALUES (?, ?)", ['admin', hashedPass]);
+        db.run("INSERT OR IGNORE INTO users (username, password, role) VALUES (?, ?, 'admin')", ['admin', hashedPass]);
+        db.run("UPDATE users SET role = 'admin' WHERE username = 'admin'");
 
         // Create Dummy Links
         const stmt = db.prepare("INSERT OR IGNORE INTO links (original_url, short_code) VALUES (?, ?)");

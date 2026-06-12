@@ -215,7 +215,7 @@
                 
                 <div id="adminBadge" class="hidden mb-6 bg-primary/10 border border-primary/20 text-primary px-4 py-3 rounded-2xl flex items-center justify-between">
                     <span class="font-bold flex items-center gap-2"><span class="material-symbols-outlined">admin_panel_settings</span> Administrator</span>
-                    <a href="/admin.html" class="text-sm underline hover:text-vibrant-fuchsia">Go to Admin Portal →</a>
+                    <a href="/admin" class="text-sm underline hover:text-vibrant-fuchsia">Go to Admin Portal →</a>
                 </div>
             </div>
 
@@ -238,7 +238,7 @@
                     <p class="text-body-md text-on-surface-variant mb-6" id="subStatus">You are currently on the free tier.</p>
                     
                     <div class="flex gap-4">
-                        <a href="/pricing.html" class="px-6 py-2.5 rounded-full bg-primary text-white font-label-md hover:bg-vibrant-fuchsia transition-colors flex items-center gap-2 shadow-md">
+                        <a href="/pricing" class="px-6 py-2.5 rounded-full bg-primary text-white font-label-md hover:bg-vibrant-fuchsia transition-colors flex items-center gap-2 shadow-md">
                             <span class="material-symbols-outlined text-[18px]">upgrade</span> Upgrade Plan
                         </a>
                         <button onclick="manageBilling()" id="billingBtn" class="hidden px-6 py-2.5 rounded-full bg-surface-variant text-on-surface font-label-md hover:bg-outline-variant/30 transition-colors flex items-center gap-2">
@@ -256,7 +256,7 @@
         try {
             const res = await fetch('/api/user/profile');
             if(res.status === 401) {
-                window.location.href = '/login.html';
+                window.location.href = '/login';
                 return;
             }
             const user = await res.json();
@@ -313,7 +313,7 @@
     async function logout() {
         try {
             await fetch('/api/logout', { method: 'POST' });
-            window.location.href = '/login.html';
+            window.location.href = '/login';
         } catch(e) {}
     }
 

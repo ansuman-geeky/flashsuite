@@ -81,7 +81,7 @@
     </style>
 
     <!-- New Design System -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
     <script id="tailwind-config">
         tailwind.config = {
           darkMode: "class",
@@ -231,7 +231,13 @@
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
-            const postId = urlParams.get('id');
+            let postId = urlParams.get('id');
+            if (!postId) {
+                const parts = window.location.pathname.split('/');
+                if (parts[1] === 'blogs' && parts[2]) {
+                    postId = parts[2];
+                }
+            }
             const container = document.getElementById('postContainer');
 
             if (!postId) {
@@ -252,7 +258,7 @@
                     <br>
                     <span class="post-meta">${new Date(blog.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
                     <h1 class="post-title">${blog.title}</h1>
-                    <div class="post-content">
+                    <div class="post-content prose prose-lg prose-purple max-w-none prose-headings:text-deep-navy prose-img:mx-auto prose-img:rounded-2xl prose-a:text-brand-purple hover:prose-a:text-[#a21caf]">
                         ${blog.content}
                     </div>
                 `;

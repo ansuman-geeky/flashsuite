@@ -1,10 +1,9 @@
 let quill;
 
 document.addEventListener('DOMContentLoaded', () => {
-    if (window.location.pathname.includes('admin.html')) {
+    if (window.location.pathname === '/admin' || window.location.pathname.includes('admin.html')) {
         loadDashboardData();
         loadBlogsData();
-        initQuill();
     }
 });
 
@@ -110,7 +109,7 @@ function selectLocalImage() {
             const data = await res.json();
             
             const range = quill.getSelection();
-            const index = range ? range.index : quill.getLength() - 1;
+            const index = range ? range.index : 0;
             quill.insertEmbed(index, 'image', data.imageUrl);
             quill.setSelection(index + 1);
         } catch (err) {
@@ -138,7 +137,7 @@ async function uploadBlogImage() {
         const data = await res.json();
         
         const range = quill.getSelection();
-        const index = range ? range.index : quill.getLength() - 1;
+        const index = range ? range.index : 0;
         quill.insertEmbed(index, 'image', data.imageUrl);
         quill.setSelection(index + 1);
         
@@ -290,6 +289,7 @@ function switchView(viewId) {
     } else if (viewId === 'blogs') {
         document.getElementById('blogView').style.display = 'block';
         if (titleEl) titleEl.innerText = 'Blog Management';
+        if (!quill) initQuill();
     } else if (viewId === 'settings') {
         document.getElementById('settingsView').style.display = 'block';
         if (titleEl) titleEl.innerText = 'System Settings';
@@ -307,13 +307,26 @@ async function loadBlogsData() {
 
         const tbody = document.getElementById('blogsBody');
         tbody.innerHTML = blogs.map(blog => `
-            <tr>
-                <td><strong>${blog.title}</strong></td>
-                <td><span class="status-badge ${blog.status}">${blog.status.toUpperCase()}</span></td>
-                <td>${new Date(blog.created_at).toLocaleDateString()}</td>
-                <td>
-                    <button onclick='startEditBlog(${JSON.stringify(blog).replace(/'/g, "&apos;")})' class="btn-action btn-edit">Edit</button>
-                    <button onclick="deleteBlog(${blog.id})" class="btn-action btn-delete">Delete</button>
+            <tr class="hover:bg-surface-container-low/30 transition-colors group">
+                <td class="px-6 py-4">
+                    <div class="flex flex-col">
+                        <span class="font-body-md text-body-md font-semibold text-on-surface">${blog.title}</span>
+                        <span class="text-body-sm text-secondary truncate max-w-xs">flashsuite.com/blog/${blog.id}</span>
+                    </div>
+                </td>
+                <td class="px-6 py-4">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold ${blog.status === 'published' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'} uppercase tracking-tighter">
+                        ${blog.status.toUpperCase()}
+                    </span>
+                </td>
+                <td class="px-6 py-4">
+                    <span class="text-body-sm text-secondary">${new Date(blog.created_at).toLocaleDateString()}</span>
+                </td>
+                <td class="px-6 py-4 text-right">
+                    <div class="flex items-center justify-end gap-3 transition-opacity">
+                        <button onclick='startEditBlog(${JSON.stringify(blog).replace(/'/g, "&apos;")})' class="text-brand-purple hover:underline font-label-caps text-xs uppercase font-bold">EDIT</button>
+                        <button onclick="deleteBlog(${blog.id})" class="text-red-600 hover:underline font-label-caps text-xs uppercase font-bold">DELETE</button>
+                    </div>
                 </td>
             </tr>
         `).join('');
@@ -349,8 +362,32 @@ function cancelEditBlog() {
 
 async function saveBlog() {
     const title = document.getElementById('blogTitle').value;
-    const content = quill ? quill.root.innerHTML : '';
     const status = document.getElementById('blogStatus').value;
+
+    const fileInput = document.getElementById('blogImageFile');
+    if (fileInput && fileInput.files[0]) {
+        try {
+            const compressedFile = await compressImage(fileInput.files[0]);
+            const formData = new FormData();
+            formData.append('image', compressedFile);
+
+            const res = await fetch('/api/admin/upload-image', {
+                method: 'POST',
+                body: formData
+            });
+            if (res.ok) {
+                const data = await res.json();
+                if (quill) {
+                    quill.insertEmbed(0, 'image', data.imageUrl);
+                }
+                fileInput.value = '';
+            }
+        } catch (err) {
+            console.error("Auto-upload failed", err);
+        }
+    }
+
+    const content = quill ? quill.root.innerHTML : '';
 
     if (!title) return alert("Blog title is required");
 

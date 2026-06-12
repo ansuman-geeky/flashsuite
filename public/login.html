@@ -351,9 +351,9 @@
                 const data = await res.json();
                 if (res.ok) {
                     if (data.role === 'admin') {
-                        window.location.href = '/admin.html';
+                        window.location.href = '/admin';
                     } else {
-                        window.location.href = '/dashboard.html';
+                        window.location.href = '/dashboard';
                     }
                 } else {
                     errorMsg.textContent = data.error || 'Invalid credentials. Please try again.';
@@ -391,7 +391,7 @@
 
                 if (res.ok) {
                     // Redirect to dashboard automatically on signup
-                    window.location.href = '/dashboard.html';
+                    window.location.href = '/dashboard';
                 } else {
                     const data = await res.json();
                     errorMsg.textContent = data.error || 'Registration failed.';

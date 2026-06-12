@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional PDF Editor | FlashSuite</title>
+    
+    <!-- Existing Site Dependencies -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#f8f9fa",
+                        "surface-container": "#edeeef",
+                        "on-secondary-container": "#5a6574",
+                        "deep-navy": "#0B1622",
+                        "tertiary-fixed": "#ffd9e2",
+                        "secondary-fixed-dim": "#bcc7d8",
+                        "on-primary-fixed-variant": "#7d008c",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-container-highest": "#e1e3e4",
+                        "surface-dim": "#d9dadb",
+                        "on-surface": "#191c1d",
+                        "on-secondary-fixed": "#121c29",
+                        "on-error": "#ffffff",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-tint": "#a400b7",
+                        "secondary-fixed": "#d8e3f5",
+                        "inverse-surface": "#2e3132",
+                        "on-tertiary-fixed": "#3f001c",
+                        "surface": "#f8f9fa",
+                        "power-pink": "#DB2777",
+                        "tertiary-container": "#d92575",
+                        "error-container": "#ffdad6",
+                        "primary-container": "#c026d3",
+                        "on-primary-container": "#fffafa",
+                        "on-primary": "#ffffff",
+                        "on-surface-variant": "#524151",
+                        "vibrant-fuchsia": "#C026D3",
+                        "surface-container-low": "#f3f4f5",
+                        "secondary": "#545f6e",
+                        "outline-variant": "#d7c0d3",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#fffafa",
+                        "surface-variant": "#e1e3e4",
+                        "on-tertiary-fixed-variant": "#8e0048",
+                        "surface-light": "#F8F9FA",
+                        "outline": "#857182",
+                        "error": "#ba1a1a",
+                        "surface-bright": "#f8f9fa",
+                        "tertiary": "#b4005d",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed-dim": "#fda9ff",
+                        "on-primary-fixed": "#36003d",
+                        "on-tertiary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#3d4855",
+                        "primary": "#9e00b1",
+                        "primary-fixed": "#ffd6fb",
+                        "tertiary-fixed-dim": "#ffb1c7",
+                        "inverse-primary": "#fda9ff",
+                        "on-background": "#191c1d",
+                        "secondary-container": "#d8e3f5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "gutter-desktop": "24px",
+                        "max-width": "1280px",
+                        "gutter-mobile": "16px",
+                        "margin-mobile": "16px",
+                        "baseline": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500" }],
+                        "title-lg": ["22px", { "lineHeight": "28px", "fontWeight": "500" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "display-lg": ["57px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- PDF Editor CSS -->
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/pdf-editor/css/pdf-editor.css?v=10000">
+
+    <!-- PDF.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    </script>
+</head>
+<body class="bg-slate-50 font-sans text-slate-900 antialiased overflow-hidden flex flex-col h-screen">
+    
+    <!-- Navbar (Existing) -->
+    <div id="navbar-placeholder" class="shrink-0 z-50 shadow-sm"></div>
+    <script src="/components/navbar.js?v=3"></script>
+
+    <!-- Editor Main App -->
+    <main class="flex-1 flex flex-col overflow-hidden relative bg-slate-100 pt-20">
+        
+        <!-- Top Action Bar (Dark Mode) -->
+        <header class="h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-6 shrink-0 z-40 shadow-md">
+            <div class="flex items-center gap-3">
+                <i data-lucide="file-text" class="text-indigo-400"></i>
+                <span id="fileNameDisplay" class="font-medium text-sm text-slate-200 truncate max-w-[200px]">No file loaded</span>
+            </div>
+            
+            <!-- Zoom & Pagination Controls -->
+            <div class="hidden md:flex items-center gap-2 bg-slate-800 rounded-lg p-1 border border-slate-700" id="viewControls" style="display: none;">
+                <button class="p-1.5 hover:bg-slate-700 rounded text-slate-400 hover:text-white transition-colors" id="btnPrevPage"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                <span class="text-xs font-medium px-3 text-slate-300"><span id="currentPageDisplay">1</span> / <span id="totalPagesDisplay">1</span></span>
+                <button class="p-1.5 hover:bg-slate-700 rounded text-slate-400 hover:text-white transition-colors" id="btnNextPage"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                <div class="w-px h-4 bg-slate-600 mx-2"></div>
+                <button class="p-1.5 hover:bg-slate-700 rounded text-slate-400 hover:text-white transition-colors" id="btnZoomOut"><i data-lucide="minus" class="w-4 h-4"></i></button>
+                <span class="text-xs font-medium px-2 w-12 text-center text-slate-300" id="zoomLevelDisplay">100%</span>
+                <button class="p-1.5 hover:bg-slate-700 rounded text-slate-400 hover:text-white transition-colors" id="btnZoomIn"><i data-lucide="plus" class="w-4 h-4"></i></button>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button id="btnExport" class="bg-indigo-500 hover:bg-indigo-400 text-white px-5 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2 shadow-sm disabled:opacity-50" disabled>
+                    <i data-lucide="download" class="w-4 h-4"></i> Export PDF
+                </button>
+            </div>
+        </header>
+
+        <!-- 3-Panel Studio -->
+        <div class="flex-1 flex overflow-hidden">
+            
+            <!-- Left Toolbar (Dark Mode) -->
+            <aside class="w-16 bg-slate-900 border-r border-slate-800 flex flex-col items-center py-6 gap-3 z-20 shrink-0 shadow-lg relative">
+                <button class="tool-btn active group hover:bg-slate-800 rounded-xl" data-tool="select" title="Select (V)">
+                    <i data-lucide="mouse-pointer-2" class="w-5 h-5 text-slate-400 group-[.active]:text-indigo-400 transition-colors"></i>
+                </button>
+                <button class="tool-btn group hover:bg-slate-800 rounded-xl" data-tool="text" title="Text (T)">
+                    <i data-lucide="type" class="w-5 h-5 text-slate-400 group-[.active]:text-indigo-400 transition-colors"></i>
+                </button>
+                <div class="relative group/tool">
+                    <button class="tool-btn group hover:bg-slate-800 rounded-xl" data-tool="shape" title="Shapes (S)">
+                        <i data-lucide="square" class="w-5 h-5 text-slate-400 group-[.active]:text-indigo-400 transition-colors"></i>
+                    </button>
+                    <!-- Sub-menu for shapes -->
+                    <div class="absolute left-full top-0 ml-2 hidden group-hover/tool:flex bg-slate-800 shadow-xl border border-slate-700 rounded-xl p-2 gap-2 flex-col z-50 w-14">
+                        <button class="tool-btn sub-tool active group/sub hover:bg-slate-700 rounded-lg" data-sub-tool="rect" title="Rectangle">
+                            <i data-lucide="square" class="w-4 h-4 text-slate-400 group-[.active]/sub:text-indigo-400"></i>
+                        </button>
+                        <button class="tool-btn sub-tool group/sub hover:bg-slate-700 rounded-lg" data-sub-tool="circle" title="Circle">
+                            <i data-lucide="circle" class="w-4 h-4 text-slate-400 group-[.active]/sub:text-indigo-400"></i>
+                        </button>
+                        <button class="tool-btn sub-tool group/sub hover:bg-slate-700 rounded-lg" data-sub-tool="line" title="Line">
+                            <i data-lucide="minus" class="w-4 h-4 text-slate-400 group-[.active]/sub:text-indigo-400"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <button class="tool-btn group hover:bg-slate-800 rounded-xl" data-tool="draw" title="Freehand Draw (D)">
+                    <i data-lucide="pen-tool" class="w-5 h-5 text-slate-400 group-[.active]:text-indigo-400 transition-colors"></i>
+                </button>
+                
+                <button class="tool-btn group relative hover:bg-slate-800 rounded-xl" data-tool="image" title="Insert Image (I)">
+                    <i data-lucide="image" class="w-5 h-5 text-slate-400 group-[.active]:text-indigo-400 transition-colors"></i>
+                    <input type="file" id="imageInput" accept="image/png, image/jpeg" class="absolute inset-0 opacity-0 cursor-pointer hidden">
+                </button>
+                <div class="w-8 h-px bg-slate-700 my-3"></div>
+                <button class="tool-btn group hover:bg-slate-800 rounded-xl" id="btnUndo" title="Undo (Ctrl+Z)">
+                    <i data-lucide="undo-2" class="w-5 h-5 text-slate-400 hover:text-indigo-400 transition-colors"></i>
+                </button>
+                <button class="tool-btn group hover:bg-slate-800 rounded-xl" id="btnRedo" title="Redo (Ctrl+Y)">
+                    <i data-lucide="redo-2" class="w-5 h-5 text-slate-400 hover:text-indigo-400 transition-colors"></i>
+                </button>
+                <button class="tool-btn group hover:bg-slate-800 rounded-xl" id="btnDelete" title="Delete Selected (Del)">
+                    <i data-lucide="trash-2" class="w-5 h-5 text-red-400 hover:text-red-300 transition-colors"></i>
+                </button>
+            </aside>
+
+            <!-- Center Canvas Viewport -->
+            <div class="flex-1 bg-slate-200 overflow-auto relative flex justify-center items-start shadow-inner" id="viewport">
+                <!-- Upload Screen Overlay -->
+                <div id="uploadScreen" class="absolute inset-0 bg-slate-50 z-30 flex items-center justify-center p-6">
+                    <div class="bg-white rounded-2xl shadow-xl border border-slate-200 p-10 max-w-lg w-full text-center">
+                        <div id="dropZone" class="border-2 border-dashed border-indigo-200 bg-indigo-50/50 rounded-xl p-12 cursor-pointer hover:bg-indigo-50 hover:border-indigo-400 transition-colors group">
+                            <i data-lucide="upload-cloud" class="w-16 h-16 text-indigo-500 mx-auto mb-4 group-hover:-translate-y-1 transition-transform"></i>
+                            <h2 class="text-xl font-semibold text-slate-800 mb-2">Upload your PDF</h2>
+                            <p class="text-sm text-slate-500 mb-6">Drag & drop or click to browse (Max 50MB)</p>
+                            <input type="file" id="fileInput" accept=".pdf" class="hidden">
+                            <button class="bg-indigo-600 text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-indigo-700 shadow-sm">Select File</button>
+                        </div>
+                        
+                        <div id="uploadProgress" class="hidden mt-6">
+                            <div class="w-full bg-slate-100 rounded-full h-2 mb-2">
+                                <div id="uploadProgressBar" class="bg-indigo-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                            <p id="uploadProgressText" class="text-xs text-slate-500 font-medium">Processing...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pages will be injected here -->
+                <div id="pagesContainer" class="flex flex-col gap-6 relative p-8"></div>
+            </div>
+
+            <!-- Right Properties Panel -->
+            <aside class="w-64 bg-white border-l border-slate-200 flex flex-col z-20 shrink-0 shadow-[-4px_0_15px_rgba(0,0,0,0.02)] overflow-y-auto">
+                <div class="p-4 border-b border-slate-100">
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4" id="propPanelTitle">Document Properties</h3>
+                    
+                    <!-- Empty State -->
+                    <div id="propEmptyState" class="text-sm text-slate-500">
+                        <p class="mb-2">Select an element to edit its properties.</p>
+                        <div class="bg-slate-50 p-3 rounded text-xs border border-slate-100">
+                            <strong>File:</strong> <span id="infoFileName">-</span><br>
+                            <strong>Pages:</strong> <span id="infoPageCount">-</span><br>
+                            <strong>Size:</strong> <span id="infoFileSize">-</span>
+                        </div>
+                    </div>
+
+                    <!-- Text Properties (Hidden by default) -->
+                    <div id="propTextState" class="hidden space-y-4">
+                        
+                        <!-- Font Family -->
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Font Family</label>
+                            <select id="propFontFamily" class="w-full text-sm rounded border-slate-300 focus:border-indigo-500 focus:ring-indigo-500 py-1.5 px-2">
+                                <option value="Helvetica">Helvetica</option>
+                                <option value="Arial">Arial</option>
+                                <option value="Times-Roman">Times New Roman</option>
+                                <option value="Courier">Courier</option>
+                            </select>
+                        </div>
+
+                        <!-- Size & Color -->
+                        <div class="flex gap-3">
+                            <div class="flex-1">
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Size (px)</label>
+                                <input type="number" id="propFontSize" class="w-full text-sm rounded border-slate-300 focus:border-indigo-500 focus:ring-indigo-500 py-1.5 px-2" value="14">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Color</label>
+                                <input type="color" id="propFontColor" class="w-8 h-8 rounded border-0 cursor-pointer p-0" value="#000000">
+                            </div>
+                        </div>
+
+                        <!-- Opacity -->
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Opacity</label>
+                            <div class="flex items-center gap-2">
+                                <input type="range" id="propOpacityText" min="0.1" max="1" step="0.1" value="1" class="w-full accent-indigo-600">
+                                <span id="propOpacityTextVal" class="text-xs text-slate-500 w-8 text-right">100%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Shape Properties (Hidden by default) -->
+                    <div id="propShapeState" class="hidden space-y-4">
+                        <div class="flex gap-3">
+                            <div class="flex-1">
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Fill Color</label>
+                                <div class="flex items-center gap-2">
+                                    <input type="color" id="propShapeFill" class="w-8 h-8 rounded border-0 cursor-pointer p-0" value="#000000">
+                                    <label class="text-xs flex items-center gap-1 cursor-pointer">
+                                        <input type="checkbox" id="propShapeFillNone" class="rounded text-indigo-600 focus:ring-indigo-500"> None
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex gap-3">
+                            <div class="flex-1">
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Stroke Color</label>
+                                <input type="color" id="propShapeStroke" class="w-8 h-8 rounded border-0 cursor-pointer p-0" value="#4f46e5">
+                            </div>
+                            <div class="flex-1">
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Stroke Width</label>
+                                <input type="number" id="propShapeStrokeWidth" class="w-full text-sm rounded border-slate-300 py-1.5 px-2" value="2" min="0">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Opacity</label>
+                            <div class="flex items-center gap-2">
+                                <input type="range" id="propOpacityShape" min="0.1" max="1" step="0.1" value="1" class="w-full accent-indigo-600">
+                                <span id="propOpacityShapeVal" class="text-xs text-slate-500 w-8 text-right">100%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Image Properties (Hidden by default) -->
+                    <div id="propImageState" class="hidden space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Opacity</label>
+                            <div class="flex items-center gap-2">
+                                <input type="range" id="propOpacityImage" min="0.1" max="1" step="0.1" value="1" class="w-full accent-indigo-600">
+                                <span id="propOpacityImageVal" class="text-xs text-slate-500 w-8 text-right">100%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- Modular JS -->
+    <script src="/pdf-editor/js/history.js?v=10000"></script>
+    <script src="/pdf-editor/js/pdf-extractor.js?v=10000"></script>
+    <script src="/pdf-editor/js/pdf-renderer.js?v=10000"></script>
+    <script src="/pdf-editor/js/annotation-layer.js?v=10000"></script>
+    <script src="/pdf-editor/js/toolbar.js?v=10000"></script>
+    <script src="/pdf-editor/js/pdf-exporter.js?v=10000"></script>
+    <script src="/pdf-editor/js/pdf-editor.js?v=10000"></script>
+    
+    <script>
+        // Init Lucide icons
+        window.addEventListener('load', () => {
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
